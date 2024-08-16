@@ -32,8 +32,6 @@ export default function Main() {
     }
   }, [router]);
 
-  // Your existing main.js code continues here...
-
   const handleInProgressClick = () => {
     setShowInProgressModal(true);
   };

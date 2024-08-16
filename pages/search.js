@@ -17,6 +17,7 @@ export default function Search() {
   const handleSearch = async () => {
     setLoading(true);
     setError('');
+    setTransactions([]); // Clear previous results
     try {
       const result = await searchTransactions(searchAddress);
       setTransactions(result.sort((a, b) => b.createdAt - a.createdAt));
@@ -56,9 +57,14 @@ export default function Search() {
       </div>
       {loading && <p className={styles.loading}>Loading...</p>}
       {error && <p className={styles.error}>{error}</p>}
-      <div className={styles.transactionList}>
-        {transactions.map((tx) => (
-          <div key={tx.id} className={styles.transactionItem} onClick={() => handleTransactionClick(tx)}>
+      <div className={`${styles.transactionList} ${transactions.length > 0 && styles.fadeIn}`}>
+        {transactions.map((tx, index) => (
+          <div
+            key={tx.id}
+            className={`${styles.transactionItem} ${styles.fadeInDelay}`}
+            style={{ animationDelay: `${index * 0.1}s` }} // Delay each item
+            onClick={() => handleTransactionClick(tx)}
+          >
             <div className={styles.transactionInfo}>
               <p><strong>{tx.currencyFrom.toUpperCase()} to {tx.currencyTo.toUpperCase()}</strong></p>
               <p>Amount: {tx.amountExpectedFrom} {tx.currencyFrom.toUpperCase()}</p>

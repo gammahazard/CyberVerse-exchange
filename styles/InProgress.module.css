@@ -51,6 +51,20 @@
     background-color: #1e1e1e;
     transition: background-color 0.3s ease;
 }
+.statusYellow {
+    color: #ffa500;
+    font-weight: bold;
+}
+
+.statusGreen {
+    color: #008000;
+    font-weight: bold;
+}
+
+.statusRed {
+    color: #ff0000;
+    font-weight: bold;
+}
 
 .transactionItem:hover {
     background-color: #2a2a2a;

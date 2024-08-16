@@ -7,19 +7,20 @@
     background-color: #0a0a0a;
     color: #00ff00;
     font-family: 'Courier New', monospace;
-  }
-  
-  .title {
-    font-size: 2rem;
-    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 2.2rem;
+    margin-bottom: 30px;
     text-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
-  }
-  
-  .backButton {
+    text-align: center;
+}
+
+.backButton {
     position: fixed;
     top: 20px;
     left: 20px;
-    padding: 10px 15px;
+    padding: 10px 20px;
     background-color: #111;
     color: #00ff00;
     border: 2px solid #00ff00;
@@ -29,108 +30,187 @@
     display: flex;
     align-items: center;
     font-size: 1rem;
-  }
-  
-  .backButton:hover {
+}
+
+.backButton:hover {
     background-color: #00ff00;
     color: #111;
     box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
-  }
-  
-  .searchContainer {
+}
+
+.searchContainer {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
     max-width: 600px;
-    margin-bottom: 20px;
-  }
-  
-  .searchInput {
-    flex-grow: 1;
-    padding: 10px;
-    font-size: 1rem;
+    margin-bottom: 30px;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.2rem;
     background-color: #111;
     color: #00ff00;
     border: 2px solid #00ff00;
-    border-radius: 4px 0 0 4px;
-  }
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
 
-  .searchIcon {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    font-size: 2rem;
-    color: #00ff00;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    animation: glow 2s infinite alternate;
-    z-index: 1000;
-  }
-  
-  .searchIcon:hover {
-    transform: scale(1.1);
-  }
-  
-  @keyframes glow {
-    from {
-      text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00, 0 0 20px #00ff00;
-    }
-    to {
-      text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00;
-    }
-  }
-  
-  .searchButton {
-    padding: 10px 20px;
-    font-size: 1rem;
+.searchButton {
+    padding: 12px 25px;
+    font-size: 1.2rem;
     background-color: #00ff00;
     color: #111;
     border: none;
-    border-radius: 0 4px 4px 0;
+    border-radius: 4px;
     cursor: pointer;
     transition: all 0.3s ease;
-  }
-  
-  .searchButton:hover {
+    width: 100%;
+    max-width: 200px;
+    text-align: center;
+}
+
+.searchButton:hover {
     background-color: #00cc00;
-  }
-  
-  .loading, .error {
+}
+
+.loading, .error {
     margin: 20px 0;
-    font-size: 1rem;
-  }
-  
-  .error {
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.error {
     color: #ff4d4f;
-  }
-  
-  .transactionList {
+}
+
+.transactionList {
     width: 100%;
     max-width: 800px;
-  }
-  
-  .transactionItem {
+    opacity: 0; /* Start invisible */
+    transition: opacity 0.5s ease-in-out;
+}
+
+.transactionList.fadeIn {
+    opacity: 1; /* Fade in when results are ready */
+}
+
+.transactionItem {
     background-color: #111;
     border: 2px solid #00ff00;
     border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-  
-  .transactionInfo p {
-    margin: 5px 0;
-  }
-  
-  .trackLink {
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    opacity: 0;
+}
+
+.transactionItem.fadeInDelay {
+    opacity: 1;
+    animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+.transactionInfo p {
+    margin: 8px 0;
+}
+
+.trackLink {
     display: flex;
     align-items: center;
     color: #00ff00;
     text-decoration: none;
     font-weight: bold;
-  }
-  
-  .trackLink:hover {
+}
+
+.trackLink:hover {
     text-decoration: underline;
-  }
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modalContent {
+    background-color: #111;
+    border: 2px solid #00ff00;
+    border-radius: 10px;
+    padding: 30px;
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+}
+
+.closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #00ff00;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.closeButton:hover {
+    color: #ff4d4f;
+}
+
+/* Keyframes for fadeIn animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile styling */
+@media only screen and (max-width: 767px) {
+    .title {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+
+    .searchInput {
+        font-size: 1rem;
+        padding: 12px;
+    }
+
+    .searchButton {
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
+
+    .transactionItem {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .transactionInfo p {
+        margin: 6px 0;
+        font-size: 0.9rem;
+    }
+
+    .modalContent {
+        padding: 20px;
+    }
+}
