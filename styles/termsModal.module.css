@@ -16,14 +16,15 @@
     color: #00ff00;
     border: 1px solid #00ff00;
     box-shadow: 0 0 20px #00ff00;
-    padding: 2rem;
+    padding: 3rem; /* Increased padding for better spacing */
     border-radius: 10px;
     width: 90%;
-    max-width: 500px;
-    height: 80vh;
+    max-width: 600px; /* Increased max-width */
+    height: 70vh; /* Reduced height */
     display: flex;
     flex-direction: column;
     animation: modalAppear 0.3s ease-out;
+    z-index: 1001;
   }
   
   @keyframes modalAppear {
@@ -33,15 +34,15 @@
   
   .title {
     text-align: center;
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
+    margin-bottom: 1.5rem; /* Increased margin for better spacing */
+    font-size: 1.8rem; /* Increased font size */
     text-shadow: 0 0 5px #00ff00;
   }
   
   .scroll {
     flex-grow: 1;
     overflow-y: auto;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     padding-right: 1rem;
   }
   
@@ -65,23 +66,23 @@
   .actions {
     display: flex;
     justify-content: space-between;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
   }
   
   .button {
-    padding: 0.5rem 1rem;
+    padding: 0.8rem 2rem; /* Increased padding for larger buttons */
     border: none;
-    border-radius: 5px;
+    border-radius: 25px; /* More rounded corners */
     cursor: pointer;
     transition: all 0.3s ease;
     font-family: 'Courier New', monospace;
-    font-size: 1rem;
+    font-size: 1.2rem; /* Slightly larger font size */
     text-transform: uppercase;
     letter-spacing: 1px;
+    z-index: 9999;
   }
   
   .acceptButton {
-    composes: button;
     background-color: #00ff00;
     color: #000;
   }
@@ -92,7 +93,6 @@
   }
   
   .declineButton {
-    composes: button;
     background-color: #333;
     color: #00ff00;
   }
@@ -112,3 +112,4 @@
     color: #00cc00;
     text-shadow: 0 0 5px #00ff00;
   }
+  
