@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import CurrencyList from '../components/CurrencySelector/CurrencyList';
 import SwapInterface from '../components/ExchangeForm/SwapInterface';
 import AddressDisplay from '../components/PaymentInfo/AddressDisplay';
@@ -9,7 +10,8 @@ import { FaSpinner, FaSearch } from 'react-icons/fa';
 import InProgress from '../components/InProgress'; // Add this line
 import Link from 'next/link';
 
-export default function App() {
+export default function Main() {
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const [receiveCurrency, setReceiveCurrency] = useState(null);
   const [sendCurrency, setSendCurrency] = useState(null);
@@ -21,6 +23,16 @@ export default function App() {
   const [showInProgressButton, setShowInProgressButton] = useState(false);
   const [inProgressTransactions, setInProgressTransactions] = useState([]);
   const [showInProgressModal, setShowInProgressModal] = useState(false);
+
+  useEffect(() => {
+    const termsAccepted = localStorage.getItem('termsAccepted');
+    if (!termsAccepted) {
+      // Redirect to the homepage if terms have not been accepted
+      router.push('/');
+    }
+  }, [router]);
+
+  // Your existing main.js code continues here...
 
   const handleInProgressClick = () => {
     setShowInProgressModal(true);

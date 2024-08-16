@@ -17,7 +17,7 @@ export default function Home() {
 
   const handleLaunch = () => {
     if (accepted) {
-      window.location.href = '/app';
+      window.location.href = '/main';
     } else {
       setShowTerms(true);
     }
@@ -27,7 +27,7 @@ export default function Home() {
     localStorage.setItem('termsAccepted', 'true');
     setAccepted(true);
     setShowTerms(false);
-    window.location.href = '/app';
+    window.location.href = '/main';
   };
 
   return (

@@ -9,107 +9,156 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
-  }
-  
-  .content {
+    padding: 2rem; /* Added padding around the modal */
+}
+
+.content {
     background-color: #111;
     color: #00ff00;
     border: 1px solid #00ff00;
     box-shadow: 0 0 20px #00ff00;
-    padding: 3rem; /* Increased padding for better spacing */
-    border-radius: 10px;
+    padding: 4rem; /* Increased padding inside the modal */
+    border-radius: 15px; /* Increased border-radius for smoother corners */
     width: 90%;
-    max-width: 600px; /* Increased max-width */
-    height: 70vh; /* Reduced height */
+    max-width: 800px; /* Increased max-width for a larger modal */
+    max-height: 85vh; /* Slightly increased max-height */
+    overflow-y: auto; /* Allows scrolling if content overflows */
     display: flex;
     flex-direction: column;
     animation: modalAppear 0.3s ease-out;
     z-index: 1001;
-  }
-  
-  @keyframes modalAppear {
+    box-sizing: border-box;
+}
+
+@keyframes modalAppear {
     from { opacity: 0; transform: translateY(-50px); }
     to { opacity: 1; transform: translateY(0); }
-  }
-  
-  .title {
+}
+
+.title {
     text-align: center;
-    margin-bottom: 1.5rem; /* Increased margin for better spacing */
-    font-size: 1.8rem; /* Increased font size */
+    margin-bottom: 2rem; /* Increased margin for better spacing */
+    font-size: 2.4rem; /* Increased font size */
     text-shadow: 0 0 5px #00ff00;
-  }
-  
-  .scroll {
+}
+
+.scroll {
     flex-grow: 1;
     overflow-y: auto;
-    margin-bottom: 1.5rem;
-    padding-right: 1rem;
-  }
-  
-  .scroll::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  .scroll::-webkit-scrollbar-track {
-    background: #0a0a0a;
-  }
-  
-  .scroll::-webkit-scrollbar-thumb {
-    background: #00ff00;
-    border-radius: 4px;
-  }
-  
-  .scroll::-webkit-scrollbar-thumb:hover {
-    background: #00cc00;
-  }
-  
-  .actions {
+    margin-bottom: 2rem; /* Added space below the scroll area */
+    padding-right: 1.5rem; /* Adjusted padding for better readability */
+    line-height: 2; /* Increased line-height for better readability */
+}
+
+.scroll p {
+    margin-bottom: 2rem; /* Added margin between paragraphs */
+}
+
+.scroll ol, .scroll ul {
+    margin-left: 2rem; /* Added left margin for better alignment */
+    padding-left: 1rem; /* Added padding to make space between border and content */
+    list-style: none; /* Removed bullet points and default list styling */
+}
+
+.scroll li {
+    margin-bottom: 1.5rem; /* Spacing between list items */
+}
+.actions {
     display: flex;
     justify-content: space-between;
-    margin-top: 1.5rem;
-  }
-  
-  .button {
-    padding: 0.8rem 2rem; /* Increased padding for larger buttons */
+    margin-top: 3rem; /* Added more margin at the top */
+    gap: 2.5rem; /* Increased gap between buttons */
+    margin-bottom: 2rem; /* Added bottom margin for space around the buttons */
+}
+
+.button {
+    padding: 1.5rem 3rem; /* Increased padding for larger buttons */
     border: none;
-    border-radius: 25px; /* More rounded corners */
+    border-radius: 25px;
     cursor: pointer;
     transition: all 0.3s ease;
     font-family: 'Courier New', monospace;
-    font-size: 1.2rem; /* Slightly larger font size */
+    font-size: 1.6rem; /* Increased font size for buttons */
     text-transform: uppercase;
     letter-spacing: 1px;
     z-index: 9999;
-  }
-  
-  .acceptButton {
+    width: 100%; /* Make buttons full width for better alignment */
+    text-align: center; /* Center-align text */
+}
+
+.acceptButton {
     background-color: #00ff00;
     color: #000;
-  }
-  
-  .acceptButton:hover {
+}
+
+.acceptButton:hover {
     background-color: #00cc00;
     box-shadow: 0 0 10px #00ff00;
-  }
-  
-  .declineButton {
+}
+
+.declineButton {
     background-color: #333;
     color: #00ff00;
-  }
-  
-  .declineButton:hover {
+}
+
+.declineButton:hover {
     background-color: #444;
     box-shadow: 0 0 10px #00ff00;
-  }
-  
-  .content a {
+}
+.changellylink {
+    text-decoration:none;
+    color:white;
+}
+.content a {
     color: #00ff00;
     text-decoration: underline;
     transition: all 0.3s ease;
-  }
-  
-  .content a:hover {
+}
+
+.content a:hover {
     color: #00cc00;
     text-shadow: 0 0 5px #00ff00;
+}
+
+
+@media only screen and (max-width: 767px) {
+    .modal {
+        padding: 1rem; /* Add padding to ensure modal is not too close to screen edges */
+    }
+  
+    .content {
+        padding: 2rem; /* Slightly reduce padding for smaller screens */
+        width: 100%;
+        max-width: 100%; /* Ensure it takes up the full width on mobile */
+        height: auto; /* Auto height for better flexibility on mobile */
+        max-height: 90vh; /* Reduce max-height for better usability */
+        border-radius: 8px; /* Slightly reduce border-radius */
+    }
+  
+    .title {
+        font-size: 1.8rem; /* Slightly reduce font size */
+        margin-bottom: 1rem; /* Reduce bottom margin */
+    }
+  
+    .scroll {
+        margin-bottom: 1rem; /* Reduce margin for better spacing */
+        padding-right: 0.5rem; /* Adjust padding for smaller screens */
+    }
+  
+    .scroll p, .scroll li {
+        margin-bottom: 0.8rem; /* Reduce margin between text elements */
+    }
+  
+    .actions {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 1rem; /* Add gap between buttons */
+    }
+  
+    .button {
+        padding: 1rem; /* Adjust padding for mobile */
+        font-size: 1.1rem; /* Slightly smaller font size for buttons */
+        width: 100%; /* Make buttons full-width on mobile */
+        text-align: center; /* Center-align text */
+    }
   }
   
