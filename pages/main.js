@@ -18,11 +18,12 @@ export default function Main() {
   const [amount, setAmount] = useState(null);
   const [address, setAddress] = useState(null);
   const [transactionDetails, setTransactionDetails] = useState(null);
-  const { createTransaction, getStatus } = useChangelly();
+  const { createTransaction, getStatus, getPairs } = useChangelly();
   const [isVisible, setIsVisible] = useState(true);
   const [showInProgressButton, setShowInProgressButton] = useState(false);
   const [inProgressTransactions, setInProgressTransactions] = useState([]);
   const [showInProgressModal, setShowInProgressModal] = useState(false);
+  const [validPairs, setValidPairs] = useState([]);
 
   useEffect(() => {
     const termsAccepted = localStorage.getItem('termsAccepted');
@@ -64,11 +65,17 @@ export default function Main() {
     setTransactionDetails(null);
   };
 
-  const handleCurrencySelect = (currency) => {
+  const handleCurrencySelect = async (currency) => {
     setIsVisible(false);
-    setTimeout(() => {
+    setTimeout(async () => {
       if (step === 1) {
         setReceiveCurrency(currency);
+        try {
+          const pairs = await getPairs(currency);
+          setValidPairs(pairs);
+        } catch (error) {
+          console.error('Error fetching valid pairs:', error);
+        }
         setStep(2);
       } else if (step === 2) {
         setSendCurrency(currency);
@@ -154,7 +161,7 @@ export default function Main() {
         </div>
       </Link>
       <div className={`${styles.content} ${isVisible ? styles.fadeIn : styles.fadeOut}`}>
-        {step === 1 && (
+      {step === 1 && (
           <CurrencyList 
             onSelect={handleCurrencySelect} 
             prompt="What coin do you want to receive?"
@@ -164,7 +171,7 @@ export default function Main() {
           <CurrencyList 
             onSelect={handleCurrencySelect} 
             prompt="What coin do you want to send?"
-            excludeCurrencies={[receiveCurrency]}  // Exclude the selected currency from the first step
+            excludeCurrency={receiveCurrency}
           />
         )}
         {step === 3 && (

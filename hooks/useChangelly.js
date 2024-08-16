@@ -25,23 +25,25 @@ export default function useChangelly() {
     };
 
 
-//get currency list
-    const getCurrencies = async () => {
-        try {
-            const response = await fetch(`${API_URL}/currencies`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            if (!data.result || !Array.isArray(data.result)) {
-                throw new Error('Invalid data structure');
-            }
-            return data.result;
-        } catch (error) {
-            console.error('Error fetching currencies:', error);
-            throw error;
+//
+const getCurrencies = async () => {
+    try {
+        const response = await fetch(`${API_URL}/currencies`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-    };
+        const data = await response.json();
+        console.log('Raw response:', data);
+        
+        if (!data.result || !Array.isArray(data.result)) {
+            throw new Error('Invalid data structure');
+        }
+        return data.result; // Return just the array of currencies
+    } catch (error) {
+        console.error('Error fetching currencies:', error);
+        throw error;
+    }
+};
 // estimate rates
   const estimateFloatingRate = async (from, to, amountFrom) => {
         try {
@@ -198,5 +200,28 @@ const searchTransactions = async (payoutAddress) => {
       throw error;
     }
   };
-    return { getCurrencies, estimateFloatingRate, estimateFixedRate, createTransaction, validateAddress, getStatus, searchTransactions };
+
+  // get pairs
+  const getPairs = async (from) => {
+    try {
+        const response = await fetch(`${API_URL}/getPairs`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ from }),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.error || 'Failed to get pairs');
+        }
+        return data.result;
+    } catch (error) {
+        console.error('Error getting pairs:', error.message || error);
+        throw error;
+    }
+};
+
+return { getCurrencies, estimateFloatingRate, estimateFixedRate, createTransaction, validateAddress, getStatus, searchTransactions, getPairs };
 }
+   
