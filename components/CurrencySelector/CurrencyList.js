@@ -3,7 +3,7 @@ import CurrencyButton from './CurrencyButton';
 import styles from '../../styles/Home.module.css';
 import useChangelly from '../../hooks/useChangelly'; // Adjust the path as necessary
 
-export default function CurrencyList({ onSelect, prompt }) {
+export default function CurrencyList({ onSelect, prompt, excludeCurrencies = [] }) {
   const [currencies, setCurrencies] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -30,9 +30,11 @@ export default function CurrencyList({ onSelect, prompt }) {
     fetchCurrencies();
   }, []); // Empty dependency array ensures this runs only once on mount
 
-  const filteredCurrencies = currencies.filter(currency =>
-    currency.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredCurrencies = currencies
+    .filter(currency => !excludeCurrencies.includes(currency))
+    .filter(currency =>
+      currency.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   if (isLoading) return <div>Loading currencies...</div>;
   if (error) return <div>Error: {error}</div>;

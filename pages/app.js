@@ -9,7 +9,6 @@ import { FaSpinner, FaSearch } from 'react-icons/fa';
 import InProgress from '../components/InProgress'; // Add this line
 import Link from 'next/link';
 
-
 export default function App() {
   const [step, setStep] = useState(1);
   const [receiveCurrency, setReceiveCurrency] = useState(null);
@@ -81,15 +80,15 @@ export default function App() {
         address: recipientAddress,
         rateType,
       });
-      
+
       setTransactionDetails(transaction);
-      
+
       // Update local storage with the new transaction
       const updatedTransactions = [...inProgressTransactions, transaction];
       localStorage.setItem('transactions', JSON.stringify(updatedTransactions));
       setInProgressTransactions(updatedTransactions);
       setShowInProgressButton(true);
-      
+
       setTimeout(() => {
         setStep(4);
         setIsVisible(true);
@@ -127,10 +126,6 @@ export default function App() {
     }
   };
 
-
-
-
-
   return (
     <div className={styles.container}>
       {step > 1 && step < 5 && (
@@ -143,7 +138,7 @@ export default function App() {
           <FaSpinner className={styles.spinIcon} /> My Transactions
         </button>
       )}
-     <Link href="/search">
+      <Link href="/search">
         <div className={styles.searchIcon}>
           <FaSearch />
         </div>
@@ -159,6 +154,7 @@ export default function App() {
           <CurrencyList 
             onSelect={handleCurrencySelect} 
             prompt="What coin do you want to send?"
+            excludeCurrencies={[receiveCurrency]}  // Exclude the selected currency from the first step
           />
         )}
         {step === 3 && (
@@ -179,7 +175,7 @@ export default function App() {
             onSent={handleSent}
           />
         )}
-    {step === 5 && transactionDetails && (
+        {step === 5 && transactionDetails && (
           <StatusDisplay 
             key={transactionDetails.id}
             transactionId={transactionDetails.id}

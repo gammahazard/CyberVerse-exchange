@@ -1,6 +1,7 @@
 .addressDisplay {
     text-align: center;
     margin: 30px 0;
+
     font-size: 1.2rem; /* Larger base font size */
     color: #00ff00; /* Neon green text color */
   }
@@ -68,4 +69,77 @@
     background-color: #00cc00;
     transform: scale(1.05);
   }
-  
+  @media screen and (max-width: 767px) {
+    .statusDisplay {
+        padding: 10px; /* Further reduce padding for smaller screens */
+        max-width: 75%;
+        word-break:break-all; /* Ensure it takes full width */
+        font-size: 0.9rem; /* Slightly smaller font size */
+        box-shadow: 0 0 10px rgba(0, 255, 0, 0.4);
+        width:fit-content;
+    }
+
+    .statusDisplay h2 {
+        font-size: 1.3rem; /* Further reduce header font size */
+        margin-bottom: 15px; /* Adjust margin for smaller screens */
+    }
+
+    .transactionTable {
+        width: 100%; /* Ensure table takes full width */
+        font-size: 0.9rem; /* Slightly smaller table text */
+    }
+
+    .transactionTable td {
+        padding: 8px; /* Further reduce padding for table cells */
+        word-wrap: break-word; /* Ensure text wraps within table cells */
+    }
+
+    .statusMessage {
+        padding: 10px;
+        font-size: 0.9rem; /* Slightly smaller status message text */
+    }
+
+    .newTransactionButton {
+        padding: 10px 15px; /* Adjust padding for the button */
+        font-size: 1rem; /* Adjust button text size */
+        max-width: 300px; /* Set a maximum width for the button */
+        margin: 20px auto; /* Center the button */
+    }
+
+    .addressDisplay {
+        font-size: 0.9rem; /* Adjust font size */
+        margin: 15px 0; /* Adjust margin */
+    }
+
+    .payinAddressContainer {
+        flex-direction: row; /* Keep address and icon on the same line */
+        text-align: left; /* Align text to the left */
+    }
+
+    .payinAddressContainer span {
+        flex-grow: 1;
+        text-align: left; /* Align address to the left */
+    }
+
+    .clipboardIcon {
+        margin-left: 5px; /* Adjust margin for better alignment */
+        color: #00ff00; /* Ensure visibility */
+    }
+
+    .copiedNotice {
+        margin-left: 5px; /* Adjust margin */
+        margin-top: 0; /* Align with the icon */
+        font-size: 0.8em; /* Slightly smaller font size */
+    }
+
+    .qrCodeContainer {
+        margin: 15px auto; /* Adjust margin for QR code */
+    }
+
+    .sentButton {
+        width: 100%; /* Ensure the button takes full width */
+        max-width: 300px; /* Set a maximum width for the button */
+        font-size: 1rem; /* Adjust button text size */
+        margin: 20px auto; /* Center the button */
+    }
+}

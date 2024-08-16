@@ -201,8 +201,8 @@
     position: absolute;
     top:0;
     left:0;
-    margin-left:19%;
-    margin-top:4%;
+    margin-left:15%;
+    margin-top:10%;
    
     
     z-index:888;
@@ -219,6 +219,19 @@
     letter-spacing: 1px;
     box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
   }
+  /* Mobile styling for iPhones */
+@media screen and (max-width: 767px) {
+    .backButton {
+        top: 10px; /* Adjust top positioning */
+        left: 10px; /* Adjust left positioning */
+        margin-left: 0; /* Remove margin-left for smaller screens */
+        margin-top: 0; /* Remove margin-top for smaller screens */
+        padding: 10px 20px; /* Adjust padding for smaller screens */
+        font-size: 0.9rem; /* Slightly smaller font size */
+        border-radius: 6px; /* Slightly less rounded corners */
+        margin-top:20%;
+    }
+}
   .inputField {
   background-color: #1e1e1e; /* Dark background */
   color: #ffffff; /* Light text color */
@@ -423,4 +436,65 @@
   .inputGroup {
     margin-bottom: 20px;
   }
-  
+  @media screen and (max-width: 767px) {
+    .container {
+        padding: 10px; /* Reduce padding for smaller screens */
+        max-width: 100%; /* Ensure the container takes full width */
+        font-size: 0.9rem; /* Slightly reduce the font size */
+    }
+
+    .title {
+        font-size: 3rem; /* Reduce title size for smaller screens */
+        margin-bottom: 1rem; /* Adjust margin for better spacing */
+    }
+
+    .titleSub {
+        font-size: 2rem; /* Adjust subtitle size */
+    }
+
+    .launchButton {
+        width: 150px; /* Reduce button size */
+        height: 150px; /* Reduce button height */
+        font-size: 1rem; /* Adjust font size */
+    }
+
+    .currencyGrid {
+        grid-template-columns: repeat(2, 1fr); /* Change grid layout to 2 columns */
+        gap: 15px; /* Adjust gap between items */
+    }
+
+    .currencyButton, .swapButton, .inProgressButton, .sentButton {
+        padding: 10px 15px; /* Adjust padding for buttons */
+        font-size: 0.9rem; /* Slightly smaller font size */
+    }
+    .inputField {
+        padding: 10px; /* Adjust padding inside input */
+        font-size: 14px; /* Adjust font size */
+    }
+
+    .prompt {
+        font-size: 1.2rem; /* Adjust prompt text size */
+        margin-bottom: 15px; /* Adjust margin */
+    }
+
+    .qrCodeContainer {
+        margin: 1.5rem 0; /* Adjust QR code margin */
+    }
+
+    .qrCodePlaceholder {
+        width: 150px; /* Adjust QR code placeholder size */
+        height: 150px; /* Adjust QR code placeholder size */
+        font-size: 12px; /* Adjust text size */
+    }
+
+    .modalContent {
+        padding: 15px; /* Adjust padding inside modals */
+        font-size: 0.9rem; /* Adjust modal font size */
+    }
+
+    .button {
+        padding: 0.6rem 1.5rem; /* Adjust button padding */
+        font-size: 1.2rem; /* Adjust button text size */
+    }
+    .addressDisplay {}
+}
