@@ -348,7 +348,22 @@
     100% { transform: rotate(1turn); }
   }
 
+  @media screen and (max-width: 767px) {
+    .title {
+        font-size: 3rem; /* Smaller title size for mobile */
+    }
 
+    .titleSub {
+        font-size: 2rem; /* Smaller subtitle for mobile */
+    }
+
+    .launchButton {
+        width: 150px; /* Smaller button size for mobile */
+        height: 150px;
+        font-size: 1.2rem; /* Smaller text size for button */
+        padding: 0.8rem 1.5rem; /* Adjust padding for mobile */
+    }
+}
 
   /* Increase the size of the entire swap interface */
   /* Style the entire swap interface */
