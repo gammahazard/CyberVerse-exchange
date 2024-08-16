@@ -39,7 +39,7 @@ export default function Search() {
 
   return (
     <div className={styles.container}>
-      <Link href="/app">
+      <Link href="/main">
         <div className={styles.backButton}>
           <FaArrowLeft /> Back
         </div>
