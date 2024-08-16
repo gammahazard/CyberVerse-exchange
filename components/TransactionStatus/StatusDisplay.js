@@ -136,7 +136,7 @@ export default function StatusDisplay({ transactionId, initialStatus, initialDet
                             <td>{txInfo.amountExpectedTo} {txInfo.currencyTo?.toUpperCase()}</td>
                         </tr>
                         <tr>
-                            <td>Payout Address:</td>
+                            <td>Payout Address(receiver):</td>
                             <td>{txInfo.payoutAddress}</td>
                         </tr>
                         <tr>

@@ -122,7 +122,7 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap })
             <div className={styles.inputGroup}>
                 <input
                     type="number"
-                    placeholder={`Enter amount of ${receiveCurrency.toUpperCase()} you want to receive`}
+                    placeholder={`Enter amount of ${sendCurrency.toUpperCase()} you want to send`}
                     value={amount}
                     onChange={handleAmountChange}
                     className={styles.inputField}
@@ -146,7 +146,7 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap })
             </div>
             {estimatedAmount && (
                 <div className={styles.estimatedAmount}>
-                    Estimated Amount to Receive: {estimatedAmount} {receiveCurrency.toUpperCase()}
+                    Estimated Amount to Receive: {estimatedAmount} {receiveCurrency.toUpperCase()} for {amount} {sendCurrency.toUpperCase()}
                 </div>
             )}
             {error && <div className={styles.error}>{error}</div>}
