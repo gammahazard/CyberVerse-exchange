@@ -1,29 +1,35 @@
 .statusDisplay {
     background-color: #111;
     border-radius: 8px;
-    padding: 20px;
-    max-width: 500px;
+    padding: 30px;
+    max-width: 1000px; /* Ensure this fits within your layout */
     margin: 0 auto;
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
     color: #00ff00;
     border: 2px solid #00ff00;
+    font-size: 1.2rem;
+    box-sizing: border-box; /* Ensure padding is included in width */
+    overflow: hidden; /* Prevent content from spilling out */
 }
+
 
 .statusDisplay h2 {
     color: #00ff00;
-    margin-bottom: 20px;
+    margin-bottom: 30px; /* Increase space below the header */
     text-align: center;
-    text-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
+    text-shadow: 0 0 15px rgba(0, 255, 0, 0.8); /* More intense glow */
+    font-size: 2rem; /* Larger header font size */
 }
 
 .transactionTable {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
+    margin-bottom: 30px; /* Increase space below the table */
+    font-size: 1.2rem; /* Larger table text */
 }
 
 .transactionTable td {
-    padding: 10px;
+    padding: 15px; /* Increase padding for table cells */
     border-bottom: 1px solid #00ff00;
 }
 
@@ -36,15 +42,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 20px;
-    padding: 10px;
+    margin-top: 30px; /* Increase space above the status message */
+    padding: 15px; /* Increase padding for status messages */
     background-color: #1e1e1e;
-    border-radius: 4px;
-    border: 1px solid #00ff00;
+    border-radius: 6px; /* More rounded corners */
+    border: 2px solid #00ff00; /* Thicker border */
+    font-size: 1.3rem; /* Larger status message text */
 }
 
 .statusMessage svg {
-    margin-right: 10px;
+    margin-right: 15px; /* Increase space between icon and text */
+    font-size: 1.5rem; /* Increase icon size */
 }
 
 .statusMessage p {
@@ -58,6 +66,7 @@
 
 .spinIcon {
     animation: spin 1s linear infinite;
+    font-size: 1.5rem; /* Larger spinner icon */
 }
 
 @keyframes spin {
@@ -69,26 +78,28 @@
     color: #ff4d4f;
     text-align: center;
     font-weight: bold;
+    font-size: 1.3rem; /* Larger error text */
 }
 
 .loading {
     text-align: center;
     color: #00ff00;
     font-weight: bold;
+    font-size: 1.3rem; /* Larger loading text */
 }
 
 .newTransactionButton {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 20px;
-    padding: 10px 20px;
+    margin-top: 30px; /* Increase space above the button */
+    padding: 15px 30px; /* Increase padding for the button */
     background-color: #00ff00;
     color: #000;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 1.5rem; /* Larger button text */
     transition: background-color 0.3s;
 }
 
@@ -97,5 +108,6 @@
 }
 
 .newTransactionButton svg {
-    margin-right: 10px;
+    margin-right: 15px; /* Increase space between icon and text */
+    font-size: 1.5rem; /* Increase icon size */
 }

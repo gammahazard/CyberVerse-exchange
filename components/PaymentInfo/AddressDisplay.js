@@ -26,26 +26,29 @@ export default function AddressDisplay({ currencyFrom, currencyTo, amountExpecte
             <td>{amountExpectedTo} {currencyTo.toUpperCase()}</td>
           </tr>
           <tr>
-            <td>Payout Address:</td>
+            <td>Receiving Address:</td>
             <td>{payoutAddress}</td>
-          </tr>
-          <tr className={styles.payinRow}>
-            <td><strong>Payin Address:</strong></td>
-            <td>
-              <strong>{payinAddress}</strong>
-              <FaClipboard 
-                className={styles.clipboardIcon} 
-                onClick={handleCopy} 
-                title="Copy to clipboard"
-              />
-              {copied && <span className={styles.copiedNotice}>Copied!</span>}
-            </td>
           </tr>
         </tbody>
       </table>
-      <div className={styles.qrCodeContainer}>
-        <QRCode value={payinAddress} size={128} />
+
+      <div className={styles.sendDetails}>
+        <p>Please send <strong>{amountExpectedFrom} {currencyFrom.toUpperCase()}</strong> to the address below:</p>
+        <div className={styles.payinAddressContainer}>
+          <span>{payinAddress}</span>
+          <FaClipboard 
+            className={styles.clipboardIcon} 
+            onClick={handleCopy} 
+            title="Copy to clipboard" 
+          />
+          {copied && <span className={styles.copiedNotice}>Copied!</span>}
+        </div>
       </div>
+
+      <div className={styles.qrCodeContainer}>
+        <QRCode value={payinAddress} size={160} />
+      </div>
+
       <button onClick={onSent} className={styles.sentButton}>I&apos;ve sent the funds</button>
     </div>
   );

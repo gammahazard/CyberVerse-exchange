@@ -122,7 +122,7 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap })
             <div className={styles.inputGroup}>
                 <input
                     type="number"
-                    placeholder="Amount"
+                    placeholder={`Enter amount of ${receiveCurrency.toUpperCase()} you want to receive`}
                     value={amount}
                     onChange={handleAmountChange}
                     className={styles.inputField}
@@ -131,7 +131,7 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap })
             <div className={styles.inputGroup}>
                 <input
                     type="text"
-                    placeholder="Recipient Address"
+                    placeholder={`Enter your ${receiveCurrency.toUpperCase()} address`}
                     value={recipientAddress}
                     onChange={handleAddressChange}
                     onBlur={handleAddressBlur}

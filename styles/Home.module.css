@@ -133,10 +133,7 @@
     margin-top: 30px;
   }
   
-  .swapButton {
-    margin-top: 15px;
-    margin-left:150px;
-  }
+
   .currencyButton, .swapButton, .inProgressButton, .sentButton {
     padding: 15px 25px;
     background-color: #111;
@@ -201,14 +198,17 @@
     100% { transform: rotate(360deg); }
   }
   .backButton {
-    position: relative;
-    top: 260px;
-    left: -1000px;
-    width:5%;
-    margin-left:75%;
+    position: absolute;
+    top:0;
+    left:0;
+    margin-left:19%;
+    margin-top:4%;
+   
+    
     z-index:888;
     padding: 15px 25px;
     background-color: #111;
+    z-index:9999;
     color: #00ff00;
     border: 2px solid #00ff00;
     border-radius: 8px;
@@ -337,4 +337,90 @@
 
 
 
+  /* Increase the size of the entire swap interface */
+  /* Style the entire swap interface */
+  .swapInterface {
+    background-color: #111; /* Dark background matching the statusDisplay */
+    border-radius: 8px;
+    padding: 20px;
+    width: 100%; /* Keep the full width */
+    max-width: 1000px; /* Allow it to be wider */
+    margin: 0 auto;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+    color: #00ff00; /* Neon green text color */
+    border: 2px solid #00ff00; /* Neon green border */
+  }
+  /* Make the input fields larger and match the color scheme */
+  .inputGroup input,
+  .inputGroup select {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.5rem; /* Larger text */
+    border-radius: 5px;
+    border: 1px solid #00ff00; /* Neon green border */
+    background-color: #1e1e1e; /* Darker input background */
+    color: #00ff00; /* Neon green text color */
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  /* Adjust the input placeholder text to fit the color scheme */
+  .inputGroup input::placeholder {
+    font-size: 1.2rem;
+    color: #00cc00; /* Lighter neon green placeholder text */
+  }
+  
+  /* Style the prompt text */
+  .prompt {
+    font-size: 2rem; /* Larger prompt text */
+    margin-bottom: 20px;
+    text-align: center;
+    color: #00ff00; /* Neon green text color */
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.6); /* Glowing effect */
+  }
+  
+  /* Style the estimated amount display */
+  .estimatedAmount {
+    font-size: 1.5rem;
+    margin-top: 20px;
+    text-align: center;
+    color: #00e676; /* Neon green color for emphasis */
+  }
+  
+  /* Style the error message */
+  .error {
+    color: #ff4d4f; /* Red error color */
+    font-size: 1.2rem;
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  /* Style the swap button */
+  .swapButton {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.5rem; /* Larger button text */
+    border: none;
+    border-radius: 4px;
+    background-color: #00ff00; /* Neon green button background */
+    color: #000;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+  }
+  
+  .swapButton:disabled {
+    background-color: #666; /* Grey out the button when disabled */
+    cursor: not-allowed;
+  }
+  
+  .swapButton:hover:enabled {
+    background-color: #00cc00; /* Darker neon green on hover */
+  }
+  
+  /* Additional styling for the input group to ensure proper spacing */
+  .inputGroup {
+    margin-bottom: 20px;
+  }
   
