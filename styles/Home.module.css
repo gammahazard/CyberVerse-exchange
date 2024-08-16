@@ -364,7 +364,76 @@
         padding: 0.8rem 1.5rem; /* Adjust padding for mobile */
     }
 }
+.rateTypeOptionBar {
+    display: flex;
+    justify-content: center;
+    background-color: #0a0a0a;
+    border: 1px solid #00ff00;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
 
+.rateTypeOptionBar label {
+    flex: 1;
+    padding: 10px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+.rateTypeOptionBar label:not(:last-child) {
+    border-right: 1px solid #00ff00;
+}
+
+.rateTypeOptionBar label:hover {
+    background-color: rgba(0, 255, 0, 0.1);
+}
+
+.rateTypeOptionBar label.active {
+    background-color: #003300;
+    box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
+    color: #ffffff;
+}
+
+.rateTypeOptionBar label.active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 49%, #00ff00 49%, #00ff00 51%, transparent 51%);
+    background-size: 4px 4px;
+    opacity: 0.2;
+}
+
+.rateTypeOptionBar input[type="radio"] {
+    display: none;
+}
+
+/* Add a subtle pulsating animation for the active state */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+    }
+    50% {
+        box-shadow: 0 0 15px #00ff00, 0 0 25px #00ff00, 0 0 35px #00ff00;
+    }
+    100% {
+        box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+    }
+}
+
+.rateTypeOptionBar label.active {
+    animation: pulse 2s infinite;
+}
   /* Increase the size of the entire swap interface */
   /* Style the entire swap interface */
   .swapInterface {

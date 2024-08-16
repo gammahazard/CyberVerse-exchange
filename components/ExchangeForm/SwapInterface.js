@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import useChangelly from '../../hooks/useChangelly';
 import styles from '../../styles/Home.module.css';
 
@@ -22,6 +22,7 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap })
     const [error, setError] = useState('');
     const [isAddressValid, setIsAddressValid] = useState(true);
     const [isEstimationSuccessful, setIsEstimationSuccessful] = useState(false);
+    const [isVisible, setIsVisible] = useState(false); // State to manage visibility
 
     const { estimateFloatingRate, estimateFixedRate, validateAddress } = useChangelly();
 
@@ -60,24 +61,15 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap })
         validateRecipientAddress(recipientAddress);
     };
 
-    const handleAmountChange = async (e) => {
-        setAmount(e.target.value);
-        console.log('Amount changed:', e.target.value);
-        console.log('Selected rate type:', rateType);
-        console.log('Send currency:', sendCurrency);
-        console.log('Receive currency:', receiveCurrency);
-    
-        if (sendCurrency && receiveCurrency && e.target.value) {
+    const estimateAmount = useCallback(async () => {
+        if (sendCurrency && receiveCurrency && amount) {
             try {
                 let estimation;
                 if (rateType === 'floating') {
-                    console.log('Calling estimateFloatingRate...');
-                    estimation = await estimateFloatingRate(sendCurrency, receiveCurrency, e.target.value);
+                    estimation = await estimateFloatingRate(sendCurrency, receiveCurrency, amount);
                 } else {
-                    console.log('Calling estimateFixedRate...');
-                    estimation = await estimateFixedRate(sendCurrency, receiveCurrency, e.target.value);
+                    estimation = await estimateFixedRate(sendCurrency, receiveCurrency, amount);
                 }
-                console.log('Estimated amount received:', estimation);
                 setEstimatedAmount(estimation.amountTo);
                 setError('');
                 setIsEstimationSuccessful(true);
@@ -92,22 +84,34 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap })
             setError('');
             setIsEstimationSuccessful(false);
         }
+    }, [sendCurrency, receiveCurrency, amount, rateType, estimateFloatingRate, estimateFixedRate]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            estimateAmount();
+        }, 1000); // 600 ms interval for updating the estimation
+
+        return () => clearInterval(interval); // Cleanup interval on component unmount
+    }, [estimateAmount]);
+
+    const handleAmountChange = (e) => {
+        setAmount(e.target.value);
+        estimateAmount();
     };
 
     const handleRateTypeChange = async (e) => {
-        setRateType(e.target.value);
-        console.log('Rate type changed to:', e.target.value);
+        const newRateType = e.target.value;
+        setRateType(newRateType);
         setEstimatedAmount('');
         setError(''); // Clear any previous error
         setIsEstimationSuccessful(false);
 
         if (amount && sendCurrency && receiveCurrency) {
-            handleAmountChange({ target: { value: amount } });
+            estimateAmount();
         }
     };
 
     const handleSwapClick = () => {
-        console.log('Initiating swap with amount:', amount, 'and recipientAddress:', recipientAddress);
         if (!amount || !recipientAddress || !isAddressValid || !isEstimationSuccessful) {
             alert('Please fill in all fields with valid data and ensure estimation is successful.');
             return;
@@ -116,9 +120,40 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap })
         onSwap(amount, recipientAddress, rateType);
     };
 
+    const RateTypeOptionBar = ({ rateType, onChange }) => (
+        <div className={styles.rateTypeOptionBar}>
+            <label className={rateType === 'floating' ? styles.active : ''}>
+                <input
+                    type="radio"
+                    value="floating"
+                    checked={rateType === 'floating'}
+                    onChange={onChange}
+                    hidden
+                />
+                Floating Rate
+            </label>
+            <label className={rateType === 'fixed' ? styles.active : ''}>
+                <input
+                    type="radio"
+                    value="fixed"
+                    checked={rateType === 'fixed'}
+                    onChange={onChange}
+                    hidden
+                />
+                Fixed Rate
+            </label>
+        </div>
+    );
+
+    useEffect(() => {
+        // Trigger the fade-in effect by setting the visibility state to true
+        setIsVisible(true);
+    }, []);
+
     return (
-        <div className={styles.swapInterface}>
+        <div className={`${styles.swapInterface} ${isVisible ? styles.fadeIn : styles.fadeOut}`}>
             <h2 className={styles.prompt}>Swap {sendCurrency.toUpperCase()} for {receiveCurrency.toUpperCase()}</h2>
+
             <div className={styles.inputGroup}>
                 <input
                     type="number"
@@ -139,10 +174,7 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap })
                 />
             </div>
             <div className={styles.inputGroup}>
-                <select value={rateType} onChange={handleRateTypeChange} className={styles.inputField}>
-                    <option value="floating">Floating Rate</option>
-                    <option value="fixed">Fixed Rate</option>
-                </select>
+                <RateTypeOptionBar rateType={rateType} onChange={handleRateTypeChange} />
             </div>
             {estimatedAmount && (
                 <div className={styles.estimatedAmount}>

@@ -1,35 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import CurrencyButton from './CurrencyButton';
 import useChangelly from '../../hooks/useChangelly';
 import styles from '../../styles/Home.module.css';
 
 const priorityCurrencies = ['btc', 'eth', 'sol', 'ton', 'erg', 'ltc', 'cro', 'usdt', 'usdc'];
 
-function sortCurrencies(currencies) {
-  const priorityMap = Object.fromEntries(priorityCurrencies.map((c, i) => [c, i]));
-  
-  return currencies.sort((a, b) => {
-    const aLower = a.toLowerCase();
-    const bLower = b.toLowerCase();
-    
-    const aIndex = aLower in priorityMap ? priorityMap[aLower] : Infinity;
-    const bIndex = bLower in priorityMap ? priorityMap[bLower] : Infinity;
-    
-    if (aIndex !== bIndex) return aIndex - bIndex;
-    
-    if (aLower.includes('usdt') && bLower.includes('usdt')) return aLower.localeCompare(bLower);
-    if (aLower.includes('usdt')) return -1;
-    if (bLower.includes('usdt')) return 1;
-    
-    if (aLower.includes('usdc') && bLower.includes('usdc')) return aLower.localeCompare(bLower);
-    if (aLower.includes('usdc')) return -1;
-    if (bLower.includes('usdc')) return 1;
-    
-    return aLower.localeCompare(bLower);
-  });
-}
-
-export default function CurrencyList({ onSelect, prompt, excludeCurrency }) {
+export default function CurrencyList({ onSelect, prompt }) {
   const [currencies, setCurrencies] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -39,14 +15,8 @@ export default function CurrencyList({ onSelect, prompt, excludeCurrency }) {
   useEffect(() => {
     const fetchCurrencies = async () => {
       try {
-        const response = await getCurrencies();
-        console.log('API Response:', response); // Log the full response for debugging
-        if (response && Array.isArray(response)) {
-          const sortedCurrencies = sortCurrencies(response);
-          setCurrencies(sortedCurrencies);
-        } else {
-          throw new Error('Invalid response format');
-        }
+        const fetchedCurrencies = await getCurrencies();
+        setCurrencies(fetchedCurrencies);
         setIsLoading(false);
       } catch (err) {
         console.error('Error fetching currencies:', err);
@@ -58,10 +28,23 @@ export default function CurrencyList({ onSelect, prompt, excludeCurrency }) {
     fetchCurrencies();
   }, []);
 
-  const filteredCurrencies = currencies.filter(currency =>
-    currency.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    currency.toLowerCase() !== excludeCurrency?.toLowerCase()
+  const sortedCurrencies = useMemo(() => {
+    return currencies.sort((a, b) => {
+      const aIndex = priorityCurrencies.indexOf(a.toLowerCase());
+      const bIndex = priorityCurrencies.indexOf(b.toLowerCase());
+      
+      if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+      if (aIndex !== -1) return -1;
+      if (bIndex !== -1) return 1;
+      return a.localeCompare(b);
+    });
+  }, [currencies]);
+
+  const filteredCurrencies = sortedCurrencies.filter(currency =>
+    currency.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  console.log('Number of currencies in Step 1:', filteredCurrencies.length);
 
   if (isLoading) return <div>Loading currencies...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -78,7 +61,12 @@ export default function CurrencyList({ onSelect, prompt, excludeCurrency }) {
       />
       <div className={styles.currencyGrid}>
         {filteredCurrencies.map((currency) => (
-          <CurrencyButton key={currency} currency={currency} onClick={() => onSelect(currency)} />
+          <CurrencyButton 
+            key={currency} 
+            currency={currency} 
+            onClick={() => onSelect(currency)}
+            isPriority={priorityCurrencies.includes(currency.toLowerCase())}
+          />
         ))}
       </div>
     </div>

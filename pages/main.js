@@ -6,11 +6,13 @@ import AddressDisplay from '../components/PaymentInfo/AddressDisplay';
 import StatusDisplay from '../components/TransactionStatus/StatusDisplay';
 import useChangelly from '../hooks/useChangelly';
 import styles from '../styles/Home.module.css';
+import FilteredCurrencyList from '../components/CurrencySelector/FilteredCurrencyList';
 import { FaSpinner, FaSearch } from 'react-icons/fa';
-import InProgress from '../components/InProgress'; // Add this line
+import InProgress from '../components/InProgress';
 import Link from 'next/link';
 
 export default function Main() {
+  // ---------------------------------------------------- states
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [receiveCurrency, setReceiveCurrency] = useState(null);
@@ -19,20 +21,33 @@ export default function Main() {
   const [address, setAddress] = useState(null);
   const [transactionDetails, setTransactionDetails] = useState(null);
   const { createTransaction, getStatus, getPairs } = useChangelly();
+  const [isLoading, setIsLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
   const [showInProgressButton, setShowInProgressButton] = useState(false);
   const [inProgressTransactions, setInProgressTransactions] = useState([]);
   const [showInProgressModal, setShowInProgressModal] = useState(false);
-  const [validPairs, setValidPairs] = useState([]);
+  const [availablePairs, setAvailablePairs] = useState([]);
+  // ---------------------------------------------------- states
 
+  // ---------------------------------------------------- useEffects
   useEffect(() => {
     const termsAccepted = localStorage.getItem('termsAccepted');
     if (!termsAccepted) {
-      // Redirect to the homepage if terms have not been accepted
       router.push('/');
     }
   }, [router]);
 
+  useEffect(() => {
+    const storedTransactions = localStorage.getItem('transactions');
+    if (storedTransactions) {
+      const parsedTransactions = JSON.parse(storedTransactions);
+      setInProgressTransactions(parsedTransactions);
+      setShowInProgressButton(parsedTransactions.length > 0);
+    }
+  }, []);
+  // ---------------------------------------------------- useEffects
+
+  // ---------------------------------------------------- consts
   const handleInProgressClick = () => {
     setShowInProgressModal(true);
   };
@@ -46,15 +61,6 @@ export default function Main() {
     setStep(5);
     setShowInProgressModal(false);
   };
-
-  useEffect(() => {
-    const storedTransactions = localStorage.getItem('transactions');
-    if (storedTransactions) {
-      const parsedTransactions = JSON.parse(storedTransactions);
-      setInProgressTransactions(parsedTransactions);
-      setShowInProgressButton(parsedTransactions.length > 0);
-    }
-  }, []);
 
   const handleNewTransaction = () => {
     setStep(1);
@@ -71,49 +77,29 @@ export default function Main() {
       if (step === 1) {
         setReceiveCurrency(currency);
         try {
-          const pairs = await getPairs(currency);
-          setValidPairs(pairs);
+          console.log('Fetching pairs for currency:', currency);
+          const pairs = await getPairs(null, currency);
+          console.log('getPairs response:', pairs);
+
+          // Filter pairs where 'to' matches the selected currency
+          const filteredPairs = pairs.filter(pair => pair.to.toLowerCase() === currency.toLowerCase());
+          console.log('Filtered pairs:', filteredPairs);
+
+          // Extract unique 'from' currencies
+          const fromCurrencies = [...new Set(filteredPairs.map(pair => pair.from))];
+          console.log('Available from currencies:', fromCurrencies);
+
+          setAvailablePairs(fromCurrencies);
+          setStep(2);
         } catch (error) {
-          console.error('Error fetching valid pairs:', error);
+          console.error('Error fetching available pairs:', error);
         }
-        setStep(2);
       } else if (step === 2) {
         setSendCurrency(currency);
         setStep(3);
       }
       setIsVisible(true);
-    }, 500);
-  };
-
-  const handleSwap = async (swapAmount, recipientAddress, rateType) => {
-    setAmount(swapAmount);
-    setAddress(recipientAddress);
-    setIsVisible(false);
-    try {
-      const transaction = await createTransaction({
-        from: sendCurrency,
-        to: receiveCurrency,
-        amount: swapAmount,
-        address: recipientAddress,
-        rateType,
-      });
-
-      setTransactionDetails(transaction);
-
-      // Update local storage with the new transaction
-      const updatedTransactions = [...inProgressTransactions, transaction];
-      localStorage.setItem('transactions', JSON.stringify(updatedTransactions));
-      setInProgressTransactions(updatedTransactions);
-      setShowInProgressButton(true);
-
-      setTimeout(() => {
-        setStep(4);
-        setIsVisible(true);
-      }, 500);
-    } catch (error) {
-      console.error('Error creating transaction:', error);
-      setIsVisible(true);
-    }
+    }, 300); // Adjust this delay to match your fade-out transition time
   };
 
   const handleSent = () => {
@@ -143,12 +129,46 @@ export default function Main() {
     }
   };
 
+  const handleSwap = async (swapAmount, recipientAddress, rateType) => {
+    setAmount(swapAmount);
+    setAddress(recipientAddress);
+    setIsVisible(false);
+    try {
+      const transaction = await createTransaction({
+        from: sendCurrency,
+        to: receiveCurrency,
+        amount: swapAmount,
+        address: recipientAddress,
+        rateType,
+      });
+
+      setTransactionDetails(transaction);
+
+      const updatedTransactions = [...inProgressTransactions, transaction];
+      localStorage.setItem('transactions', JSON.stringify(updatedTransactions));
+      setInProgressTransactions(updatedTransactions);
+      setShowInProgressButton(true);
+
+      setTimeout(() => {
+        setStep(4);
+        setIsVisible(true);
+      }, 500);
+    } catch (error) {
+      console.error('Error creating transaction:', error);
+      setIsVisible(true);
+    }
+  };
+  // ---------------------------------------------------- consts
+
+  // ---------------------------------------------------- ui
   return (
     <div className={styles.container}>
       {step > 1 && step < 5 && (
-        <button onClick={handleBack} className={styles.backButton}>
-          ←
-        </button>
+        <div className='button container'>
+          <button onClick={handleBack} className={styles.backButton}>
+            ←
+          </button>
+        </div>
       )}
       {showInProgressButton && (
         <button onClick={handleInProgressClick} className={styles.inProgressButton}>
@@ -161,28 +181,29 @@ export default function Main() {
         </div>
       </Link>
       <div className={`${styles.content} ${isVisible ? styles.fadeIn : styles.fadeOut}`}>
-      {step === 1 && (
-          <CurrencyList 
-            onSelect={handleCurrencySelect} 
+        {step === 1 && (
+          <CurrencyList
+            onSelect={handleCurrencySelect}
             prompt="What coin do you want to receive?"
           />
         )}
         {step === 2 && (
-          <CurrencyList 
-            onSelect={handleCurrencySelect} 
+          <FilteredCurrencyList
+            onSelect={handleCurrencySelect}
             prompt="What coin do you want to send?"
-            excludeCurrency={receiveCurrency}
+            availablePairs={availablePairs}
+            isLoading={isLoading}
           />
         )}
         {step === 3 && (
-          <SwapInterface 
-            sendCurrency={sendCurrency} 
-            receiveCurrency={receiveCurrency} 
+          <SwapInterface
+            sendCurrency={sendCurrency}
+            receiveCurrency={receiveCurrency}
             onSwap={handleSwap}
           />
         )}
         {step === 4 && transactionDetails && (
-          <AddressDisplay 
+          <AddressDisplay
             currencyFrom={transactionDetails.currencyFrom}
             currencyTo={transactionDetails.currencyTo}
             amountExpectedFrom={transactionDetails.amountExpectedFrom}
@@ -193,7 +214,7 @@ export default function Main() {
           />
         )}
         {step === 5 && transactionDetails && (
-          <StatusDisplay 
+          <StatusDisplay
             key={transactionDetails.id}
             transactionId={transactionDetails.id}
             initialStatus={transactionDetails.status}
@@ -210,4 +231,5 @@ export default function Main() {
       )}
     </div>
   );
+  // ---------------------------------------------------- ui
 }

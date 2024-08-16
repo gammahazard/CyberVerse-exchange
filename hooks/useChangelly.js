@@ -202,14 +202,18 @@ const searchTransactions = async (payoutAddress) => {
   };
 
   // get pairs
-  const getPairs = async (from) => {
+  const getPairs = async (from, to, txType) => {
     try {
         const response = await fetch(`${API_URL}/getPairs`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ from }),
+            body: JSON.stringify({ 
+                from,
+                to,
+                txType 
+            }),
         });
         const data = await response.json();
         if (!response.ok) {
