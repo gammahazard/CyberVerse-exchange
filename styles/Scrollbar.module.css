@@ -1,0 +1,51 @@
+/* Webkit browsers (Chrome, Safari, newer versions of Opera) */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #0a0a0a;
+    border: 1px solid #00ff00;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #00ff00;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #00ff00;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #00cc00;
+    box-shadow: 0 0 10px #00ff00;
+  }
+  
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #00ff00 #0a0a0a;
+  }
+  
+  /* For Internet Explorer */
+  body {
+    scrollbar-face-color: #00ff00;
+    scrollbar-track-color: #0a0a0a;
+    scrollbar-arrow-color: #00ff00;
+    scrollbar-shadow-color: #00cc00;
+  }
+  
+  /* For when the scrollbar corner is visible */
+  ::-webkit-scrollbar-corner {
+    background: #0a0a0a;
+  }
+  
+  /* Optional: Add a subtle animation to the scrollbar thumb */
+  @keyframes pulse {
+    0% { box-shadow: 0 0 5px #00ff00; }
+    50% { box-shadow: 0 0 10px #00ff00; }
+    100% { box-shadow: 0 0 5px #00ff00; }
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    animation: pulse 2s infinite;
+  }

@@ -1,0 +1,56 @@
+.addressDisplay {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .transactionTable {
+    margin: 20px auto;
+    border-collapse: collapse;
+    width: 80%;
+  }
+  
+  .transactionTable td {
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .transactionTable tr {
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .payinRow td {
+    font-size: 1.1em;
+    font-weight: bold;
+  }
+  
+  .clipboardIcon {
+    margin-left: 10px;
+    cursor: pointer;
+    color: #007bff;
+  }
+  
+  .copiedNotice {
+    margin-left: 10px;
+    color: green;
+    font-size: 0.9em;
+  }
+  
+  .qrCodeContainer {
+    margin: 20px auto;
+  }
+  
+  .sentButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .sentButton:hover {
+    background-color: #0056b3;
+  }
+  

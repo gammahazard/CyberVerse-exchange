@@ -1,0 +1,114 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .content {
+    background-color: #111;
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    box-shadow: 0 0 20px #00ff00;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    animation: modalAppear 0.3s ease-out;
+  }
+  
+  @keyframes modalAppear {
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .title {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    text-shadow: 0 0 5px #00ff00;
+  }
+  
+  .scroll {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .scroll::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .scroll::-webkit-scrollbar-track {
+    background: #0a0a0a;
+  }
+  
+  .scroll::-webkit-scrollbar-thumb {
+    background: #00ff00;
+    border-radius: 4px;
+  }
+  
+  .scroll::-webkit-scrollbar-thumb:hover {
+    background: #00cc00;
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+  
+  .button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .acceptButton {
+    composes: button;
+    background-color: #00ff00;
+    color: #000;
+  }
+  
+  .acceptButton:hover {
+    background-color: #00cc00;
+    box-shadow: 0 0 10px #00ff00;
+  }
+  
+  .declineButton {
+    composes: button;
+    background-color: #333;
+    color: #00ff00;
+  }
+  
+  .declineButton:hover {
+    background-color: #444;
+    box-shadow: 0 0 10px #00ff00;
+  }
+  
+  .content a {
+    color: #00ff00;
+    text-decoration: underline;
+    transition: all 0.3s ease;
+  }
+  
+  .content a:hover {
+    color: #00cc00;
+    text-shadow: 0 0 5px #00ff00;
+  }

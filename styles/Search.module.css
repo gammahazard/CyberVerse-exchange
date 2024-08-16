@@ -1,0 +1,136 @@
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #0a0a0a;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+  }
+  
+  .title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
+  }
+  
+  .backButton {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 10px 15px;
+    background-color: #111;
+    color: #00ff00;
+    border: 2px solid #00ff00;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+  }
+  
+  .backButton:hover {
+    background-color: #00ff00;
+    color: #111;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
+  }
+  
+  .searchContainer {
+    display: flex;
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 20px;
+  }
+  
+  .searchInput {
+    flex-grow: 1;
+    padding: 10px;
+    font-size: 1rem;
+    background-color: #111;
+    color: #00ff00;
+    border: 2px solid #00ff00;
+    border-radius: 4px 0 0 4px;
+  }
+
+  .searchIcon {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 2rem;
+    color: #00ff00;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: glow 2s infinite alternate;
+    z-index: 1000;
+  }
+  
+  .searchIcon:hover {
+    transform: scale(1.1);
+  }
+  
+  @keyframes glow {
+    from {
+      text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00, 0 0 20px #00ff00;
+    }
+    to {
+      text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00;
+    }
+  }
+  
+  .searchButton {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #00ff00;
+    color: #111;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .searchButton:hover {
+    background-color: #00cc00;
+  }
+  
+  .loading, .error {
+    margin: 20px 0;
+    font-size: 1rem;
+  }
+  
+  .error {
+    color: #ff4d4f;
+  }
+  
+  .transactionList {
+    width: 100%;
+    max-width: 800px;
+  }
+  
+  .transactionItem {
+    background-color: #111;
+    border: 2px solid #00ff00;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .transactionInfo p {
+    margin: 5px 0;
+  }
+  
+  .trackLink {
+    display: flex;
+    align-items: center;
+    color: #00ff00;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .trackLink:hover {
+    text-decoration: underline;
+  }
