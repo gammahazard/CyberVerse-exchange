@@ -46,7 +46,7 @@ export default function AddressDisplay({ currencyFrom, currencyTo, amountExpecte
       <div className={styles.qrCodeContainer}>
         <QRCode value={payinAddress} size={128} />
       </div>
-      <button onClick={onSent} className={styles.sentButton}>I've sent the funds</button>
+      <button onClick={onSent} className={styles.sentButton}>I&apos;ve sent the funds</button>
     </div>
   );
 }

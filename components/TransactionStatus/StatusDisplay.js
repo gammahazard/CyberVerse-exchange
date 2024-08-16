@@ -71,7 +71,7 @@ export default function StatusDisplay({ transactionId, initialStatus, initialDet
                 return (
                     <div className={styles.statusMessage}>
                         <FaPaperPlane size={iconSize} />
-                        <p>Coins are being sent to the recipient's address. Your funds will arrive shortly!</p>
+                        <p>Coins are being sent to the recipient&apos;s address. Your funds will arrive shortly!</p>
                     </div>
                 );
             case 'finished':
