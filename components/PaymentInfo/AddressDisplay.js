@@ -132,8 +132,10 @@ export default function AddressDisplay({
       <div className={styles.qrCodeContainer}>
         <QRCode value={payinAddress} size={160} />
       </div>
+      <button onClick={onSent} className={styles.sentButton}>I&apos;ve sent the funds</button>
 
-      <button onClick={onSent} className={styles.sentButton}>I've sent the funds</button>
+
+
 
       {isWalletConnected && (currencyFrom.toLowerCase() === 'eth' || currencyFrom.toLowerCase() === 'arb') && (
         <button onClick={handleSendWithMetaMask} className={styles.metaMaskButton}>
