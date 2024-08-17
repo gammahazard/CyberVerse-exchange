@@ -1,17 +1,17 @@
 import { useState, useCallback, useEffect } from 'react';
 import useChangelly from '../../hooks/useChangelly';
-import { FaQuestionCircle } from 'react-icons/fa'; // Import the question mark icon
+import { FaQuestionCircle } from 'react-icons/fa';
 import styles from '../../styles/Home.module.css';
 
-export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap }) {
+export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap, connectedWalletAddress, onSent }) { // Add onSent prop here
     const [amount, setAmount] = useState('');
     const [recipientAddress, setRecipientAddress] = useState('');
     const [refundAddress, setRefundAddress] = useState('');
     const [rateType, setRateType] = useState('floating');
     const [estimatedAmount, setEstimatedAmount] = useState('');
-    const [error, setError] = useState(''); // For estimation errors only
-    const [recipientValidationError, setRecipientValidationError] = useState(''); // For recipient address validation errors
-    const [refundValidationError, setRefundValidationError] = useState(''); // For refund address validation errors
+    const [error, setError] = useState('');
+    const [recipientValidationError, setRecipientValidationError] = useState('');
+    const [refundValidationError, setRefundValidationError] = useState('');
     const [isAddressValid, setIsAddressValid] = useState(true);
     const [isRefundAddressValid, setIsRefundAddressValid] = useState(true);
     const [isEstimationSuccessful, setIsEstimationSuccessful] = useState(false);
@@ -26,7 +26,7 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap })
                     const validationResult = await validateAddress(receiveCurrency, address);
                     if (validationResult.result) {
                         setIsAddressValid(true);
-                        setRecipientValidationError(''); // Clear validation error if the address is valid
+                        setRecipientValidationError('');
                     } else {
                         setIsAddressValid(false);
                         setRecipientValidationError(validationResult.message || 'Invalid address');
@@ -47,7 +47,7 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap })
                     const validationResult = await validateAddress(sendCurrency, address);
                     if (validationResult.result) {
                         setIsRefundAddressValid(true);
-                        setRefundValidationError(''); // Clear validation error if the refund address is valid
+                        setRefundValidationError('');
                     } else {
                         setIsRefundAddressValid(false);
                         setRefundValidationError(validationResult.message || 'Invalid refund address');
@@ -73,6 +73,13 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap })
         validateRefundAddress(address);
     };
 
+    useEffect(() => {
+        if (connectedWalletAddress && (sendCurrency.toLowerCase() === 'eth' || sendCurrency.toLowerCase() === 'arb')) {
+            setRefundAddress(connectedWalletAddress);
+            validateRefundAddress(connectedWalletAddress);
+        }
+    }, [connectedWalletAddress, sendCurrency, validateRefundAddress]);
+
     const estimateAmount = useCallback(async () => {
         if (sendCurrency && receiveCurrency && amount) {
             try {
@@ -83,11 +90,11 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap })
                     estimation = await estimateFixedRate(sendCurrency, receiveCurrency, amount);
                 }
                 setEstimatedAmount(estimation.amountTo);
-                setError(''); // Clear estimation error if successful
+                setError('');
                 setIsEstimationSuccessful(true);
             } catch (err) {
                 console.error('Error during estimation:', err.message || err);
-                setError(err.message); // Set error for estimation issues
+                setError(err.message);
                 setEstimatedAmount('');
                 setIsEstimationSuccessful(false);
             }
@@ -101,7 +108,7 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap })
     useEffect(() => {
         const interval = setInterval(() => {
             estimateAmount();
-        }, 1000); // 600 ms interval for updating the estimation
+        }, 1000); // 1-second interval for updating the estimation
 
         return () => clearInterval(interval); // Cleanup interval on component unmount
     }, [estimateAmount]);
@@ -111,21 +118,38 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap })
         estimateAmount();
     };
 
-
-    const handleSwapClick = () => {
+    const handleSwapClick = async () => {
         if (!amount || !recipientAddress || !isAddressValid || !isEstimationSuccessful || !isRefundAddressValid) {
             alert('Please fill in all fields with valid data and ensure estimation is successful.');
             return;
         }
 
-        onSwap(amount, recipientAddress, refundAddress, rateType, refundAddress);
+        let rateId = null;
+
+        if (rateType === 'fixed') {
+            try {
+                const estimation = await estimateFixedRate(sendCurrency, receiveCurrency, amount);
+                rateId = estimation.rateId;
+            } catch (err) {
+                console.error('Error retrieving fixed rate ID:', err.message || err);
+                setError('Failed to retrieve fixed rate ID.');
+                return;
+            }
+        }
+
+        onSwap(amount, recipientAddress, refundAddress, rateType, rateId); // Pass rateId to onSwap
+
+        // Call the onSent callback if provided
+        if (onSent) {
+            onSent();
+        }
     };
 
     const handleRateTypeChange = async (e) => {
         const newRateType = e.target.value;
         setRateType(newRateType);
         setEstimatedAmount('');
-        setError(''); // Clear any previous estimation error
+        setError('');
         setIsEstimationSuccessful(false);
 
         if (amount && sendCurrency && receiveCurrency) {
@@ -176,7 +200,6 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap })
             <h2 className={styles.prompt}>Swap {sendCurrency.toUpperCase()} for {receiveCurrency.toUpperCase()}</h2>
 
             <div className={styles.inputGroup}>
-                {/* Amount input with tooltip */}
                 <div className={styles.inputWithTooltip}>
                     <FaQuestionCircle className={styles.tooltipIcon} />
                     <div className={styles.tooltip}>
@@ -192,7 +215,6 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap })
                 </div>
             </div>
             <div className={styles.inputGroup}>
-                {/* Recipient address input with tooltip */}
                 <div className={styles.inputWithTooltip}>
                     <FaQuestionCircle className={styles.tooltipIcon} />
                     <div className={styles.tooltip}>
@@ -209,7 +231,6 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap })
                 </div>
             </div>
             <div className={styles.inputGroup}>
-                {/* Refund address input with tooltip */}
                 <div className={styles.inputWithTooltip}>
                     <FaQuestionCircle className={styles.tooltipIcon} />
                     <div className={styles.tooltip}>
@@ -226,7 +247,6 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap })
                 </div>
             </div>
 
-            {/* Rate type option bar with tooltip */}
             <div className={styles.inputGroup}>
                 <RateTypeOptionBar rateType={rateType} onChange={handleRateTypeChange} />
             </div>

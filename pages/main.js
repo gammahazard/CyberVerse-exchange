@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import CurrencyList from '../components/CurrencySelector/CurrencyList';
 import SwapInterface from '../components/ExchangeForm/SwapInterface';
-import AddressDisplay from '../components/PaymentInfo/AddressDisplay';
 import StatusDisplay from '../components/TransactionStatus/StatusDisplay';
 import useChangelly from '../hooks/useChangelly';
 import styles from '../styles/Home.module.css';
@@ -10,6 +9,9 @@ import FilteredCurrencyList from '../components/CurrencySelector/FilteredCurrenc
 import { FaSpinner, FaSearch } from 'react-icons/fa';
 import InProgress from '../components/InProgress';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
+
+const AddressDisplay = dynamic(() => import('../components/PaymentInfo/AddressDisplay'), { ssr: false });
 
 export default function Main() {
   // ---------------------------------------------------- states
@@ -27,7 +29,7 @@ export default function Main() {
   const [inProgressTransactions, setInProgressTransactions] = useState([]);
   const [showInProgressModal, setShowInProgressModal] = useState(false);
   const [availablePairs, setAvailablePairs] = useState([]);
-  // ---------------------------------------------------- states
+  const [connectedWalletAddress, setConnectedWalletAddress] = useState(null);
 
   // ---------------------------------------------------- useEffects
   useEffect(() => {
@@ -45,7 +47,6 @@ export default function Main() {
       setShowInProgressButton(parsedTransactions.length > 0);
     }
   }, []);
-  // ---------------------------------------------------- useEffects
 
   // ---------------------------------------------------- consts
   const handleInProgressClick = () => {
@@ -71,7 +72,7 @@ export default function Main() {
     setTransactionDetails(null);
   };
 
-  const handleCurrencySelect = async (currency) => {
+  const handleCurrencySelect = async (currency, walletAddress = null) => {
     setIsVisible(false);
     setTimeout(async () => {
       if (step === 1) {
@@ -96,18 +97,13 @@ export default function Main() {
         }
       } else if (step === 2) {
         setSendCurrency(currency);
+        if (walletAddress) {
+          setConnectedWalletAddress(walletAddress);
+        }
         setStep(3);
       }
       setIsVisible(true);
-    }, 300); // Adjust this delay to match your fade-out transition time
-  };
-
-  const handleSent = () => {
-    setIsVisible(false);
-    setTimeout(() => {
-      setStep(5);
-      setIsVisible(true);
-    }, 500);
+    }, 300);
   };
 
   const handleBack = () => {
@@ -119,6 +115,7 @@ export default function Main() {
           if (newStep === 1) {
             setReceiveCurrency(null);
             setSendCurrency(null);
+            setAvailablePairs([]);
           } else if (newStep === 2) {
             setSendCurrency(null);
           }
@@ -129,19 +126,20 @@ export default function Main() {
     }
   };
 
-  const handleSwap = async (swapAmount, recipientAddress, refundAddress, rateType) => { // Added refundAddress here
+  const handleSwap = async (swapAmount, recipientAddress, refundAddress, rateType, rateId = null) => {
     setAmount(swapAmount);
     setAddress(recipientAddress);
     setIsVisible(false);
     try {
-        const transaction = await createTransaction({
-            from: sendCurrency,
-            to: receiveCurrency,
-            amount: swapAmount,
-            address: recipientAddress,
-            refundAddress, // Added refundAddress here
-            rateType,
-        });
+      const transaction = await createTransaction({
+        from: sendCurrency,
+        to: receiveCurrency,
+        amount: swapAmount,
+        address: recipientAddress,
+        refundAddress,
+        rateType,
+        rateId // Include rateId only for fixed rate transactions
+      });
 
       setTransactionDetails(transaction);
 
@@ -159,7 +157,12 @@ export default function Main() {
       setIsVisible(true);
     }
   };
-  // ---------------------------------------------------- consts
+
+  // ---------------------------------------------------- new function
+  const handleSent = () => {
+    // This function can be used to do something after the transaction is sent.
+    console.log('Transaction sent!');
+  };
 
   // ---------------------------------------------------- ui
   return (
@@ -193,7 +196,6 @@ export default function Main() {
             onSelect={handleCurrencySelect}
             prompt="What coin do you want to send?"
             availablePairs={availablePairs}
-            isLoading={isLoading}
           />
         )}
         {step === 3 && (
@@ -201,19 +203,20 @@ export default function Main() {
             sendCurrency={sendCurrency}
             receiveCurrency={receiveCurrency}
             onSwap={handleSwap}
+            connectedWalletAddress={connectedWalletAddress}
           />
         )}
         {step === 4 && transactionDetails && (
-      <AddressDisplay 
-      currencyFrom={transactionDetails.currencyFrom}
-      currencyTo={transactionDetails.currencyTo}
-      amountExpectedFrom={transactionDetails.amountExpectedFrom}
-      amountExpectedTo={transactionDetails.amountExpectedTo}
-      payinAddress={transactionDetails.payinAddress}
-      payoutAddress={transactionDetails.payoutAddress}
-      refundAddress={transactionDetails.refundAddress} // Pass the refundAddress here
-      onSent={handleSent}
-    />
+          <AddressDisplay
+            currencyFrom={transactionDetails.currencyFrom}
+            currencyTo={transactionDetails.currencyTo}
+            amountExpectedFrom={transactionDetails.amountExpectedFrom}
+            amountExpectedTo={transactionDetails.amountExpectedTo}
+            payinAddress={transactionDetails.payinAddress}
+            payoutAddress={transactionDetails.payoutAddress}
+            refundAddress={transactionDetails.refundAddress}
+            onSent={handleSent} // This now correctly references the handleSent function
+          />
         )}
         {step === 5 && transactionDetails && (
           <StatusDisplay
@@ -233,5 +236,4 @@ export default function Main() {
       )}
     </div>
   );
-  // ---------------------------------------------------- ui
 }

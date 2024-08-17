@@ -631,12 +631,121 @@
         height: 150px; /* Reduce button height */
         font-size: 1rem; /* Adjust font size */
     }
+  
 
     .currencyGrid {
         grid-template-columns: repeat(2, 1fr); /* Change grid layout to 2 columns */
         gap: 15px; /* Adjust gap between items */
     }
-
+    .currencyButtonContainer {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .currencyTooltip {
+        visibility: hidden;
+        background-color: #555;
+        color: #fff;
+        text-align: left;
+        border-radius: 6px;
+        padding: 8px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%; /* Position the tooltip above the button */
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    .currencyButtonContainer {
+        position: relative;
+        display: inline-block;
+        margin: 10px;
+    }
+    
+    .currencyButton {
+        background-color: #fff;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        width: 70px;  /* Fixed width for the button */
+        height: 70px; /* Fixed height for the button */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        outline: none;
+        transition: border-color 0.3s ease;
+    }
+    
+    .currencyButton:hover {
+        border-color: #0070f3;
+    }
+    
+    .currencyIcon {
+        width: 40px;   /* Fixed width for the image */
+        height: 40px;  /* Fixed height for the image */
+        object-fit: contain;
+    }.spinnerContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh; /* Full screen height */
+      }
+      
+      .spinner {
+        font-size: 3rem; /* Large size */
+        color: lightgreen; /* Light green color */
+        animation: spin infinite linear infinite; /* Spinning animation */
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      .loadingMessage {
+        margin-top: 1rem;
+        font-size: 1.5rem;
+        color: lightgreen;
+      }
+      
+    
+    .currencyTooltip {
+        visibility: hidden;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 120%; /* Position the tooltip above the button */
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        white-space: nowrap;
+        width: max-content;  /* Tooltip width adjusts based on content */
+    }
+    
+    .currencyButtonContainer:hover .currencyTooltip {
+        visibility: visible;
+        opacity: 1;
+    }
+    
+    .currencyButtonContainer:hover .currencyTooltip {
+        visibility: visible;
+        opacity: 1;
+    }
+    
+    .currencyIcon {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+        vertical-align: middle;
+    }
+    
     .currencyButton, .swapButton, .inProgressButton, .sentButton {
         padding: 10px 15px; /* Adjust padding for buttons */
         font-size: 0.9rem; /* Slightly smaller font size */

@@ -99,16 +99,23 @@ const getCurrencies = async () => {
 
 
 //create tx to send to changelly 
-const createTransaction = async ({ from, to, amount, address, refundAddress, rateType }) => {
+const createTransaction = async ({ from, to, amount, address, refundAddress, rateType, rateId }) => {
     try {
         const method = rateType === 'fixed' ? 'createFixTransaction' : 'createTransaction';
+        const bodyParams = { from, to, amount, address, refundAddress };
+
+        if (rateType === 'fixed' && rateId) {
+            bodyParams.rateId = rateId; // Add rateId for fixed rate transactions
+        }
+
         const response = await fetch(`${API_URL}/${method}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ from, to, amount, address, refundAddress }),
+            body: JSON.stringify(bodyParams),
         });
+
         const data = await response.json();
         console.log('Create transaction response:', data);
 
@@ -209,11 +216,7 @@ const searchTransactions = async (payoutAddress) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ 
-                from,
-                to,
-                txType 
-            }),
+            body: JSON.stringify({ from, to, txType }),
         });
         const data = await response.json();
         if (!response.ok) {
@@ -226,6 +229,29 @@ const searchTransactions = async (payoutAddress) => {
     }
 };
 
-return { getCurrencies, estimateFloatingRate, estimateFixedRate, createTransaction, validateAddress, getStatus, searchTransactions, getPairs };
+const getCurrenciesFull = async () => {
+    try {
+        const response = await fetch(`${API_URL}/currenciesFull`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data.result;
+    } catch (error) {
+        console.error('Error fetching full currency information:', error);
+        throw error;
+    }
+};
+
+return { 
+    getCurrencies, 
+    estimateFloatingRate, 
+    estimateFixedRate, 
+    createTransaction, 
+    validateAddress, 
+    getStatus, 
+    searchTransactions, 
+    getPairs, 
+    getCurrenciesFull // Don't forget to return this function
+};
 }
-   

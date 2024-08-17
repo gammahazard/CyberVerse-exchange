@@ -10,13 +10,16 @@ export default function CurrencyList({ onSelect, prompt }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { getCurrencies } = useChangelly();
+  const { getCurrenciesFull } = useChangelly();
 
   useEffect(() => {
     const fetchCurrencies = async () => {
       try {
-        const fetchedCurrencies = await getCurrencies();
-        setCurrencies(fetchedCurrencies);
+        if (currencies.length === 0) {
+          const fetchedCurrencies = await getCurrenciesFull();
+          console.log('Fetched currencies:', fetchedCurrencies);
+          setCurrencies(fetchedCurrencies);
+        }
         setIsLoading(false);
       } catch (err) {
         console.error('Error fetching currencies:', err);
@@ -26,22 +29,22 @@ export default function CurrencyList({ onSelect, prompt }) {
     };
 
     fetchCurrencies();
-  }, []);
+  }, []); // Empty dependency array ensures this runs only once
 
   const sortedCurrencies = useMemo(() => {
     return currencies.sort((a, b) => {
-      const aIndex = priorityCurrencies.indexOf(a.toLowerCase());
-      const bIndex = priorityCurrencies.indexOf(b.toLowerCase());
-      
+      const aIndex = priorityCurrencies.indexOf(a.ticker.toLowerCase());
+      const bIndex = priorityCurrencies.indexOf(b.ticker.toLowerCase());
+
       if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
       if (aIndex !== -1) return -1;
       if (bIndex !== -1) return 1;
-      return a.localeCompare(b);
+      return a.ticker.localeCompare(b.ticker);
     });
   }, [currencies]);
 
   const filteredCurrencies = sortedCurrencies.filter(currency =>
-    currency.toLowerCase().includes(searchTerm.toLowerCase())
+    currency.ticker.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   console.log('Number of currencies in Step 1:', filteredCurrencies.length);
@@ -62,10 +65,10 @@ export default function CurrencyList({ onSelect, prompt }) {
       <div className={styles.currencyGrid}>
         {filteredCurrencies.map((currency) => (
           <CurrencyButton 
-            key={currency} 
-            currency={currency} 
-            onClick={() => onSelect(currency)}
-            isPriority={priorityCurrencies.includes(currency.toLowerCase())}
+            key={currency.ticker} 
+            currency={currency.ticker} 
+            onClick={() => onSelect(currency.ticker)}
+            currencyInfo={currency} // Pass the full currency info
           />
         ))}
       </div>

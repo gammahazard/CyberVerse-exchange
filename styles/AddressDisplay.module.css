@@ -53,10 +53,12 @@
     margin: 30px auto;
   }
   
-  .sentButton {
+  .sentButton, .metaMaskButton {
     margin-top: 30px;
     padding: 15px 30px;
     font-size: 1.2em;
+    display:block;
+    margin-inline:auto;
     background-color: #00ff00;
     color: #000;
     border: none;
@@ -136,10 +138,19 @@
         margin: 15px auto; /* Adjust margin for QR code */
     }
 
-    .sentButton {
+    .sentButton{
         width: 100%; /* Ensure the button takes full width */
         max-width: 300px; /* Set a maximum width for the button */
         font-size: 1rem; /* Adjust button text size */
         margin: 20px auto; /* Center the button */
     }
-}
+}  .errorMessage {
+    color: #ff4d4f;
+    
+  
+    border: 1px solid #ffccc7;
+    padding: 10px;
+    margin-top: 50px;
+    border-radius: 4px;
+  }
+
