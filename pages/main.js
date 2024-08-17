@@ -129,18 +129,19 @@ export default function Main() {
     }
   };
 
-  const handleSwap = async (swapAmount, recipientAddress, rateType) => {
+  const handleSwap = async (swapAmount, recipientAddress, refundAddress, rateType) => { // Added refundAddress here
     setAmount(swapAmount);
     setAddress(recipientAddress);
     setIsVisible(false);
     try {
-      const transaction = await createTransaction({
-        from: sendCurrency,
-        to: receiveCurrency,
-        amount: swapAmount,
-        address: recipientAddress,
-        rateType,
-      });
+        const transaction = await createTransaction({
+            from: sendCurrency,
+            to: receiveCurrency,
+            amount: swapAmount,
+            address: recipientAddress,
+            refundAddress, // Added refundAddress here
+            rateType,
+        });
 
       setTransactionDetails(transaction);
 
@@ -203,15 +204,16 @@ export default function Main() {
           />
         )}
         {step === 4 && transactionDetails && (
-          <AddressDisplay
-            currencyFrom={transactionDetails.currencyFrom}
-            currencyTo={transactionDetails.currencyTo}
-            amountExpectedFrom={transactionDetails.amountExpectedFrom}
-            amountExpectedTo={transactionDetails.amountExpectedTo}
-            payinAddress={transactionDetails.payinAddress}
-            payoutAddress={transactionDetails.payoutAddress}
-            onSent={handleSent}
-          />
+      <AddressDisplay 
+      currencyFrom={transactionDetails.currencyFrom}
+      currencyTo={transactionDetails.currencyTo}
+      amountExpectedFrom={transactionDetails.amountExpectedFrom}
+      amountExpectedTo={transactionDetails.amountExpectedTo}
+      payinAddress={transactionDetails.payinAddress}
+      payoutAddress={transactionDetails.payoutAddress}
+      refundAddress={transactionDetails.refundAddress} // Pass the refundAddress here
+      onSent={handleSent}
+    />
         )}
         {step === 5 && transactionDetails && (
           <StatusDisplay

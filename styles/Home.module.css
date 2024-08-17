@@ -78,7 +78,60 @@
     font-size: 3rem;
     color: #00cc00;
   }
-  
+  .rateTypeOptionBarContainer {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.rateTypeOptionBar {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-right: 15px;
+}
+
+.inputWithTooltip {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.tooltipIcon {
+    margin-left: 0px;
+    margin-right:10px;
+    color: #00ff00;
+    cursor: pointer;
+    font-size: 1.2em;
+}
+.rateTypeOptionBar{
+    margin-inline:auto;
+}
+
+.tooltip {
+    display: none;
+    position: absolute;
+    left: 35px;
+    top: -25px;
+    background-color: #1a1a1a;
+    color: #00ff00;
+    padding: 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 1;
+    font-size: 0.9em;
+    min-width: 200px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.inputWithTooltip:hover .tooltip {
+    display: block;
+}
+
+.inputField {
+    flex-grow: 1;
+}
+
   .launchButton {
     font-size: 1.5rem;
     padding: 1rem 2rem;

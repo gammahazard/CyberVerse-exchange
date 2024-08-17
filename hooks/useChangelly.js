@@ -99,32 +99,32 @@ const getCurrencies = async () => {
 
 
 //create tx to send to changelly 
-    const createTransaction = async ({ from, to, amount, address, rateType }) => {
-        try {
-            const method = rateType === 'fixed' ? 'createFixTransaction' : 'createTransaction';
-            const response = await fetch(`${API_URL}/${method}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ from, to, amount, address }),
-            });
-            const data = await response.json();
-            console.log('Create transaction response:', data);
+const createTransaction = async ({ from, to, amount, address, refundAddress, rateType }) => {
+    try {
+        const method = rateType === 'fixed' ? 'createFixTransaction' : 'createTransaction';
+        const response = await fetch(`${API_URL}/${method}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ from, to, amount, address, refundAddress }),
+        });
+        const data = await response.json();
+        console.log('Create transaction response:', data);
 
-            if (response.ok && data.result) {
-                return data.result; // Return all transaction details
-            } else if (data.error) {
-                console.error('Changelly API Error:', data.error.message);
-                throw new Error(data.error.message); // Pass the actual error message
-            } else {
-                throw new Error('Failed to create transaction');
-            }
-        } catch (error) {
-            console.error('Error creating transaction:', error.message || error);
-            throw error; // Pass the error up the stack
+        if (response.ok && data.result) {
+            return data.result; // Return all transaction details
+        } else if (data.error) {
+            console.error('Changelly API Error:', data.error.message);
+            throw new Error(data.error.message); // Pass the actual error message
+        } else {
+            throw new Error('Failed to create transaction');
         }
-    };
+    } catch (error) {
+        console.error('Error creating transaction:', error.message || error);
+        throw error; // Pass the error up the stack
+    }
+};
 
 
 // validate address input

@@ -3,7 +3,7 @@ import QRCode from 'qrcode.react';
 import { FaClipboard } from 'react-icons/fa';
 import styles from '../../styles/AddressDisplay.module.css';
 
-export default function AddressDisplay({ currencyFrom, currencyTo, amountExpectedFrom, amountExpectedTo, payinAddress, payoutAddress, onSent }) {
+export default function AddressDisplay({ currencyFrom, currencyTo, amountExpectedFrom, amountExpectedTo, payinAddress, payoutAddress, refundAddress, onSent }) {  // Added refundAddress as a prop
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -50,6 +50,12 @@ export default function AddressDisplay({ currencyFrom, currencyTo, amountExpecte
       </div>
 
       <button onClick={onSent} className={styles.sentButton}>I&apos;ve sent the funds</button>
+
+      {refundAddress && (
+        <div className={styles.refundInfo}>
+          <p>IN CASE OF TRANSACTION FAILURE FUNDS WILL BE REFUNDED TO {refundAddress}</p>
+        </div>
+      )}
     </div>
   );
 }
