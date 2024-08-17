@@ -37,13 +37,11 @@ export default function AddressDisplay({
         console.log('To Address:', payinAddress);
         console.log('Amount:', amountExpectedFrom, currencyFrom.toUpperCase());
   
-        // Define the token address for ARB if applicable
         const tokenAddress = currencyFrom.toLowerCase() === 'arb' ? '0x912CE59144191C1204E64559FE8253a0e49E6548' : null;
-  
-        // Call sendTransaction with the token address if ARB, or null if native ETH
         const txHash = await sendTransaction(ethereumProvider.provider, payinAddress, amountExpectedFrom, network, tokenAddress);
         console.log('Transaction sent:', txHash);
         alert(`Transaction sent! Hash: ${txHash}`);
+        onSent(); // Move to the next step after the transaction is sent
       } catch (error) {
         console.error('Error sending transaction:', error);
         handleTransactionError(error);
@@ -133,9 +131,6 @@ export default function AddressDisplay({
         <QRCode value={payinAddress} size={160} />
       </div>
       <button onClick={onSent} className={styles.sentButton}>I&apos;ve sent the funds</button>
-
-
-
 
       {isWalletConnected && (currencyFrom.toLowerCase() === 'eth' || currencyFrom.toLowerCase() === 'arb') && (
         <button onClick={handleSendWithMetaMask} className={styles.metaMaskButton}>

@@ -4,9 +4,9 @@
     padding: 30px;
     max-width: 1000px; /* Ensure this fits within your layout */
     margin: 0 auto;
-    box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
-    color: #00ff00;
-    border: 2px solid #00ff00;
+    box-shadow: 0 0 15px rgb(0 255 0 / 40%);
+    color: #0f0;
+    border: 2px solid #0f0;
     font-size: 1.2rem;
     box-sizing: border-box; /* Ensure padding is included in width */
     overflow: hidden; /* Prevent content from spilling out */
@@ -14,10 +14,10 @@
 
 
 .statusDisplay h2 {
-    color: #00ff00;
+    color: #0f0;
     margin-bottom: 30px; /* Increase space below the header */
     text-align: center;
-    text-shadow: 0 0 15px rgba(0, 255, 0, 0.8); /* More intense glow */
+    text-shadow: 0 0 15px rgb(0 255 0 / 80%); /* More intense glow */
     font-size: 2rem; /* Larger header font size */
 }
 
@@ -30,12 +30,12 @@
 
 .transactionTable td {
     padding: 15px; /* Increase padding for table cells */
-    border-bottom: 1px solid #00ff00;
+    border-bottom: 1px solid #0f0;
 }
 
 .transactionTable td:first-child {
     font-weight: bold;
-    color: #00cc00;
+    color: #0c0;
 }
 
 .statusMessage {
@@ -46,7 +46,7 @@
     padding: 15px; /* Increase padding for status messages */
     background-color: #1e1e1e;
     border-radius: 6px; /* More rounded corners */
-    border: 2px solid #00ff00; /* Thicker border */
+    border: 2px solid #0f0; /* Thicker border */
     font-size: 1.3rem; /* Larger status message text */
 }
 
@@ -83,7 +83,7 @@
 
 .loading {
     text-align: center;
-    color: #00ff00;
+    color: #0f0;
     font-weight: bold;
     font-size: 1.3rem; /* Larger loading text */
 }
@@ -94,7 +94,7 @@
     justify-content: center;
     margin-top: 30px; /* Increase space above the button */
     padding: 15px 30px; /* Increase padding for the button */
-    background-color: #00ff00;
+    background-color: #0f0;
     color: #000;
     border: none;
     border-radius: 6px;
@@ -104,7 +104,7 @@
 }
 
 .newTransactionButton:hover {
-    background-color: #00cc00;
+    background-color: #0c0;
 }
 
 .newTransactionButton svg {

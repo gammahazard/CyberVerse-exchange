@@ -160,8 +160,11 @@ export default function Main() {
 
   // ---------------------------------------------------- new function
   const handleSent = () => {
-    // This function can be used to do something after the transaction is sent.
-    console.log('Transaction sent!');
+    setIsVisible(false); // Fade out the current step
+    setTimeout(() => {
+      setStep(5); // Move to the next step after fading out
+      setIsVisible(true); // Fade in the new step
+    }, 300); // Adjust the timeout to match your fade-out duration
   };
 
   // ---------------------------------------------------- ui
