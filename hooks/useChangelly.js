@@ -5,24 +5,24 @@ export default function useChangelly() {
 
 
 //parse error messages to show user max and min amounts more clearly
-    const parseErrorMessage = (error) => {
-        const maxAmountRegex = /Maximum amount is (\d+(\.\d+)?)\s+(\w+)/i;
-        const minAmountRegex = /Minimal amount is (\d+(\.\d+)?)\s+(\w+)/i;
-        
-        const maxMatch = error.match(maxAmountRegex);
-        if (maxMatch) {
-            const [, amount, , asset] = maxMatch;
-            return `MAXIMUM AMOUNT IS ${amount} ${asset.toUpperCase()}`;
-        }
-        
-        const minMatch = error.match(minAmountRegex);
-        if (minMatch) {
-            const [, amount, , asset] = minMatch;
-            return `MINIMUM AMOUNT IS ${amount} ${asset.toUpperCase()}`;
-        }
-        
-        return error; // Return the original error if it doesn't match either format
-    };
+const parseErrorMessage = (error) => {
+    const maxAmountRegex = /Maximum amount is (\d+(\.\d+)?)\s+(\w+)/i;
+    const minAmountRegex = /Minimal amount is (\d+(\.\d+)?)\s+(\w+)/i;
+    
+    const maxMatch = error.match(maxAmountRegex);
+    if (maxMatch) {
+        const [, amount, , asset] = maxMatch;
+        return `MAXIMUM AMOUNT IS ${amount} ${asset.toUpperCase()}`;
+    }
+    
+    const minMatch = error.match(minAmountRegex);
+    if (minMatch) {
+        const [, amount, , asset] = minMatch;
+        return `MINIMUM AMOUNT IS ${amount} ${asset.toUpperCase()}`;
+    }
+    
+    return error; // Return the original error if it doesn't match either format
+};
 
 
 //
@@ -82,9 +82,14 @@ const getCurrencies = async () => {
             });
             const data = await response.json();
             console.log('Fixed rate estimate response:', data);
-
-            if (response.ok && data.result) {
-                return { amountTo: data.result[0].amountTo };
+    
+            if (response.ok && data.result && data.result.length > 0) {
+                return {
+                    amountTo: data.result[0].amountTo,
+                    rateId: data.result[0].id,
+                    min: data.result[0].min,
+                    max: data.result[0].max
+                };
             } else if (data.error) {
                 console.error('Changelly API Error:', data.error);
                 throw new Error(parseErrorMessage(data.error));
@@ -102,11 +107,28 @@ const getCurrencies = async () => {
 const createTransaction = async ({ from, to, amount, address, refundAddress, rateType, rateId }) => {
     try {
         const method = rateType === 'fixed' ? 'createFixTransaction' : 'createTransaction';
-        const bodyParams = { from, to, amount, address, refundAddress };
+        let bodyParams;
 
-        if (rateType === 'fixed' && rateId) {
-            bodyParams.rateId = rateId; // Add rateId for fixed rate transactions
+        if (rateType === 'fixed') {
+            bodyParams = {
+                from: from.toLowerCase(),
+                to: to.toLowerCase(),
+                amountFrom: amount.toString(),
+                address,
+                rateId,
+                refundAddress
+            };
+        } else {
+            bodyParams = {
+                from: from.toLowerCase(),
+                to: to.toLowerCase(),
+                amount: amount.toString(),
+                address,
+                refundAddress
+            };
         }
+
+        console.log(`Sending ${method} request with params:`, bodyParams);
 
         const response = await fetch(`${API_URL}/${method}`, {
             method: 'POST',
@@ -119,17 +141,18 @@ const createTransaction = async ({ from, to, amount, address, refundAddress, rat
         const data = await response.json();
         console.log('Create transaction response:', data);
 
-        if (response.ok && data.result) {
-            return data.result; // Return all transaction details
-        } else if (data.error) {
-            console.error('Changelly API Error:', data.error.message);
-            throw new Error(data.error.message); // Pass the actual error message
-        } else {
-            throw new Error('Failed to create transaction');
+        if (!response.ok) {
+            throw new Error(data.error || `HTTP error! status: ${response.status}`);
         }
+
+        if (data.error) {
+            throw new Error(data.error.message || 'Unknown API error');
+        }
+
+        return data.result;
     } catch (error) {
-        console.error('Error creating transaction:', error.message || error);
-        throw error; // Pass the error up the stack
+        console.error(`Error in ${rateType} transaction creation:`, error);
+        throw error;
     }
 };
 
@@ -236,6 +259,7 @@ const getCurrenciesFull = async () => {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
+        console.log('FULL CURRENCY INFO:', data)
         return data.result;
     } catch (error) {
         console.error('Error fetching full currency information:', error);
@@ -252,6 +276,8 @@ return {
     getStatus, 
     searchTransactions, 
     getPairs, 
-    getCurrenciesFull // Don't forget to return this function
+    getCurrenciesFull,// Don't forget to return this function
+    parseErrorMessage // Add this line
+
 };
 }

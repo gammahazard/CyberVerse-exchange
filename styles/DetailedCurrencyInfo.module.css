@@ -1,0 +1,86 @@
+.detailedCurrencyInfoContainer {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-direction: row;
+}
+
+.detailedCurrencyInfo {
+    background-color: #000;
+    border-radius: 10px;
+    padding: 20px;
+    width: 50%;
+    height: auto;
+    min-height: 400px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #00ff00; /* Neon green text */
+    border: 1px solid #00ff00; /* Neon green border */
+}
+
+.currencySection,
+.amountSection,
+.contractSection,
+.imageSection,
+.confirmationsSection {
+    margin-bottom: 10px;
+}
+
+.currencyHeader {
+    margin-bottom: 10px;
+}
+
+.currencyTicker {
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.currencyFullName {
+    font-size: 18px;
+}
+
+.amount {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #00ff00; /* Neon green text */
+}
+
+.currencyImage {
+    width: 50px;
+    height: 50px;
+    margin-top: 10px;
+}
+
+.arrowIcon {
+    font-size: 30px;
+    color: #00ff00; /* Neon green arrow */
+}
+
+.confirmationsSection {
+    visibility: hidden;
+    height: 20px;
+}
+
+.confirmationsSection.visible {
+    visibility: visible;
+}
+
+@media (max-width: 768px) {
+    .detailedCurrencyInfoContainer {
+        flex-direction: column;
+    }
+
+    .arrowIcon {
+        font-size: 30px;
+        transform: rotate(90deg); /* Rotate arrow for down direction */
+    }
+}

@@ -30,7 +30,7 @@ export default function Main() {
   const [showInProgressModal, setShowInProgressModal] = useState(false);
   const [availablePairs, setAvailablePairs] = useState([]);
   const [connectedWalletAddress, setConnectedWalletAddress] = useState(null);
-
+  const [isInputChanged, setIsInputChanged] = useState(false);
   // ---------------------------------------------------- useEffects
   useEffect(() => {
     const termsAccepted = localStorage.getItem('termsAccepted');
@@ -126,37 +126,30 @@ export default function Main() {
     }
   };
 
-  const handleSwap = async (swapAmount, recipientAddress, refundAddress, rateType, rateId = null) => {
-    setAmount(swapAmount);
-    setAddress(recipientAddress);
+const handleSwap = async (swapParams) => {
+    setAmount(swapParams.amount);
+    setAddress(swapParams.address);
     setIsVisible(false);
     try {
-      const transaction = await createTransaction({
-        from: sendCurrency,
-        to: receiveCurrency,
-        amount: swapAmount,
-        address: recipientAddress,
-        refundAddress,
-        rateType,
-        rateId // Include rateId only for fixed rate transactions
-      });
+        const transaction = await createTransaction(swapParams);
 
-      setTransactionDetails(transaction);
+        setTransactionDetails(transaction);
 
-      const updatedTransactions = [...inProgressTransactions, transaction];
-      localStorage.setItem('transactions', JSON.stringify(updatedTransactions));
-      setInProgressTransactions(updatedTransactions);
-      setShowInProgressButton(true);
+        const updatedTransactions = [...inProgressTransactions, transaction];
+        localStorage.setItem('transactions', JSON.stringify(updatedTransactions));
+        setInProgressTransactions(updatedTransactions);
+        setShowInProgressButton(true);
 
-      setTimeout(() => {
-        setStep(4);
-        setIsVisible(true);
-      }, 500);
+        setTimeout(() => {
+            setStep(4);
+            setIsVisible(true);
+        }, 500);
     } catch (error) {
-      console.error('Error creating transaction:', error);
-      setIsVisible(true);
+        console.error('Error creating transaction:', error);
+        alert(`Failed to create transaction: ${error.message || 'Unknown error'}`);
+        setIsVisible(true);
     }
-  };
+};
 
   // ---------------------------------------------------- new function
   const handleSent = () => {
