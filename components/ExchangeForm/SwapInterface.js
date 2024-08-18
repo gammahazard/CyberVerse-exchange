@@ -21,7 +21,9 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap, c
     const [isInputChanged, setIsInputChanged] = useState(false);
     const [isRateChanging, setIsRateChanging] = useState(false);
     const [isSwapButtonDisabled, setIsSwapButtonDisabled] = useState(false);
-
+    const [networkFee, setNetworkFee] = useState('0');
+    const [exchangeFee, setExchangeFee] = useState('0');
+    const [totalAmount, setTotalAmount] = useState('0');
     const [currenciesData, setCurrenciesData] = useState([]);
     const { 
         estimateFloatingRate, 
@@ -82,6 +84,10 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap, c
                     setIsRefundAddressValid(false);
                     setRefundValidationError(err.message || 'Failed to validate refund address');
                 }
+            } else {
+                // If the address is empty, set it as invalid
+                setIsRefundAddressValid(false);
+                setRefundValidationError('Refund address is required');
             }
         },
         [validateAddress]
@@ -90,11 +96,11 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap, c
  
 
     useEffect(() => {
-        if (connectedWalletAddress && (sendCurrency.toLowerCase() === 'eth' || sendCurrency.toLowerCase() === 'arb')) {
-            setRefundAddress(connectedWalletAddress);
-            validateRefundAddress(connectedWalletAddress);
+        if (connectedWalletAddress && (sendCurrency.toLowerCase() === 'eth' || sendCurrency.toLowerCase() === 'arb' || sendCurrency.toLowerCase() === 'sol')) {
+          setRefundAddress(connectedWalletAddress);
+          validateRefundAddress(connectedWalletAddress);
         }
-    }, [validateRefundAddress]);
+      }, [validateRefundAddress]);
 
     const estimateAmount = useCallback(async () => {
         if (sendCurrency && receiveCurrency && amount) {
@@ -102,13 +108,24 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap, c
                 let estimation;
                 if (rateType === 'floating') {
                     estimation = await estimateFloatingRate(sendCurrency, receiveCurrency, amount);
-                    setEstimatedAmount(estimation.amountTo);
+                    setNetworkFee(estimation.networkFee);
+                    const totalEstimated = parseFloat(estimation.visibleAmount || estimation.amountTo);
+                    const exchangeFeeAmount = totalEstimated * 0.009; // 0.9% exchange fee
+                    setExchangeFee(exchangeFeeAmount.toFixed(8));
+                    const amountAfterFees = totalEstimated - parseFloat(estimation.networkFee) - exchangeFeeAmount;
+                    setEstimatedAmount(amountAfterFees.toFixed(8));
+                    setTotalAmount(totalEstimated.toFixed(8));
                     setRateId(null);
                 } else {
                     estimation = await estimateFixedRate(sendCurrency, receiveCurrency, amount);
-                    setEstimatedAmount(estimation.amountTo);
+                    setNetworkFee(estimation.networkFee);
+                    const totalEstimated = parseFloat(estimation.amountTo);
+                    const exchangeFeeAmount = totalEstimated * 0.009; // 0.9% exchange fee
+                    setExchangeFee(exchangeFeeAmount.toFixed(8));
+                    const amountAfterFees = totalEstimated - parseFloat(estimation.networkFee) - exchangeFeeAmount;
+                    setEstimatedAmount(amountAfterFees.toFixed(8));
+                    setTotalAmount(totalEstimated.toFixed(8));
                     setRateId(estimation.rateId);
-                    console.log('Fixed rate estimation:', estimation);
                     if (parseFloat(amount) < parseFloat(estimation.min) || parseFloat(amount) > parseFloat(estimation.max)) {
                         throw new Error(`Amount must be between ${estimation.min} and ${estimation.max} ${sendCurrency.toUpperCase()}`);
                     }
@@ -121,12 +138,18 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap, c
                 setEstimatedAmount('');
                 setIsEstimationSuccessful(false);
                 setRateId(null);
+                setNetworkFee('0');
+                setExchangeFee('0');
+                setTotalAmount('0');
             }
         } else {
             setEstimatedAmount('');
             setError('');
             setIsEstimationSuccessful(false);
             setRateId(null);
+            setNetworkFee('0');
+            setExchangeFee('0');
+            setTotalAmount('0');
         }
     }, [sendCurrency, receiveCurrency, amount, rateType, estimateFloatingRate, estimateFixedRate, parseErrorMessage]);
 
@@ -318,26 +341,32 @@ const handleRateTypeChange = (e) => {
                 <RateTypeOptionBar rateType={rateType} onChange={handleRateTypeChange} />
             </div>
             {estimatedAmount && (
-                <div className={styles.estimatedAmount}>
-                    Estimated Amount to Receive: {parseFloat(estimatedAmount).toFixed(4)} {receiveCurrency.toUpperCase()} for {amount} {sendCurrency.toUpperCase()}
+                <div className={styles.feeBreakdownContainer}>
+                    <div className={styles.feeBreakdownTitle}>Transaction Details</div>
+                    <div className={styles.feeItem}>
+                        <span className={styles.feeLabel}>Total Amount (You are sending):</span>
+                        <span className={styles.feeValue}>{amount} {sendCurrency.toUpperCase()}</span>
+                    </div>
+                    <div className={styles.feeItem}>
+                        <span className={styles.feeLabel}>Total Amount (You are receiving before fees):</span>
+                        <span className={styles.feeValue}>{totalAmount} {receiveCurrency.toUpperCase()}</span>
+                    </div>
+                    <div className={styles.feeItem}>
+                        <span className={styles.feeLabel}>Network Fee:</span>
+                        <span className={styles.feeValue}>{networkFee} {receiveCurrency.toUpperCase()}</span>
+                    </div>
+                    <div className={styles.feeItem}>
+                        <span className={styles.feeLabel}>Exchange Fee (0.9%):</span>
+                        <span className={styles.feeValue}>{exchangeFee} {receiveCurrency.toUpperCase()}</span>
+                    </div>
+                    <div className={`${styles.feeItem} ${styles.totalFee}`}>
+                        <span className={styles.feeLabel}>Estimated Amount (You will receive after fees):</span>
+                        <span className={styles.feeValue}>{estimatedAmount} {receiveCurrency.toUpperCase()}</span>
+                    </div>
                 </div>
             )}
             {error && <div className={styles.error}>{error}</div>}
-            <button
-    onClick={handleSwapClick}
-    className={styles.swapButton}
-    disabled={
-        !isAddressValid ||
-        !amount ||
-        !recipientAddress ||
-        !isEstimationSuccessful ||
-        !isRefundAddressValid ||
-        isRateChanging ||
-        isSwapButtonDisabled // Disable the button based on this state
-    }
->
-    Exchange Now
-</button>
+
 <div className={styles.detailedCurrencyInfoContainer}>
     {sendCurrencyData && (
         <DetailedCurrencyInfo 
@@ -355,7 +384,21 @@ const handleRateTypeChange = (e) => {
         />
     )}
 </div>
-
+<button
+    onClick={handleSwapClick}
+    className={styles.swapButton}
+    disabled={
+        !isAddressValid ||
+        !amount ||
+        !recipientAddress ||
+        !isEstimationSuccessful ||
+        !isRefundAddressValid || 
+        isRateChanging ||
+        isSwapButtonDisabled // Disable the button based on this state
+    }
+>
+    Exchange Now
+</button>
         </div>
     );
 }

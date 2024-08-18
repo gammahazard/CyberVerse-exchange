@@ -701,7 +701,25 @@ position:relative;
       }
       
       /* Ensure image is correctly sized and positioned */
-
+      .initialFadeIn {
+        opacity: 0;
+        animation: fadeIn 300ms ease-in forwards;
+      }
+      
+      .fadeIn {
+        opacity: 1;
+        transition: opacity 300ms ease-in;
+      }
+      
+      .fadeOut {
+        opacity: 0;
+        transition: opacity 300ms ease-out;
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
 .currencyButton img {
     width: 80%;
     height: 80%;
@@ -716,7 +734,91 @@ position:relative;
   }
 
 
-
+  .feeBreakdownContainer {
+    background-color: #000;
+    border: 1px solid #0f0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+    font-family: 'Courier New', monospace;
+    color: #0f0;
+    text-align: center;
+  }
+  
+  .feeBreakdownTitle {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 3px rgba(0, 255, 0, 0.5);
+  }
+  
+  .feeItem {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+  }
+  
+  .feeLabel {
+    font-weight: bold;
+  }
+  
+  .feeValue {
+    font-family: 'Consolas', 'Courier New', monospace;
+  }
+  
+  .totalFee {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(0, 255, 0, 0.5);
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+  
+  /* Subtle Animation for Matrix-like effect */
+  @keyframes subtleMatrixGlow {
+    0% {
+      text-shadow: 0 0 1px rgba(0, 255, 0, 0.3);
+    }
+    50% {
+      text-shadow: 0 0 2px rgba(0, 255, 0, 0.5);
+    }
+    100% {
+      text-shadow: 0 0 1px rgba(0, 255, 0, 0.3);
+    }
+  }
+  
+  .feeBreakdownContainer * {
+    animation: subtleMatrixGlow 4s infinite;
+  }
+  
+  /* Mobile Styles */
+  @media (max-width: 600px) {
+    .feeBreakdownContainer {
+      padding: 15px;
+    }
+  
+    .feeBreakdownTitle {
+      font-size: 1rem;
+    }
+  
+    .feeItem {
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+  
+    .feeLabel {
+      margin-bottom: 5px;
+    }
+  
+    .totalFee {
+      font-size: 1rem;
+    }
+  }
 
 
 

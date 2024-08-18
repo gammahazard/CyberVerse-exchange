@@ -4,6 +4,7 @@ import useChangelly from '../../hooks/useChangelly';
 import styles from '../../styles/Home.module.css';
 import { FaSpinner } from 'react-icons/fa';
 import EthereumWalletModal from '../../wallets/ethereum/EthereumWalletModal';
+import SolanaWalletModal from '../../wallets/solana/SolanaWalletModal';
 
 const priorityCurrencies = ['btc', 'eth', 'arb', 'sol', 'ton', 'erg', 'ltc', 'cro', 'usdt', 'usdc'];
 
@@ -16,6 +17,7 @@ export default function FilteredCurrencyList({ onSelect, prompt, availablePairs 
   const [isLoading, setIsLoading] = useState(true);
   const { getCurrenciesFull } = useChangelly();
   const fetchedOnce = useRef(false);
+  const [showSolanaModal, setShowSolanaModal] = useState(false);
 
   useEffect(() => {
     const fetchFullCurrencyList = async () => {
@@ -64,9 +66,17 @@ export default function FilteredCurrencyList({ onSelect, prompt, availablePairs 
     if (currency.toLowerCase() === 'eth' || currency.toLowerCase() === 'arb') {
       setSelectedCurrency(currency);
       setShowWalletModal(true);
+    } else if (currency.toLowerCase() === 'sol') {
+      setSelectedCurrency(currency);
+      setShowSolanaModal(true);
     } else {
       onSelect(currency);
     }
+  };
+
+  const handleSolanaWalletConnected = (address) => {
+    setShowSolanaModal(false);
+    onSelect(selectedCurrency, address);
   };
 
   const handleWalletConnected = (address) => {
@@ -116,6 +126,15 @@ export default function FilteredCurrencyList({ onSelect, prompt, availablePairs 
           network={selectedCurrency.toLowerCase() === 'arb' ? 'arbitrum' : 'ethereum'}
         />
       )}
+        {showSolanaModal && (
+        <SolanaWalletModal
+          onClose={() => setShowSolanaModal(false)}
+          onWalletConnected={handleSolanaWalletConnected}
+          onContinueWithoutWallet={handleContinueWithoutWallet}
+          network="mainnet"
+        />
+      )}
     </>
+    
   );
 }

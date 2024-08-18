@@ -2,8 +2,8 @@
     background-color: #111;
     border-radius: 8px;
     padding: 30px;
-    width: 100%;
- 
+    max-width: 800px;  /* Set a max-width for larger screens */
+    width: 90%;
     margin: 0 auto;
     box-shadow: 0 0 15px rgb(0 255 0 / 40%);
     color: #0f0;
@@ -11,6 +11,49 @@
     font-size: 1.2rem;
     box-sizing: border-box;
     overflow: hidden;
+}
+
+.statusMessage {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    margin-top: 30px;
+    padding: 20px;  /* Increased padding */
+    background-color: #1e1e1e;
+    border-radius: 6px;
+    border: 2px solid #0f0;
+    font-size: 1.3rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+}
+
+.statusMessage svg {
+    margin-right: 20px;  /* Increased margin */
+    font-size: 2rem;  /* Increased icon size */
+    flex-shrink: 0;
+}
+
+.statusMessage p {
+    margin: 0;
+    max-width: calc(100% - 60px);  /* Adjust based on icon size and margin */
+    line-height: 1.5;  /* Improved readability */
+}
+
+.transactionTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    font-size: 1.2rem;
+    table-layout: fixed;
+}
+
+.transactionTable td {
+    padding: 15px;
+    border-bottom: 1px solid #0f0;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .statusDisplay h2 {
@@ -21,45 +64,14 @@
     font-size: 2rem;
 }
 
-.transactionTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 30px;
-    font-size: 1.2rem;
-}
 
-.transactionTable td {
-    padding: 15px;
-    border-bottom: 1px solid #0f0;
-    word-break: break-word;
-}
 
 .transactionTable td:first-child {
     font-weight: bold;
     color: #0c0;
 }
 
-.statusMessage {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 30px;
-    padding: 15px;
-    background-color: #1e1e1e;
-    border-radius: 6px;
-    border: 2px solid #0f0;
-    font-size: 1.3rem;
-}
 
-.statusMessage svg {
-    margin-right: 15px;
-    font-size: 1.5rem;
-    flex-shrink: 0;
-}
-
-.statusMessage p {
-    margin: 0;
-}
 
 .holdStatus {
     background-color: #2a0000;
@@ -117,16 +129,48 @@
 /* Tablet Styles */
 @media screen and (max-width: 1024px) {
     .statusDisplay {
-        width: 70%;
+        width: 95%;
+        padding: 20px;
+        font-size: 1rem;
+    }
+
+    .statusMessage {
+        flex-direction: column;
+        text-align: center;
+        font-size: 1rem;
+        padding: 10px;
+    }
+
+    .transactionTable {
+        font-size: 0.9rem;
+    }
+
+    .transactionTable td {
+        padding: 10px;
     }
 }
 
 /* Mobile Styles */
 @media screen and (max-width: 768px) {
     .statusDisplay {
-        width: 90%;
+        width: 95%;
         padding: 20px;
         font-size: 1rem;
+    }
+
+    .statusMessage {
+        flex-direction: column;
+        text-align: center;
+        font-size: 1rem;
+        padding: 10px;
+    }
+
+    .transactionTable {
+        font-size: 0.9rem;
+    }
+
+    .transactionTable td {
+        padding: 10px;
     }
 
     .statusDisplay h2 {
@@ -175,9 +219,22 @@
 /* iPhone SE and smaller screens */
 @media screen and (max-width: 375px) {
     .statusDisplay {
-        width: 95%;
+        width: 100%;
         padding: 15px;
         font-size: 0.9rem;
+    }
+
+    .statusMessage {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    .transactionTable {
+        font-size: 0.8rem;
+    }
+
+    .transactionTable td {
+        padding: 8px;
     }
 
     .statusDisplay h2 {

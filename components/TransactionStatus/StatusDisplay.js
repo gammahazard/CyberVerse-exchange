@@ -3,12 +3,12 @@ import { FaSpinner, FaExchangeAlt, FaPaperPlane, FaCheckCircle, FaTimesCircle, F
 import { RiPoliceLineFill } from 'react-icons/ri';
 import useChangelly from '../../hooks/useChangelly';
 import styles from '../../styles/StatusDisplay.module.css';
-
 export default function StatusDisplay({ transactionId, getStatus, onNewTransaction, initialDetails }) {
     const [txInfo, setTxInfo] = useState(initialDetails || {});
     const [status, setStatus] = useState(initialDetails?.status || 'waiting');
     const [error, setError] = useState('');
     const lastUpdateTime = useRef(0);
+    const { getStatus: getStatusHook } = useChangelly();
 
     const fetchStatus = useCallback(async () => {
         const now = Date.now();
@@ -19,7 +19,7 @@ export default function StatusDisplay({ transactionId, getStatus, onNewTransacti
 
         try {
             console.log('Fetching status for transaction:', transactionId);
-            const result = await getStatus(transactionId);
+            const result = await (getStatus || getStatusHook)(transactionId);
             console.log('Received status:', result);
             
             if (result && result.result) {
@@ -33,7 +33,7 @@ export default function StatusDisplay({ transactionId, getStatus, onNewTransacti
             console.error('Error fetching status:', err);
             setError('Failed to fetch status: ' + err.message);
         }
-    }, [transactionId, getStatus]);
+    }, [transactionId, getStatus, getStatusHook]);
 
     useEffect(() => {
         fetchStatus(); // Initial fetch
@@ -44,6 +44,17 @@ export default function StatusDisplay({ transactionId, getStatus, onNewTransacti
 
         return () => clearInterval(timer);
     }, [fetchStatus]);
+
+    useEffect(() => {
+        // Update local storage when status changes
+        if (txInfo.id) {
+            const storedTransactions = JSON.parse(localStorage.getItem('transactions') || '[]');
+            const updatedTransactions = storedTransactions.map(tx => 
+                tx.id === txInfo.id ? { ...tx, status: status } : tx
+            );
+            localStorage.setItem('transactions', JSON.stringify(updatedTransactions));
+        }
+    }, [status, txInfo.id]);
 
     const renderStatusMessage = () => {
         const iconSize = 24;

@@ -1,156 +1,223 @@
 .addressDisplay {
-    text-align: center;
-    margin: 30px 0;
-    font-size: 1.2rem; /* Larger base font size */
-    color: #0f0; /* Neon green text color */
-  }
-  
-  .transactionTable {
-    margin: 30px auto;
-    border-collapse: collapse;
-    width: 90%;
-  }
-  
-  .transactionTable td {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid #0f0; /* Neon green border */
-  }
-  
-  .sendDetails {
-    margin-top: 20px;
-    font-size: 1.1em;
-  }
-  
-  .payinAddressContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Center the entire content */
-    margin-top: 10px;
-  }
-  
-  .payinAddressContainer span {
-    flex-grow: 1;
-    text-align: center; /* Center align the address */
-  }
-  
-  .clipboardIcon {
-    margin-left: 10px;
-    cursor: pointer;
-    color: #0f0; /* Neon green color for the icon */
-  }
-  
-  .copiedNotice {
-    margin-left:120%;
-    margin-top:10%;
-    color: #0f0; /* Neon green color */
-    font-size: 1em;
-    position:absolute;
-  }
-  
-  .qrCodeContainer {
-    margin: 30px auto;
-  }
-  
-  .sentButton, .metaMaskButton {
-    margin-top: 30px;
-    padding: 15px 30px;
-    font-size: 1.2em;
-    display:block;
-    margin-inline:auto;
-    background-color: #0f0;
-    color: #000;
-    border: none;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background-color 0.3s, transform 0.3s;
-  }
-  
-  .sentButton:hover {
-    background-color: #0c0;
-    transform: scale(1.05);
-  }
-
-  @media screen and (width <= 767px) {
-    .statusDisplay {
-        padding: 10px; /* Further reduce padding for smaller screens */
-        max-width: 75%;
-        word-break:break-all; /* Ensure it takes full width */
-        font-size: 0.9rem; /* Slightly smaller font size */
-        box-shadow: 0 0 10px rgb(0 255 0 / 40%);
-        width:fit-content;
-    }
-
-    .statusDisplay h2 {
-        font-size: 1.3rem; /* Further reduce header font size */
-        margin-bottom: 15px; /* Adjust margin for smaller screens */
-    }
-
-    .transactionTable {
-        width: 100%; /* Ensure table takes full width */
-        font-size: 0.9rem; /* Slightly smaller table text */
-    }
-
-    .transactionTable td {
-        padding: 8px; /* Further reduce padding for table cells */
-        word-wrap: break-word; /* Ensure text wraps within table cells */
-    }
-
-    .statusMessage {
-        padding: 10px;
-        font-size: 0.9rem; /* Slightly smaller status message text */
-    }
-
-    .newTransactionButton {
-        padding: 10px 15px; /* Adjust padding for the button */
-        font-size: 1rem; /* Adjust button text size */
-        max-width: 300px; /* Set a maximum width for the button */
-        margin: 20px auto; /* Center the button */
-    }
-
-    .addressDisplay {
-        font-size: 0.9rem; /* Adjust font size */
-        margin: 15px 0; /* Adjust margin */
-    }
-
-    .payinAddressContainer {
-        flex-direction: row; /* Keep address and icon on the same line */
-        text-align: left; /* Align text to the left */
-    }
-
-    .payinAddressContainer span {
-        flex-grow: 1;
-        text-align: left; /* Align address to the left */
-    }
-
-    .clipboardIcon {
-        margin-left: 5px; /* Adjust margin for better alignment */
-        color: #0f0; /* Ensure visibility */
-    }
-
-    .copiedNotice {
-        margin-left: 5px; /* Adjust margin */
-        margin-top: 0; /* Align with the icon */
-        font-size: 0.8em; /* Slightly smaller font size */
-    }
-
-    .qrCodeContainer {
-        margin: 15px auto; /* Adjust margin for QR code */
-    }
-
-    .sentButton{
-        width: 100%; /* Ensure the button takes full width */
-        max-width: 300px; /* Set a maximum width for the button */
-        font-size: 1rem; /* Adjust button text size */
-        margin: 20px auto; /* Center the button */
-    }
+  text-align: center;
+  margin: 30px auto;
+  font-size: 1.2rem;
+  color: #0f0;
+  max-width: auto;
+  overflow-wrap:break-word;
+  border: 2px solid #0f0;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: rgba(0, 255, 0, 0.05);
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
 }
 
-  .errorMessage {
-    color: #ff4d4f;
-    border: 1px solid #ffccc7;
+.addressDisplay h2 {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #0f0;
+  padding-bottom: 10px;
+}
+
+.transactionTable {
+  margin: 20px auto;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  width: 100%;
+}
+
+.transactionTable td {
+  padding: 10px;
+  text-align: left;
+  border: none;
+}
+
+.transactionTable td:first-child {
+  font-weight: bold;
+  color: #0c0;
+}
+
+.sendDetails {
+  margin-top: 30px;
+  font-size: 1.1em;
+  border-top: 1px solid #0f0;
+  border-bottom: 1px solid #0f0;
+  padding: 20px 0;
+}
+
+.payinAddressContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  flex-wrap: nowrap;
+  background-color: rgba(0, 255, 0, 0.1);
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.payinAddressContainer span {
+  flex-grow: 1;
+  text-align: left;
+  word-break: break-all;
+  margin-right: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.clipboardIcon {
+  cursor: pointer;
+  color: #0f0;
+  flex-shrink: 0;
+  font-size: 1.2em;
+  transition: transform 0.3s;
+}
+
+.clipboardIcon:hover {
+  transform: scale(1.1);
+}
+
+.copiedNotice {
+  color: #0f0;
+  font-size: 0.9em;
+  margin-top: 5px;
+  width: 100%;
+  text-align: right;
+}
+
+.qrCodeContainer {
+  margin: 30px auto;
+  border-top: 1px solid #0f0;
+  border-bottom: 1px solid #0f0;
+  padding: 20px 0;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.sentButton, .walletButton {
+  padding: 15px 30px;
+  font-size: 1.2em;
+  background-color: #0f0;
+  color: #000;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s, transform 0.3s;
+  width: 100%;
+  max-width: 300px;
+  margin: 10px 0;
+}
+
+.sentButton:hover, .walletButton:hover {
+  background-color: #0c0;
+  transform: scale(1.05);
+}
+
+.walletButton:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+}
+
+.walletButton:disabled:hover {
+  transform: none;
+}
+
+.walletInfo {
+  margin-top: 20px;
+  font-size: 1.1em;
+  color: #0f0;
+  background-color: rgba(0, 255, 0, 0.1);
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.errorMessage {
+  color: #ff4d4f;
+  border: 1px solid #ffccc7;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 4px;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  background-color: rgba(255, 77, 79, 0.1);
+}
+
+@media screen and (max-width: 767px) {
+  .addressDisplay {
+    font-size: 0.9rem;
+    margin: 15px auto;
     padding: 10px;
-    margin-top: 50px;
-    border-radius: 4px;
+    width: 95%;
+    box-sizing: border-box;
   }
 
+  .addressDisplay h2 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+
+  .transactionTable {
+    font-size: 0.8rem;
+  }
+
+  .transactionTable td {
+    padding: 8px;
+    word-wrap: break-word;
+  }
+
+  .sendDetails {
+    font-size: 0.9em;
+  }
+
+  .payinAddressContainer {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .payinAddressContainer span {
+    font-size: 0.8em;
+  }
+
+  .clipboardIcon {
+    margin-left: 5px;
+  }
+
+  .copiedNotice {
+    font-size: 0.7em;
+    margin-top: 5px;
+  }
+
+  .qrCodeContainer {
+    margin: 15px auto;
+  }
+
+  .qrCodeContainer svg {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 160px;
+  }
+
+  .sentButton, .walletButton {
+    font-size: 1rem;
+    padding: 12px 20px;
+    max-width: 100%;
+  }
+
+  .walletInfo {
+    font-size: 0.8em;
+  }
+
+  .errorMessage {
+    font-size: 0.8em;
+    padding: 8px;
+    margin-top: 15px;
+    max-width: 100%;
+  }
+}

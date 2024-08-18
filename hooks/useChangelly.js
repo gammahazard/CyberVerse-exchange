@@ -45,62 +45,67 @@ const getCurrencies = async () => {
     }
 };
 // estimate rates
-  const estimateFloatingRate = async (from, to, amountFrom) => {
-        try {
-            const response = await fetch(`${API_URL}/estimateFloatingRate`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ from, to, amountFrom }),
-            });
-            const data = await response.json();
-            console.log('Floating rate estimate response:', data);
-
-            if (response.ok && data.result) {
-                return { amountTo: data.result[0].amountTo };
-            } else if (data.error) {
-                console.error('Changelly API Error:', data.error);
-                throw new Error(parseErrorMessage(data.error));
-            } else {
-                throw new Error('Failed to estimate floating rate');
-            }
-        } catch (error) {
-            console.error('Error estimating floating rate:', error.message || error);
-            throw error;
+const estimateFloatingRate = async (from, to, amountFrom) => {
+    try {
+        const response = await fetch(`${API_URL}/estimateFloatingRate`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ from, to, amountFrom }),
+        });
+        const data = await response.json();
+        console.log('Floating rate estimate response:', data);
+        
+        if (response.ok && data.result && data.result.length > 0) {
+            return {
+                amountTo: data.result[0].amountTo,
+                networkFee: data.result[0].networkFee || '0', // Include networkFee, default to '0' if not present
+                visibleAmount: data.result[0].visibleAmount || data.result[0].amountTo // Include visibleAmount if available
+            };
+        } else if (data.error) {
+            console.error('Changelly API Error:', data.error);
+            throw new Error(parseErrorMessage(data.error));
+        } else {
+            throw new Error('Failed to estimate floating rate');
         }
-    };
+    } catch (error) {
+        console.error('Error estimating floating rate:', error.message || error);
+        throw error;
+    }
+};
 
-    const estimateFixedRate = async (from, to, amountFrom) => {
-        try {
-            const response = await fetch(`${API_URL}/estimateFixedRate`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ from, to, amountFrom }),
-            });
-            const data = await response.json();
-            console.log('Fixed rate estimate response:', data);
-    
-            if (response.ok && data.result && data.result.length > 0) {
-                return {
-                    amountTo: data.result[0].amountTo,
-                    rateId: data.result[0].id,
-                    min: data.result[0].min,
-                    max: data.result[0].max
-                };
-            } else if (data.error) {
-                console.error('Changelly API Error:', data.error);
-                throw new Error(parseErrorMessage(data.error));
-            } else {
-                throw new Error('Failed to estimate fixed rate');
-            }
-        } catch (error) {
-            console.error('Error estimating fixed rate:', error.message || error);
-            throw error;
+const estimateFixedRate = async (from, to, amountFrom) => {
+    try {
+        const response = await fetch(`${API_URL}/estimateFixedRate`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ from, to, amountFrom }),
+        });
+        const data = await response.json();
+        console.log('Fixed rate estimate response:', data);
+        
+        if (response.ok && data.result && data.result.length > 0) {
+            return {
+                amountTo: data.result[0].amountTo,
+                rateId: data.result[0].id,
+                min: data.result[0].min,
+                max: data.result[0].max,
+                networkFee: data.result[0].networkFee || '0', // Include networkFee, default to '0' if not present
+            };
+        } else if (data.error) {
+            console.error('Changelly API Error:', data.error);
+            throw new Error(parseErrorMessage(data.error));
+        } else {
+            throw new Error('Failed to estimate fixed rate');
         }
-    };
+    } catch (error) {
+        console.error('Error estimating fixed rate:', error.message || error);
+        throw error;
+    }
+};
 
 
 //create tx to send to changelly 

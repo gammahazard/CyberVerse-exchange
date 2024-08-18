@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import QRCode from 'qrcode.react';
 import { FaClipboard, FaWallet } from 'react-icons/fa';
 import styles from '../../styles/AddressDisplay.module.css';
-import EthereumWalletModal from '../../wallets/ethereum/EthereumWalletModal';
 import { detectEthereumProvider, connectWallet, sendTransaction } from '../../wallets/ethereum/eth';
+import { detectSolanaProvider, connectSolanaWallet, sendSolanaTransaction, getSolanaBalance } from '../../wallets/solana/solana';
 
 export default function AddressDisplay({ 
   currencyFrom, 
@@ -17,7 +17,10 @@ export default function AddressDisplay({
 }) {
   const [copied, setCopied] = useState(false);
   const [isWalletConnected, setIsWalletConnected] = useState(false);
+  const [connectedWalletName, setConnectedWalletName] = useState('');
   const [transactionError, setTransactionError] = useState(null);
+  const [walletProvider, setWalletProvider] = useState(null);
+  const [walletBalance, setWalletBalance] = useState(null);
 
   const network = currencyFrom.toLowerCase() === 'arb' ? 'arbitrum' : 'ethereum';
 
@@ -27,72 +30,113 @@ export default function AddressDisplay({
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleSendWithMetaMask = async () => {
+  const handleSendWithWallet = async () => {
     setTransactionError(null);
-    const ethereumProvider = await detectEthereumProvider();
-    if (ethereumProvider) {
-      try {
-        console.log('Attempting to send transaction:');
-        console.log('Network:', network);
-        console.log('To Address:', payinAddress);
-        console.log('Amount:', amountExpectedFrom, currencyFrom.toUpperCase());
-  
-        const tokenAddress = currencyFrom.toLowerCase() === 'arb' ? '0x912CE59144191C1204E64559FE8253a0e49E6548' : null;
-        const txHash = await sendTransaction(ethereumProvider.provider, payinAddress, amountExpectedFrom, network, tokenAddress);
-        console.log('Transaction sent:', txHash);
-        alert(`Transaction sent! Hash: ${txHash}`);
-        onSent(); // Move to the next step after the transaction is sent
-      } catch (error) {
-        console.error('Error sending transaction:', error);
-        handleTransactionError(error);
+    if (currencyFrom.toLowerCase() === 'sol') {
+      if (walletProvider) {
+        try {
+          console.log('Attempting to send Solana transaction:');
+          console.log('To Address:', payinAddress);
+          console.log('Amount:', amountExpectedFrom, 'SOL');
+
+          const txHash = await sendSolanaTransaction(walletProvider, payinAddress, parseFloat(amountExpectedFrom));
+          console.log('Transaction sent:', txHash);
+          alert(`Transaction sent! Hash: ${txHash}`);
+          onSent();
+        } catch (error) {
+          console.error('Error sending Solana transaction:', error);
+          handleTransactionError(error);
+        }
+      } else {
+        setTransactionError('Solana wallet is not connected!');
       }
     } else {
-      setTransactionError('MetaMask is not installed!');
+      if (walletProvider) {
+        try {
+          console.log('Attempting to send transaction:');
+          console.log('Network:', network);
+          console.log('To Address:', payinAddress);
+          console.log('Amount:', amountExpectedFrom, currencyFrom.toUpperCase());
+    
+          const tokenAddress = currencyFrom.toLowerCase() === 'arb' ? '0x912CE59144191C1204E64559FE8253a0e49E6548' : null;
+          const txHash = await sendTransaction(walletProvider, payinAddress, amountExpectedFrom, network, tokenAddress);
+          console.log('Transaction sent:', txHash);
+          alert(`Transaction sent! Hash: ${txHash}`);
+          onSent();
+        } catch (error) {
+          console.error('Error sending transaction:', error);
+          handleTransactionError(error);
+        }
+      } else {
+        setTransactionError('Ethereum wallet is not connected!');
+      }
     }
   };
   
   const handleTransactionError = (error) => {
-    if (error && error.error && error.error.message) {
-      const errorMessage = error.error.message.toLowerCase();
-  
-      if (errorMessage.includes('insufficient funds')) {
-        const match = errorMessage.match(/have (\d+) want (\d+)/);
-        if (match) {
-          const have = parseFloat(match[1]) / 1e18;
-          const want = parseFloat(match[2]) / 1e18;
-          const needed = (want - have).toFixed(6);
-          setTransactionError(`Insufficient funds. You need ${needed} more ${currencyFrom.toUpperCase()} to complete this transaction.`);
-        } else {
-          setTransactionError('Insufficient funds. Please top up your wallet and try again.');
-        }
-      } else if (errorMessage.includes('transfer amount exceeds balance')) {
-        setTransactionError(`Insufficient ${currencyFrom.toUpperCase()} balance to complete the transaction.`);
-      } else if (errorMessage.includes('user rejected')) {
-        setTransactionError('Transaction was rejected. Please try again.');
-      } else {
-        setTransactionError(`Transaction failed: ${error.error.message}`);
-      }
+    if (error && error.message) {
+      setTransactionError(`Transaction failed: ${error.message}`);
     } else {
       setTransactionError('Failed to send transaction. Please check the console for details.');
     }
   };
 
+  const updateSolanaBalance = async () => {
+    if (walletProvider && currencyFrom.toLowerCase() === 'sol') {
+      try {
+        const balance = await getSolanaBalance(walletProvider.publicKey.toString());
+        setWalletBalance(balance);
+      } catch (error) {
+        console.error('Failed to update Solana balance:', error);
+      }
+    }
+  };
+
   useEffect(() => {
     const checkWalletConnection = async () => {
-      const ethereumProvider = await detectEthereumProvider();
-      if (ethereumProvider) {
+      if (currencyFrom.toLowerCase() === 'sol') {
         try {
-          const { account } = await connectWallet(ethereumProvider.provider, network);
+          const { account, walletName, provider } = await connectSolanaWallet();
           setIsWalletConnected(!!account);
+          setConnectedWalletName(walletName);
+          setWalletProvider(provider);
+          // Update balance immediately after connecting
+          const balance = await getSolanaBalance(account);
+          setWalletBalance(balance);
         } catch (error) {
-          console.error("Failed to check wallet connection:", error);
+          console.error("Failed to check Solana wallet connection:", error);
           setIsWalletConnected(false);
+          setConnectedWalletName('');
+          setWalletProvider(null);
+        }
+      } else {
+        const ethereumProvider = await detectEthereumProvider();
+        if (ethereumProvider) {
+          try {
+            const { account } = await connectWallet(ethereumProvider.provider, network);
+            setIsWalletConnected(!!account);
+            setConnectedWalletName('MetaMask');
+            setWalletProvider(ethereumProvider.provider);
+          } catch (error) {
+            console.error("Failed to check wallet connection:", error);
+            setIsWalletConnected(false);
+            setConnectedWalletName('');
+            setWalletProvider(null);
+          }
         }
       }
     };
 
     checkWalletConnection();
-  }, [network]);
+  }, [currencyFrom, network]);
+
+  useEffect(() => {
+    if (isWalletConnected && currencyFrom.toLowerCase() === 'sol') {
+      updateSolanaBalance();
+      const intervalId = setInterval(updateSolanaBalance, 10000); // Update every 10 seconds
+      return () => clearInterval(intervalId);
+    }
+  }, [isWalletConnected, currencyFrom, walletProvider]);
 
   return (
     <div className={styles.addressDisplay}>
@@ -130,13 +174,29 @@ export default function AddressDisplay({
       <div className={styles.qrCodeContainer}>
         <QRCode value={payinAddress} size={160} />
       </div>
-      <button onClick={onSent} className={styles.sentButton}>I&apos;ve sent the funds</button>
 
-      {isWalletConnected && (currencyFrom.toLowerCase() === 'eth' || currencyFrom.toLowerCase() === 'arb') && (
-        <button onClick={handleSendWithMetaMask} className={styles.metaMaskButton}>
-          Send with MetaMask
-        </button>
-      )}
+
+      <div className={styles.buttonContainer}>
+        <button onClick={onSent} className={styles.sentButton}>I&apos;ve sent the funds</button>
+
+        {isWalletConnected && (
+          <>
+            <div className={styles.walletInfo}>
+              <p>Connected Wallet: {connectedWalletName}</p>
+              {walletBalance !== null && (
+                <p>Balance: {walletBalance.toFixed(4)} {currencyFrom.toUpperCase()}</p>
+              )}
+            </div>
+            <button 
+              onClick={handleSendWithWallet} 
+              className={styles.walletButton}
+              disabled={walletBalance !== null && walletBalance < parseFloat(amountExpectedFrom)}
+            >
+              Send with {connectedWalletName}
+            </button>
+          </>
+        )}
+      </div>
 
       {refundAddress && (
         <div className={styles.refundInfo}>
