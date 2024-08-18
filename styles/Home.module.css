@@ -20,11 +20,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
-    linear-gradient(45deg, #ff00ff 25%, transparent 25%),
-    linear-gradient(-45deg, #ff00ff 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, #ff00ff 75%),
-    linear-gradient(-45deg, transparent 75%, #ff00ff 75%);
+
   background-size: 20px 20px;
   opacity: 0.1; /* Slightly increase opacity for a more vivid effect */
   z-index: 1;
@@ -712,6 +708,9 @@
 
   .currencyList {
         width: 100%;
+        padding:50px;
+        border:1px solid #ff00ff;
+        border-radius: 10px;
       }
 
     .currencyButtonContainer {
