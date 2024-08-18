@@ -5,8 +5,8 @@
     align-items: center;
     padding: 20px;
     background-color: #0a0a0a;
-    color: #0f0;
-    font-family: 'Courier New', monospace;
+    color: #ff00ff;
+ 
 }
 
 .title {
@@ -22,8 +22,8 @@
     left: 20px;
     padding: 10px 20px;
     background-color: #111;
-    color: #0f0;
-    border: 2px solid #0f0;
+    color: #ff00ff;
+    border: 2px solid #ff00ff;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -33,7 +33,7 @@
 }
 
 .backButton:hover {
-    background-color: #0f0;
+    background-color: #ff00ff;
     color: #111;
     box-shadow: 0 0 20px rgb(0 255 0 / 60%);
 }
@@ -52,8 +52,8 @@
     padding: 15px;
     font-size: 1.2rem;
     background-color: #111;
-    color: #0f0;
-    border: 2px solid #0f0;
+    color: #ff00ff;
+    border: 2px solid #ff00ff;
     border-radius: 4px;
     margin-bottom: 10px;
 }
@@ -61,7 +61,7 @@
 .searchButton {
     padding: 12px 25px;
     font-size: 1.2rem;
-    background-color: #0f0;
+    background-color: #ff00ff;
     color: #111;
     border: none;
     border-radius: 4px;
@@ -73,7 +73,7 @@
 }
 
 .searchButton:hover {
-    background-color: #0c0;
+    background-color: rgb(121, 0, 242);
 }
 
 .loading, .error {
@@ -98,8 +98,8 @@
 }
 
 .transactionItem {
-    background-color: #111;
-    border: 2px solid #0f0;
+    background-color: transparent;
+    border: 2px solid #ff00ff;
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 20px;
@@ -122,7 +122,7 @@
 .trackLink {
     display: flex;
     align-items: center;
-    color: #0f0;
+    color: #ff00ff;
     text-decoration: none;
     font-weight: bold;
 }
@@ -146,14 +146,14 @@
 
 .modalContent {
     background-color: #111;
-    border: 2px solid #0f0;
+    border: 2px solid #ff00ff;
     border-radius: 10px;
     padding: 30px;
     width: 90%;
     max-width: 600px;
     position: relative;
-    color: #0f0;
-    font-family: 'Courier New', monospace;
+    color: #ff00ff;
+   
 }
 
 .closeButton {
@@ -162,13 +162,13 @@
     right: 10px;
     background: none;
     border: none;
-    color: #0f0;
+    color: #ff00ff;
     font-size: 1.5rem;
     cursor: pointer;
 }
 
 .closeButton:hover {
-    color: #ff4d4f;
+    color: #3700ff;
 }
 
 /* Keyframes for fadeIn animation */

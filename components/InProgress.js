@@ -123,14 +123,14 @@ export default function InProgress({ onClose, onSelectTransaction }) {
                     ) : (
                         transactions.map((tx) => (
                             <div key={tx.id} className={styles.transactionItem}>
-                                <div className={styles.transactionInfo} onClick={() => onSelectTransaction(tx)}>
-                                    <p><strong>{tx.currencyFrom.toUpperCase()} to {tx.currencyTo.toUpperCase()}</strong></p>
-                                    <p>Amount: {tx.amountExpectedFrom} {tx.currencyFrom.toUpperCase()}</p>
-                                    <p>Status: <span className={getStatusClass(tx.status)}>{tx.status}</span></p>
-                                    <p>{getStatusDescription(tx.status)}</p>
-                                    <p>Created: {new Date(tx.createdAt).toLocaleString()}</p>
-                                </div>
-                                <a 
+                           <div className={styles.transactionInfo} onClick={() => onSelectTransaction(tx)}>
+    <p><strong>{tx.currencyFrom.toUpperCase()} to {tx.currencyTo.toUpperCase()}</strong></p>
+    <p><span>Amount:</span> {tx.amountExpectedFrom} {tx.currencyFrom.toUpperCase()}</p>
+    <p><span>Status:</span> <span className={getStatusClass(tx.status)}>{tx.status}</span></p>
+    <p>{getStatusDescription(tx.status)}</p>
+    <p><span>Created:</span> {new Date(tx.createdAt).toLocaleString()}</p>
+</div>
+<a 
                                     href={tx.trackUrl} 
                                     target="_blank" 
                                     rel="noopener noreferrer" 
@@ -139,9 +139,11 @@ export default function InProgress({ onClose, onSelectTransaction }) {
                                     TRACK <FaExternalLinkAlt />
                                 </a>
                             </div>
+                            
                         ))
                     )}
                 </div>
+                
             </div>
         </div>
     );

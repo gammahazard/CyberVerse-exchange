@@ -1,43 +1,42 @@
 .container {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #0a0a0a;
-    color: #00ff00;
-    font-family: 'Courier New', monospace;
-    overflow: hidden;
-    position: relative;
-    padding: 20px;
-    z-index:1;
-  }
-  
-  .container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-      linear-gradient(45deg, #00ff00 25%, transparent 25%),
-      linear-gradient(-45deg, #00ff00 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, #00ff00 75%),
-      linear-gradient(-45deg, transparent 75%, #00ff00 75%);
-    background-size: 20px 20px;
-    opacity: 0.05;
-    z-index: 1;
-  }
-  
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #0a0a0a;
+  color: #ff00ff; /* Change to a vibrant pink/purple color */
+  font-family: 'Orbitron', sans-serif; /* Apply the Orbitron font */
+  overflow: hidden;
+  position: relative;
+  padding: 20px;
+  z-index: 1;
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(45deg, #ff00ff 25%, transparent 25%),
+    linear-gradient(-45deg, #ff00ff 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ff00ff 75%),
+    linear-gradient(-45deg, transparent 75%, #ff00ff 75%);
+  background-size: 20px 20px;
+  opacity: 0.1; /* Slightly increase opacity for a more vivid effect */
+  z-index: 1;
+}
   .content {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     z-index: 2;
-    width: 100%;
-    max-width: 600px;
+    
+    max-width:1000px;
     transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
   }
   
@@ -63,20 +62,20 @@
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-family: 'Courier New', monospace;
+ font-family: 'Orbitron', sans-serif; /* Apply the Orbitron font */
     font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 1px;
     z-index:9999;
   }
   .titleGlow {
-    text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
+    text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #ff00ff; 
   }
   
   .titleSub {
     display: block;
     font-size: 3rem;
-    color: #00cc00;
+    color: #ff00ff; 
   }
   .rateTypeOptionBarContainer {
     display: flex;
@@ -100,7 +99,7 @@
 .tooltipIcon {
     margin-left: 0px;
     margin-right:10px;
-    color: #00ff00;
+    color: #ff00ff; 
     cursor: pointer;
     font-size: 1.2em;
 }
@@ -111,7 +110,7 @@
 .tooltip {
     display: none;
     background-color: #1a1a1a;
-    color: #00ff00;
+    color: #ff00ff; 
     padding: 8px;
     border-radius: 4px;
     white-space: normal;
@@ -130,7 +129,7 @@
 /* Specific style for rate type tooltip */
 .rateTypeTooltip {
     background-color: #1a1a1a;
-    color: #ffcc00;
+    color: #ff00ff; 
     padding: 10px;
     border-radius: 6px;
     white-space: normal;
@@ -150,7 +149,7 @@
     left: 35px;
     top: -25px;
     background-color: #1a1a1a;
-    color: #00ff00;
+    color: #ff00ff; 
     padding: 8px;
     border-radius: 4px;
     pointer-events: none; /* Allow clicks to pass through the tooltip */
@@ -174,7 +173,7 @@
     padding: 1rem 2rem;
     border: none;
     border-radius: 50%;
-    background-color: #00ff00;
+    background-color: #0a0a0a;
     color: #000;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -197,7 +196,7 @@
     height: 200%;
     background: conic-gradient(
       transparent, 
-      rgba(0, 255, 0, 0.3), 
+      rgba(212, 6, 192, 0.3), 
       transparent 30%
     );
     animation: rotate 4s linear infinite;
@@ -217,16 +216,17 @@
   .currencyGrid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 100px;
     margin-top: 30px;
+    min-width:800px;
   }
   
 
    .swapButton, .inProgressButton, .sentButton {
     padding: 15px 25px;
-    background-color: #111;
-    color: #00ff00;
-    border: 2px solid #00ff00;
+    background-color: transparent;
+    color: #ff00ff; 
+    border: 2px solid #ff00ff; 
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -245,9 +245,9 @@
     left: 10px;
     z-index:888;
     padding: 15px 25px;
-    background-color: #111;
-    color: #00ff00;
-    border: 2px solid #00ff00;
+    background-color: transparent;
+    color: #ff00ff; 
+    border: 2px solid #ff00ff; 
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -265,7 +265,7 @@
     top: 20px;
     right: 20px;
     font-size: 2rem;
-    color: #00ff00;
+    color: #ff00ff; 
     cursor: pointer;
     transition: all 0.3s ease;
     animation: glow 2s infinite alternate;
@@ -273,9 +273,15 @@
   }
   .searchInput {
     background-color:transparent;
-    border:.5px solid #00ff00;
+    border:.5px solid #ff00ff; 
+    color: #ff00ff; 
+    font-size:2rem;
     border-radius:10px;
-    width:25rem;
+    width:100%;
+    height:5rem;
+    margin-top:50px;
+    position:relative;
+    margin-bottom:50px;
   }
   .spinIcon {
     animation: spin 1s linear infinite;
@@ -289,17 +295,17 @@
   .backButton {
     position: absolute;
     top:0;
-    left:0;
-    margin-top:5%;
+    margin-top:10px;
+
 
    
     
     z-index:888;
     padding: 15px 25px;
-    background-color: #111;
+    background-color: transparent;
     z-index:9999;
-    color: #00ff00;
-    border: 2px solid #00ff00;
+    color: #ff00ff; 
+    border: 2px solid #ff00ff; 
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -312,7 +318,7 @@
 
   .inputField {
   background-color: #1e1e1e; /* Dark background */
-  color: #ffffff; /* Light text color */
+  color: #ff00ff;  /* Light text color */
   border: 1px solid #444444; /* Subtle border */
   border-radius: 4px; /* Rounded corners */
   padding: 10px; /* Padding inside the input */
@@ -398,17 +404,18 @@
 
 
 .inputField::placeholder {
-  color: #aaaaaa; /* Lighter placeholder text */
+  color: #ff00ff; ; /* Lighter placeholder text */
 }
   .backButton:hover {
-    background-color: #00ff00;
-    color: #111;
+    background-color: transparent;
+    color: #ff00ff;
     box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
   }
   
   .prompt {
     font-size: 1.5rem;
     margin-bottom: 20px;
+    margin-top:50px;
     text-align: center;
     text-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
   }
@@ -423,16 +430,16 @@
   .qrCodePlaceholder {
     width: 200px;
     height: 200px;
-    background-color: #111111;
-    border: 2px solid #00ff00;
-    color: #00ff00;
+    background-color: transparent;
+    border: 2px solid #ff00ff; 
+    color: #ff00ff; 
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 14px;
     text-align: center;
     border-radius: 10px;
-    box-shadow: 0 0 10px #00ff00;
+    box-shadow: 0 0 10px #ff00ff; 
   }
   
   .modal {
@@ -440,12 +447,7 @@
     z-index: 1000; /* Ensure modal is on top */
   }
   
-  .modalContent {
-    background-color: #111;
-    color: #00ff00;
-    border: 1px solid #00ff00;
-    box-shadow: 0 0 10px #00ff00;
-  }
+
   
   .button {
     padding: 0.8rem 2rem; /* Increased padding for larger buttons */
@@ -453,7 +455,7 @@
     border-radius: 25px; /* More rounded corners */
     cursor: pointer;
     transition: all 0.3s ease;
-    font-family: 'Courier New', monospace;
+ font-family: 'Orbitron', sans-serif; /* Apply the Orbitron font */
     font-size: 2rem; /* Slightly larger font size */
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -461,25 +463,41 @@
   }
   
   .acceptButton {
-    background-color: #00ff00;
-    color: #000;
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.6); /* Soft glow effect */
+    background-color: #0a0a0a;
+    color: #ff00ff; /* Use the neon pink color for text */
+    border: 2px solid #ff00ff; /* Add a neon border */
+    padding: 10px 20px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s, color 0.3s, transform 0.3s;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.6), 0 0 20px rgba(255, 0, 255, 0.4); /* Pink glow effect */
   }
   
   .acceptButton:hover {
-    background-color: #00cc00;
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.9); /* More intense glow on hover */
+    background-color: #ff00ff; /* Invert background and text colors on hover */
+    color: #0a0a0a;
+    box-shadow: 0 0 20px rgba(255, 0, 255, 1), 0 0 30px rgba(255, 0, 255, 0.8); /* More intense glow */
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
   }
   
   .declineButton {
     background-color: #333;
-    color: #00ff00;
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.6); /* Soft glow effect */
+    color: #00ffff; /* Neon blue for the decline button text */
+    border: 2px solid #00ffff; /* Add a neon blue border */
+    padding: 10px 20px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s, color 0.3s, transform 0.3s;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.6), 0 0 20px rgba(0, 255, 255, 0.4); /* Blue glow effect */
   }
   
   .declineButton:hover {
-    background-color: #444;
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.9); /* More intense glow on hover */
+    background-color: #00ffff; /* Invert background and text colors on hover */
+    color: #0a0a0a;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 1), 0 0 30px rgba(0, 255, 255, 0.8); /* More intense glow */
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
   }
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-20px); }
@@ -487,11 +505,32 @@
   }
   
   @keyframes pulseGlow {
-    0% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00; }
-    50% { box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00; }
-    100% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00; }
+    0% { 
+      box-shadow: 
+        0 0 5px #ff00ff,   /* Neon pink soft glow */
+        0 0 10px #ff00ff,  /* Neon pink medium glow */
+        0 0 15px #a020f0,  /* Neon purple outer glow */
+        0 0 20px #ff00ff,  /* Neon pink outermost glow */
+        0 0 25px #a020f0;  /* Neon purple far outer glow */
+    }
+    50% { 
+      box-shadow: 
+        0 0 10px #ff00ff,  /* Stronger neon pink soft glow */
+        0 0 20px #ff00ff,  /* Stronger neon pink medium glow */
+        0 0 30px #a020f0,  /* Stronger neon purple outer glow */
+        0 0 40px #ff00ff,  /* Stronger neon pink outermost glow */
+        0 0 50px #a020f0;  /* Stronger neon purple far outer glow */
+    }
+    100% { 
+      box-shadow: 
+        0 0 5px #ff00ff,   /* Neon pink soft glow */
+        0 0 10px #ff00ff,  /* Neon pink medium glow */
+        0 0 15px #a020f0,  /* Neon purple outer glow */
+        0 0 20px #ff00ff,  /* Neon pink outermost glow */
+        0 0 25px #a020f0;  /* Neon purple far outer glow */
+    }
   }
-  
+   
   @keyframes rotate {
     100% { transform: rotate(1turn); }
   }
@@ -500,8 +539,8 @@
 .rateTypeOptionBar {
     display: flex;
     justify-content: center;
-    background-color: #0a0a0a;
-    border: 1px solid #00ff00;
+    background-color: transparent;
+    border: 1px solid #ff00ff; 
     border-radius: 5px;
     overflow: hidden;
     margin-bottom: 20px;
@@ -513,8 +552,8 @@
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    color: #00ff00;
-    font-family: 'Courier New', monospace;
+    color: #ff00ff; 
+ font-family: 'Orbitron', sans-serif; /* Apply the Orbitron font */
     text-transform: uppercase;
     letter-spacing: 1px;
     position: relative;
@@ -522,7 +561,7 @@
 }
 
 .rateTypeOptionBar label:not(:last-child) {
-    border-right: 1px solid #00ff00;
+    border-right: 1px solid #ff00ff; 
 }
 
 .rateTypeOptionBar label:hover {
@@ -531,8 +570,8 @@
 
 .rateTypeOptionBar label.active {
     background-color: #003300;
-    box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
-    color: #ffffff;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 1), 0 0 30px rgba(0, 255, 255, 0.8); /* More intense glow */
+    color: #ff00ff; 
 }
 
 .rateTypeOptionBar label.active::after {
@@ -553,15 +592,22 @@
 
 /* Add a subtle pulsating animation for the active state */
 @keyframes pulse {
-    0% {
-        box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
-    }
-    50% {
-        box-shadow: 0 0 15px #00ff00, 0 0 25px #00ff00, 0 0 35px #00ff00;
-    }
-    100% {
-        box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
-    }
+  0% {
+      box-shadow: 
+          0 0 10px #ff00ff,  /* Neon pink soft glow */
+          0 0 20px #a020f0;  /* Neon purple outer glow */
+  }
+  50% {
+      box-shadow: 
+          0 0 15px #ff00ff,  /* Stronger neon pink soft glow */
+          0 0 25px #ff00ff,  /* Stronger neon pink medium glow */
+          0 0 35px #a020f0;  /* Stronger neon purple outer glow */
+  }
+  100% {
+      box-shadow: 
+          0 0 10px #ff00ff,  /* Neon pink soft glow */
+          0 0 20px #a020f0;  /* Neon purple outer glow */
+  }
 }
 
 .rateTypeOptionBar label.active {
@@ -570,15 +616,15 @@
   /* Increase the size of the entire swap interface */
   /* Style the entire swap interface */
   .swapInterface {
-    background-color: #111; /* Dark background matching the statusDisplay */
+    background-color: transparent;; /* Dark background matching the statusDisplay */
     border-radius: 8px;
     padding: 20px;
     min-width: max-content;
  
     margin: 0 auto;
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
-    color: #00ff00; /* Neon green text color */
-    border: 2px solid #00ff00; /* Neon green border */
+    box-shadow: 0 0 20px rgba(0, 255, 255, 1), 0 0 30px rgba(0, 255, 255, 0.8); /* More intense glow */
+    color: #ff00ff;  /* Neon green text color */
+    border: 2px solid #ff00ff;  /* Neon green border */
   }
   /* Make the input fields larger and match the color scheme */
   .inputGroup input,
@@ -587,9 +633,9 @@
     padding: 15px;
     font-size: 1.5rem; /* Larger text */
     border-radius: 5px;
-    border: 1px solid #00ff00; /* Neon green border */
-    background-color: #1e1e1e; /* Darker input background */
-    color: #00ff00; /* Neon green text color */
+    border: 1px solid #ff00ff;  /* Neon green border */
+    background-color: transparent;
+    color: #ff00ff;  /* Neon green text color */
     margin-top: 10px;
     margin-bottom: 20px;
   }
@@ -597,7 +643,7 @@
   /* Adjust the input placeholder text to fit the color scheme */
   .inputGroup input::placeholder {
     font-size: 1.2rem;
-    color: #00cc00; /* Lighter neon green placeholder text */
+    color: #ff00ff;  /* Lighter neon green placeholder text */
   }
   
   /* Style the prompt text */
@@ -605,8 +651,11 @@
     font-size: 2rem; /* Larger prompt text */
     margin-bottom: 20px;
     text-align: center;
-    color: #00ff00; /* Neon green text color */
-    text-shadow: 0 0 10px rgba(0, 255, 0, 0.6); /* Glowing effect */
+    color: #ff00ff;  /* Neon green text color */
+    text-shadow: 
+    0 0 10px rgba(255, 0, 255, 0.6), /* Neon pink glow */
+    0 0 15px rgba(160, 32, 240, 0.6); /* Neon purple glow */
+
   }
   
   /* Style the estimated amount display */
@@ -614,9 +663,16 @@
     font-size: 1.5rem;
     margin-top: 20px;
     text-align: center;
-    color: #00e676; /* Neon green color for emphasis */
+    color: #ff00ff;; /* Neon green color for emphasis */
   }
-  
+  .currencyButtonContainer:hover .currencyButton {
+    border-color: #0070f3;
+}
+.currencyButton:hover {
+  background-color: #0a0a0a;
+  color: #ff00ff;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
+}
   /* Style the error message */
   .error {
     color: #ff4d4f; /* Red error color */
@@ -633,7 +689,7 @@
     font-size: 1.5rem; /* Larger button text */
     border: none;
     border-radius: 4px;
-    background-color: #00ff00; /* Neon green button background */
+    background-color: #0a0a0a; /* Neon green button background */
     color: #000;
     cursor: pointer;
     margin-top: 20px;
@@ -646,7 +702,7 @@
   }
   
   .swapButton:hover:enabled {
-    background-color: #00cc00; /* Darker neon green on hover */
+    background-color: #ff00ff;  /* Darker neon green on hover */
   }
   
   /* Additional styling for the input group to ensure proper spacing */
@@ -666,18 +722,21 @@ position:relative;
       /* Currency button styling */
       .currencyButton {
         padding: 15px 25px;
-        background-color: #111;
-        color: #00ff00;
-        border: 2px solid #00ff00;
+        background-color: transparent;
+        color: #ff00ff; 
+        border: 2px solid #ff00ff; 
         border-radius: 50%; /* Circular button */
         cursor: pointer;
         transition: all 0.3s ease;
         font-size: 1rem;
         text-transform: uppercase;
         letter-spacing: 1px;
-        box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        box-shadow: 0 0 20px rgba(0, 255, 255, 1), 0 0 30px rgba(0, 255, 255, 0.8); /* More intense glow */
       }
-      
+      .currencyButton img {
+        color:black;
+        background-color :
+      }
       /* Hide the tooltip by default */
       .currencyTooltip {
         display: none;
@@ -686,63 +745,68 @@ position:relative;
         left: 50%;
         transform: translateX(-50%);
         background-color: #222;
+        width: 250px;
+        font-size: large;
         color: #fff;
-        padding: 10px;
+        padding: 15px; /* Add more padding for spacing */
         border-radius: 5px;
-        font-size: 0.8rem;
-        white-space: nowrap;
+        word-wrap: break-word; /* Ensure text wraps to the next line */
+        word-break: break-word; /* Break words that are too long */
+        white-space: normal; /* Allow text to wrap to the next line */
         z-index: 1000;
-        box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
-      }
-      
-      /* Show the tooltip on hover for desktop */
-      .currencyButtonContainer:hover .currencyTooltip {
+        box-shadow: 0 0 20px rgba(255, 0, 255, 1), 0 0 30px rgba(255, 0, 255, 0.8); /* Purple neon glow */
+    }
+    
+    .tooltipDivider {
+        height: 2px;
+        background-color: #ff00ff; /* Purple neon divider */
+        margin: 8px 0; /* Spacing around the divider */
+    }
+    
+    /* Show the tooltip when hovering over the button */
+    .currencyButtonContainer:hover .currencyTooltip {
         display: block;
-      }
+    }
+    .tooltipDivider {
+        height: 2px;
+        background-color: #ff00ff; /* Purple neon divider */
+        margin: 8px 0; /* Spacing around the divider */
+    }
+   
       
       /* Ensure image is correctly sized and positioned */
-      .initialFadeIn {
-        opacity: 0;
-        animation: fadeIn 300ms ease-in forwards;
-      }
-      
-      .fadeIn {
-        opacity: 1;
-        transition: opacity 300ms ease-in;
-      }
-      
-      .fadeOut {
-        opacity: 0;
-        transition: opacity 300ms ease-out;
-      }
-      
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
+
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 .currencyButton img {
     width: 80%;
+   
     height: 80%;
     object-fit: contain;
     border-radius: 50%;
 }
 
   .currencyButton:hover {
-    background-color: #00ff00;
-    color: #111;
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
+    background-color: #0a0a0a;
+    color: #ff00ff;
+
+    box-shadow: 0 0 20px rgba(0, 255, 255, 1), 0 0 30px rgba(0, 255, 255, 0.8); /* More intense glow */
   }
 
 
   .feeBreakdownContainer {
-    background-color: #000;
-    border: 1px solid #0f0;
+    background-color: transparent;
+    border: 1px solid #ff00ff;
     border-radius: 8px;
     padding: 20px;
     margin-top: 20px;
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
-    font-family: 'Courier New', monospace;
-    color: #0f0;
+
+    box-shadow: 0 0 20px rgba(0, 255, 255, 1), 0 0 30px rgba(0, 255, 255, 0.8); /* More intense glow */
+ font-family: 'Orbitron', sans-serif; /* Apply the Orbitron font */
+    color: #ff00ff;
     text-align: center;
   }
   
@@ -752,7 +816,9 @@ position:relative;
     margin-bottom: 15px;
     text-transform: uppercase;
     letter-spacing: 2px;
-    text-shadow: 0 0 3px rgba(0, 255, 0, 0.5);
+    text-shadow: 
+    0 0 10px rgba(255, 0, 255, 0.6), /* Neon pink glow */
+    0 0 15px rgba(160, 32, 240, 0.6); /* Neon purple glow */
   }
   
   .feeItem {
@@ -767,32 +833,36 @@ position:relative;
   }
   
   .feeValue {
-    font-family: 'Consolas', 'Courier New', monospace;
+    font-family: 'Orbitron', sans-serif; /* Apply the Orbitron font */
   }
   
   .totalFee {
     margin-top: 15px;
     padding-top: 15px;
-    border-top: 1px solid rgba(0, 255, 0, 0.5);
+    border-top: 1px solid rgba(255, 0, 225, 0.5);
     font-size: 1.1rem;
     font-weight: bold;
   }
   
   /* Subtle Animation for Matrix-like effect */
-  @keyframes subtleMatrixGlow {
+  @keyframes subtleCyberGlow {
     0% {
-      text-shadow: 0 0 1px rgba(0, 255, 0, 0.3);
+        text-shadow: 0 0 1px rgba(255, 0, 255, 0.3), /* Subtle pink glow */
+                    0 0 1px rgba(160, 32, 240, 0.3); /* Subtle purple glow */
     }
     50% {
-      text-shadow: 0 0 2px rgba(0, 255, 0, 0.5);
+        text-shadow: 0 0 2px rgba(255, 0, 255, 0.5), /* Slightly stronger pink glow */
+                    0 0 2px rgba(160, 32, 240, 0.5); /* Slightly stronger purple glow */
     }
     100% {
-      text-shadow: 0 0 1px rgba(0, 255, 0, 0.3);
+        text-shadow: 0 0 1px rgba(255, 0, 255, 0.3), /* Subtle pink glow */
+                    0 0 1px rgba(160, 32, 240, 0.3); /* Subtle purple glow */
     }
-  }
+}
+
   
   .feeBreakdownContainer * {
-    animation: subtleMatrixGlow 4s infinite;
+    animation: subtleCyberGlow 4s infinite;
   }
   
   /* Mobile Styles */
@@ -821,18 +891,17 @@ position:relative;
   }
 
 
-
   @media screen and (max-width: 767px) {
     .swapInterface {
-      background-color: #111; /* Dark background matching the statusDisplay */
+      background-color: transparent; /* Dark background matching the statusDisplay */
       border-radius: 8px;
       padding: 20px;
       min-width:50%;
    
       margin: 0 auto;
-      box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
-      color: #00ff00; /* Neon green text color */
-      border: 2px solid #00ff00; /* Neon green border */
+      box-shadow: 0 0 20px rgba(0, 255, 255, 1), 0 0 30px rgba(0, 255, 255, 0.8); /* More intense glow */
+      color: #ff00ff;  /* Neon green text color */
+      border: 2px solid #ff00ff;  /* Neon green border */
     }
     .container {
         padding: 10px; /* Reduce padding for smaller screens */
@@ -859,6 +928,8 @@ position:relative;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
+        
+        min-width:auto;
         margin-top: 30px;
       }
       
@@ -902,7 +973,11 @@ position:relative;
 .currencyButtonContainer:hover .currencyButton {
     border-color: #0070f3;
 }
-
+.currencyButton:hover {
+  background-color: #0a0a0a;
+  color: #ff00ff;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
+}
 /* Ensure image is correctly sized and positioned */
 .currencyButton img {
     width: 40px; /* Adjust image size appropriately */
@@ -912,11 +987,7 @@ position:relative;
 }
 
 /* Adjust hover effect */
-.currencyButton:hover {
-    background-color: #00ff00;
-    color: #111;
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
-}
+
     
     .currencyButton, .swapButton, .inProgressButton, .sentButton {
         padding: 10px 15px; /* Adjust padding for buttons */
@@ -952,7 +1023,7 @@ position:relative;
 }
 @media screen and (max-width: 767px) {
     .backButton {
-        top: 10px; /* Adjust top positioning */
+
         left: 10px; /* Adjust left positioning */
         margin-left: 0; /* Remove margin-left for smaller screens */
         margin-top: 0; /* Remove margin-top for smaller screens */
@@ -960,6 +1031,10 @@ position:relative;
         font-size: 0.9rem; /* Slightly smaller font size */
         border-radius: 6px; /* Slightly less rounded corners */
         margin-top:20%;
+    }
+    .searchInput {
+      margin-left:30px;
+      width:min-content;
     }
 }
 @media screen and (max-width: 767px) {
@@ -977,4 +1052,56 @@ position:relative;
         font-size: 1.2rem; /* Smaller text size for button */
         padding: 0.8rem 1.5rem; /* Adjust padding for mobile */
     }
+}
+
+/* Mobile styling */
+@media only screen and (max-width: 600px) {
+  .currencyTooltip {
+      width: 200px;
+      font-size: medium;
+      padding: 10px;
+  }
+
+  .currencyButtonContainer {
+      margin-bottom: 15px;
+  }
+
+  .currencyTooltip {
+      left: 50%;
+      transform: translateX(-50%);
+  }
+
+  /* Adjust tooltip positioning to prevent it from being cut off */
+  .currencyButtonContainer {
+      position: relative;
+  }
+
+  .currencyTooltip::before {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 5px;
+      border-style: solid;
+      border-color: #222 transparent transparent transparent;
+  }
+
+  .currencyButtonContainer:hover .currencyTooltip {
+      display: block;
+  }
+
+  /* Adjust positioning if tooltip is cut off on the left side */
+  .currencyTooltip {
+      left: auto;
+      right: 0;
+      transform: none;
+  }
+
+  /* Adjust positioning if tooltip is cut off on the right side */
+  .currencyTooltip {
+      right: auto;
+      left: 0;
+      transform: none;
+  }
 }

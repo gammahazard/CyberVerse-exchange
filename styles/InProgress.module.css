@@ -4,7 +4,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgb(0 0 0 / 80%);
+    background-color: rgb(0 0 0 / 60%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,16 +13,16 @@
 
 .modalContent {
     background-color: #111;
-    color: #0f0;
+    color: #ff00ff;
     padding: 20px;
     border-radius: 8px;
-    max-width: 600px;
+    max-width: 50%;
     width: 90%;
     max-height: 80vh;
     overflow-y: auto;
     position: relative;
-    border: 2px solid #0f0;
-    box-shadow: 0 0 10px rgb(0 255 0 / 30%);
+    border: 2px solid #ff00ff;
+    box-shadow: 0 0 20px rgba(255, 0, 255, 1), 0 0 30px rgba(255, 0, 255, 0.8); /* More intense glow */
 }
 
 .closeButton {
@@ -33,7 +33,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: #0f0;
+    color: #ff00ff;
 }
 
 .transactionList {
@@ -41,7 +41,7 @@
 }
 
 .transactionItem {
-    border: 1px solid #0f0;
+    border: 1px solid #ff00ff;
     border-radius: 4px;
     padding: 10px;
     margin-bottom: 10px;
@@ -74,19 +74,24 @@
 .transactionInfo {
     flex-grow: 1;
     cursor: pointer;
+    margin-right: 10px; /* Add margin to separate from track link */
 }
 
 .transactionInfo p {
     margin: 5px 0;
-    color: #0f0;
+    color: #ff00ff;
+    font-size: 14px; /* Slightly smaller font */
+    font-weight: bold; /* Emphasis on titles */
 }
 
 .trackLink {
     display: flex;
     align-items: center;
-    color: #0f0;
+    color: #ff00ff;
     text-decoration: none;
+    background-color: transparent;
     font-weight: bold;
+    font-size: 14px; /* Slightly smaller font */
 }
 
 .trackLink svg {
@@ -97,7 +102,6 @@
     text-decoration: underline;
 }
 
-
 .loadingContainer {
     display: flex;
     flex-direction: column;
@@ -107,8 +111,8 @@
 }
 
 .loadingSpinner {
-    font-size: 48px;
-    color: #39ff14; /* Neon green color */
+    font-size: 36px; /* Reduce spinner size for better mobile view */
+    color: #ff00ff;
     animation: spin 1s linear infinite;
 }
 
@@ -119,6 +123,29 @@
 
 .loadingContainer p {
     margin-top: 16px;
-    font-size: 18px;
-    color: #39ff14; /* Neon green color */
+    font-size: 16px; /* Slightly smaller font */
+    color: #ff00ff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .modalContent {
+        padding: 15px;
+        max-width: 90%;
+    }
+
+    .transactionInfo {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .transactionItem {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .trackLink {
+        width: 100%;
+        text-align: right;
+    }
 }

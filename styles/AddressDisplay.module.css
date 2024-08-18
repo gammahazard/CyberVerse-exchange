@@ -2,10 +2,10 @@
   text-align: center;
   margin: 30px auto;
   font-size: 1.2rem;
-  color: #0f0;
+  color: #ff00ff;
   max-width: auto;
   overflow-wrap:break-word;
-  border: 2px solid #0f0;
+  border: 2px solid #ff00ff;
   border-radius: 10px;
   padding: 20px;
   background-color: rgba(0, 255, 0, 0.05);
@@ -14,7 +14,7 @@
 
 .addressDisplay h2 {
   margin-bottom: 20px;
-  border-bottom: 1px solid #0f0;
+  border-bottom: 1px solid #ff00ff;
   padding-bottom: 10px;
 }
 
@@ -33,14 +33,14 @@
 
 .transactionTable td:first-child {
   font-weight: bold;
-  color: #0c0;
+  color: #1da4de;
 }
 
 .sendDetails {
   margin-top: 30px;
   font-size: 1.1em;
-  border-top: 1px solid #0f0;
-  border-bottom: 1px solid #0f0;
+  border-top: 1px solid #ff00ff;
+  border-bottom: 1px solid #ff00ff;
   padding: 20px 0;
 }
 
@@ -50,7 +50,7 @@
   justify-content: space-between;
   margin-top: 10px;
   flex-wrap: nowrap;
-  background-color: rgba(0, 255, 0, 0.1);
+  background-color: transparent;
   border-radius: 5px;
   padding: 10px;
 }
@@ -66,7 +66,7 @@
 
 .clipboardIcon {
   cursor: pointer;
-  color: #0f0;
+  color: #ff00ff;
   flex-shrink: 0;
   font-size: 1.2em;
   transition: transform 0.3s;
@@ -77,7 +77,7 @@
 }
 
 .copiedNotice {
-  color: #0f0;
+  color: #ff00ff;
   font-size: 0.9em;
   margin-top: 5px;
   width: 100%;
@@ -86,8 +86,9 @@
 
 .qrCodeContainer {
   margin: 30px auto;
-  border-top: 1px solid #0f0;
-  border-bottom: 1px solid #0f0;
+  border-top: 1px solid #ff00ff;
+  border-bottom: 1px solid #ff00ff;
+  
   padding: 20px 0;
 }
 
@@ -101,9 +102,10 @@
 .sentButton, .walletButton {
   padding: 15px 30px;
   font-size: 1.2em;
-  background-color: #0f0;
-  color: #000;
-  border: none;
+  background-color: transparent;
+  border:1px solid #ff00ff;
+  color: #ff00ff;
+
   cursor: pointer;
   border-radius: 8px;
   transition: background-color 0.3s, transform 0.3s;
@@ -113,7 +115,7 @@
 }
 
 .sentButton:hover, .walletButton:hover {
-  background-color: #0c0;
+  background-color: rgb(24, 3, 27);
   transform: scale(1.05);
 }
 
@@ -129,8 +131,8 @@
 .walletInfo {
   margin-top: 20px;
   font-size: 1.1em;
-  color: #0f0;
-  background-color: rgba(0, 255, 0, 0.1);
+  color: #ff00ff;
+  background-color: transparent;
   border-radius: 5px;
   padding: 10px;
 }

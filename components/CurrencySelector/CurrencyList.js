@@ -3,7 +3,7 @@ import CurrencyButton from './CurrencyButton';
 import useChangelly from '../../hooks/useChangelly';
 import styles from '../../styles/Home.module.css';
 
-const priorityCurrencies = ['btc', 'eth', 'sol', 'ton', 'erg', 'ltc', 'cro', 'usdt', 'usdc'];
+const priorityCurrencies = ['btc', 'eth', 'sol', 'ton', 'erg', 'ltc', 'cro', 'usdt', 'usdc', 'ada', 'etharb'];
 
 export default function CurrencyList({ onSelect, prompt }) {
   const [currencies, setCurrencies] = useState([]);

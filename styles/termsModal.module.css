@@ -14,9 +14,9 @@
 
 .content {
     background-color: #111;
-    color: #0f0;
-    border: 1px solid #0f0;
-    box-shadow: 0 0 20px #0f0;
+    color: #ff00ff;
+    border: 1px solid #ff00ff;
+    box-shadow: 0 0 20px #ff00ff;
     padding: 4rem; /* Increased padding inside the modal */
     border-radius: 15px; /* Increased border-radius for smoother corners */
     width: 90%;
@@ -39,7 +39,7 @@
     text-align: center;
     margin-bottom: 2rem; /* Increased margin for better spacing */
     font-size: 2.4rem; /* Increased font size */
-    text-shadow: 0 0 5px #0f0;
+    text-shadow: 0 0 5px #ff00ff;
 }
 
 .scroll {
@@ -88,23 +88,23 @@
 }
 
 .acceptButton {
-    background-color: #0f0;
+    background-color: #ff00ff;
     color: #000;
 }
 
 .acceptButton:hover {
     background-color: #0c0;
-    box-shadow: 0 0 10px #0f0;
+    box-shadow: 0 0 10px #ff00ff;
 }
 
 .declineButton {
     background-color: #333;
-    color: #0f0;
+    color: #ff00ff;
 }
 
 .declineButton:hover {
     background-color: #444;
-    box-shadow: 0 0 10px #0f0;
+    box-shadow: 0 0 10px #ff00ff;
 }
 
 .changellylink {
@@ -113,14 +113,14 @@
 }
 
 .content a {
-    color: #0f0;
+    color: #ff00ff;
     text-decoration: underline;
     transition: all 0.3s ease;
 }
 
 .content a:hover {
     color: #0c0;
-    text-shadow: 0 0 5px #0f0;
+    text-shadow: 0 0 5px #ff00ff;
 }
 
 

@@ -9,7 +9,7 @@
 }
 
 .detailedCurrencyInfo {
-    background-color: #000;
+    background-color: transparent;
     border-radius: 10px;
     padding: 20px;
     width: 300px;
@@ -18,11 +18,11 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    color: #00ff00;
-    border: 1px solid #00ff00;
+    color: #ff00ff; 
+    border: 1px solid #ff00ff; 
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: #00ff00 #000;
+    overflow:hidden;
 }
 
 .detailedCurrencyInfo::-webkit-scrollbar {
@@ -34,7 +34,7 @@
 }
 
 .detailedCurrencyInfo::-webkit-scrollbar-thumb {
-    background-color: #00ff00;
+    background-color: #ff00ff; 
     border-radius: 3px;
 }
 
@@ -63,7 +63,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #00ff00;
+    color: #ff00ff; 
 }
 
 .currencyImage {
@@ -74,7 +74,7 @@
 
 .arrowIcon {
     font-size: 30px;
-    color: #00ff00;
+    color: #ff00ff; 
 }
 
 .confirmationsSection {
