@@ -721,6 +721,17 @@ position:relative;
 
 
   @media screen and (max-width: 767px) {
+    .swapInterface {
+      background-color: #111; /* Dark background matching the statusDisplay */
+      border-radius: 8px;
+      padding: 20px;
+      min-width:50%;
+   
+      margin: 0 auto;
+      box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+      color: #00ff00; /* Neon green text color */
+      border: 2px solid #00ff00; /* Neon green border */
+    }
     .container {
         padding: 10px; /* Reduce padding for smaller screens */
         max-width: 100%; /* Ensure the container takes full width */
@@ -749,6 +760,16 @@ position:relative;
         margin-top: 30px;
       }
       
+@media (max-width: 768px) {
+    .detailedCurrencyInfoContainer {
+        flex-direction: column;
+    }
+
+    .arrowIcon {
+        font-size: 30px;
+        transform: rotate(90deg); /* Rotate arrow for down direction */
+    }
+}
 
   /* Currency grid layout for mobile */
 

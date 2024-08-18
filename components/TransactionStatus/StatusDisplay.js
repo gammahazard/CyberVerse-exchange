@@ -4,11 +4,10 @@ import { RiPoliceLineFill } from 'react-icons/ri';
 import useChangelly from '../../hooks/useChangelly';
 import styles from '../../styles/StatusDisplay.module.css';
 
-export default function StatusDisplay({ transactionId, initialStatus, initialDetails, onNewTransaction }) {
+export default function StatusDisplay({ transactionId, getStatus, onNewTransaction, initialDetails }) {
     const [txInfo, setTxInfo] = useState(initialDetails || {});
-    const [status, setStatus] = useState(initialStatus || 'waiting');
+    const [status, setStatus] = useState(initialDetails?.status || 'waiting');
     const [error, setError] = useState('');
-    const { getStatus } = useChangelly();
     const lastUpdateTime = useRef(0);
 
     const fetchStatus = useCallback(async () => {
@@ -22,8 +21,12 @@ export default function StatusDisplay({ transactionId, initialStatus, initialDet
             console.log('Fetching status for transaction:', transactionId);
             const result = await getStatus(transactionId);
             console.log('Received status:', result);
-            setStatus(result.status || 'waiting');
-            setTxInfo(prevInfo => ({ ...prevInfo, ...result }));
+            
+            if (result && result.result) {
+                setStatus(result.result);
+                setTxInfo(prevInfo => ({ ...prevInfo, status: result.result }));
+            }
+            
             setError('');
             lastUpdateTime.current = now;
         } catch (err) {
@@ -44,15 +47,16 @@ export default function StatusDisplay({ transactionId, initialStatus, initialDet
 
     const renderStatusMessage = () => {
         const iconSize = 24;
+        const amount = txInfo.amount || txInfo.amountExpectedFrom;
         switch (status) {
             case 'new':
-            case 'waiting':
-                return (
-                    <div className={styles.statusMessage}>
-                        <FaSpinner className={styles.spinIcon} size={iconSize} />
-                        <p>Waiting to receive {txInfo.currencyFrom?.toUpperCase()} to {txInfo.payinAddress}</p>
-                    </div>
-                );
+                case 'waiting':
+                    return (
+                        <div className={styles.statusMessage}>
+                            <FaSpinner className={styles.spinIcon} size={iconSize} />
+                            <p>Waiting to receive {amount} {txInfo.currencyFrom?.toUpperCase()} to {txInfo.payinAddress}</p>
+                        </div>
+                    );
             case 'confirming':
                 return (
                     <div className={styles.statusMessage}>
@@ -115,7 +119,6 @@ export default function StatusDisplay({ transactionId, initialStatus, initialDet
         }
     };
 
-    const isFinalState = ['refunded', 'expired', 'failed', 'finished', 'waiting'].includes(status);
 
     if (error) {
         return <div className={styles.error}>{error}</div>;
@@ -143,6 +146,10 @@ export default function StatusDisplay({ transactionId, initialStatus, initialDet
                             <td>Payin Address:</td>
                             <td>{txInfo.payinAddress}</td>
                         </tr>
+                        <tr>
+                            <td>Status:</td>
+                            <td>{status}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -150,11 +157,11 @@ export default function StatusDisplay({ transactionId, initialStatus, initialDet
                 <h3>Current Status</h3>
                 {renderStatusMessage()}
             </div>
-            {isFinalState && (
+       
                 <button onClick={onNewTransaction} className={styles.newTransactionButton}>
                     <FaArrowLeft /> Start New Transaction
                 </button>
-            )}
+      
         </div>
     );
 }

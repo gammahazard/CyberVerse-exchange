@@ -98,3 +98,27 @@
 }
 
 
+.loadingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+}
+
+.loadingSpinner {
+    font-size: 48px;
+    color: #39ff14; /* Neon green color */
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loadingContainer p {
+    margin-top: 16px;
+    font-size: 18px;
+    color: #39ff14; /* Neon green color */
+}

@@ -2,35 +2,36 @@
     background-color: #111;
     border-radius: 8px;
     padding: 30px;
-    max-width: 1000px; /* Ensure this fits within your layout */
+    width: 100%;
+ 
     margin: 0 auto;
     box-shadow: 0 0 15px rgb(0 255 0 / 40%);
     color: #0f0;
     border: 2px solid #0f0;
     font-size: 1.2rem;
-    box-sizing: border-box; /* Ensure padding is included in width */
-    overflow: hidden; /* Prevent content from spilling out */
+    box-sizing: border-box;
+    overflow: hidden;
 }
-
 
 .statusDisplay h2 {
     color: #0f0;
-    margin-bottom: 30px; /* Increase space below the header */
+    margin-bottom: 30px;
     text-align: center;
-    text-shadow: 0 0 15px rgb(0 255 0 / 80%); /* More intense glow */
-    font-size: 2rem; /* Larger header font size */
+    text-shadow: 0 0 15px rgb(0 255 0 / 80%);
+    font-size: 2rem;
 }
 
 .transactionTable {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 30px; /* Increase space below the table */
-    font-size: 1.2rem; /* Larger table text */
+    margin-bottom: 30px;
+    font-size: 1.2rem;
 }
 
 .transactionTable td {
-    padding: 15px; /* Increase padding for table cells */
+    padding: 15px;
     border-bottom: 1px solid #0f0;
+    word-break: break-word;
 }
 
 .transactionTable td:first-child {
@@ -42,17 +43,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 30px; /* Increase space above the status message */
-    padding: 15px; /* Increase padding for status messages */
+    margin-top: 30px;
+    padding: 15px;
     background-color: #1e1e1e;
-    border-radius: 6px; /* More rounded corners */
-    border: 2px solid #0f0; /* Thicker border */
-    font-size: 1.3rem; /* Larger status message text */
+    border-radius: 6px;
+    border: 2px solid #0f0;
+    font-size: 1.3rem;
 }
 
 .statusMessage svg {
-    margin-right: 15px; /* Increase space between icon and text */
-    font-size: 1.5rem; /* Increase icon size */
+    margin-right: 15px;
+    font-size: 1.5rem;
+    flex-shrink: 0;
 }
 
 .statusMessage p {
@@ -66,7 +68,7 @@
 
 .spinIcon {
     animation: spin 1s linear infinite;
-    font-size: 1.5rem; /* Larger spinner icon */
+    font-size: 1.5rem;
 }
 
 @keyframes spin {
@@ -78,28 +80,28 @@
     color: #ff4d4f;
     text-align: center;
     font-weight: bold;
-    font-size: 1.3rem; /* Larger error text */
+    font-size: 1.3rem;
 }
 
 .loading {
     text-align: center;
     color: #0f0;
     font-weight: bold;
-    font-size: 1.3rem; /* Larger loading text */
+    font-size: 1.3rem;
 }
 
 .newTransactionButton {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 30px; /* Increase space above the button */
-    padding: 15px 30px; /* Increase padding for the button */
+    margin-top: 30px;
+    padding: 15px 30px;
     background-color: #0f0;
     color: #000;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 1.5rem; /* Larger button text */
+    font-size: 1.5rem;
     transition: background-color 0.3s;
 }
 
@@ -108,6 +110,100 @@
 }
 
 .newTransactionButton svg {
-    margin-right: 15px; /* Increase space between icon and text */
-    font-size: 1.5rem; /* Increase icon size */
+    margin-right: 15px;
+    font-size: 1.5rem;
+}
+
+/* Tablet Styles */
+@media screen and (max-width: 1024px) {
+    .statusDisplay {
+        width: 70%;
+    }
+}
+
+/* Mobile Styles */
+@media screen and (max-width: 768px) {
+    .statusDisplay {
+        width: 90%;
+        padding: 20px;
+        font-size: 1rem;
+    }
+
+    .statusDisplay h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .transactionTable {
+        font-size: 0.9rem;
+    }
+
+    .transactionTable td {
+        padding: 10px;
+    }
+
+    .statusMessage {
+        flex-direction: column;
+        text-align: center;
+        font-size: 1rem;
+        padding: 10px;
+    }
+
+    .statusMessage svg {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .spinIcon {
+        font-size: 1.2rem;
+    }
+
+    .error, .loading {
+        font-size: 1rem;
+    }
+
+    .newTransactionButton {
+        padding: 10px 20px;
+        font-size: 1.2rem;
+    }
+
+    .newTransactionButton svg {
+        font-size: 1.2rem;
+    }
+}
+
+/* iPhone SE and smaller screens */
+@media screen and (max-width: 375px) {
+    .statusDisplay {
+        width: 95%;
+        padding: 15px;
+        font-size: 0.9rem;
+    }
+
+    .statusDisplay h2 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+
+    .transactionTable {
+        font-size: 0.8rem;
+    }
+
+    .transactionTable td {
+        padding: 8px;
+    }
+
+    .statusMessage {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    .newTransactionButton {
+        padding: 8px 16px;
+        font-size: 1rem;
+    }
+
+    .newTransactionButton svg {
+        font-size: 1rem;
+    }
 }

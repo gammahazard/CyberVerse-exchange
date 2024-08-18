@@ -2,7 +2,7 @@
     margin-top: 50px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
     gap: 20px;
     flex-direction: row;
 }
@@ -11,23 +11,34 @@
     background-color: #000;
     border-radius: 10px;
     padding: 20px;
-    width: 50%;
-    height: auto;
-    min-height: 400px;
+    width: 300px;
+    height: 400px;
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    color: #00ff00; /* Neon green text */
-    border: 1px solid #00ff00; /* Neon green border */
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #00ff00 #000;
 }
 
-.currencySection,
-.amountSection,
-.contractSection,
-.imageSection,
-.confirmationsSection {
-    margin-bottom: 10px;
+.detailedCurrencyInfo::-webkit-scrollbar {
+    width: 6px;
+}
+
+.detailedCurrencyInfo::-webkit-scrollbar-track {
+    background: #000;
+}
+
+.detailedCurrencyInfo::-webkit-scrollbar-thumb {
+    background-color: #00ff00;
+    border-radius: 3px;
+}
+
+.currencySection, .amountSection, .contractSection, .imageSection, .confirmationsSection {
+    margin-bottom: 15px;
 }
 
 .currencyHeader {
@@ -51,7 +62,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #00ff00; /* Neon green text */
+    color: #00ff00;
 }
 
 .currencyImage {
@@ -62,7 +73,7 @@
 
 .arrowIcon {
     font-size: 30px;
-    color: #00ff00; /* Neon green arrow */
+    color: #00ff00;
 }
 
 .confirmationsSection {
@@ -77,10 +88,21 @@
 @media (max-width: 768px) {
     .detailedCurrencyInfoContainer {
         flex-direction: column;
+        align-items: center;
+    }
+
+    .detailedCurrencyInfo {
+        width: 100%;
+        max-width: 300px;
+        height: 350px;
+        margin-bottom: 20px;
     }
 
     .arrowIcon {
-        font-size: 30px;
-        transform: rotate(90deg); /* Rotate arrow for down direction */
+        transform: rotate(90deg);
+    }
+
+    .confirmationsSection {
+        margin-bottom: 0 !important;
     }
 }

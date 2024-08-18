@@ -4,20 +4,7 @@ import styles from '../../styles/DetailedCurrencyInfo.module.css';
 export default function DetailedCurrencyInfo({ currencyData, isSending, amount }) {
     if (!currencyData) return null;
 
-    // Filtered data to log
-    const filteredData = {
-        name: currencyData.name,
-        ticker: currencyData.ticker,
-        fullName: currencyData.fullName,
-        blockchain: currencyData.blockchain,
-        protocol: currencyData.protocol,
-        contractAddress: currencyData.contractAddress,
-        image: currencyData.image,
-        payinConfirmations: currencyData.payinConfirmations,
-    };
-
-    // Log the filtered data
-    console.log('DetailedCurrencyInfo filtered currencyData:', filteredData);
+    console.log('DetailedCurrencyInfo filtered currencyData:', currencyData);
     console.log('DetailedCurrencyInfo isSending:', isSending ? 'Sending Currency' : 'Receiving Currency');
     console.log('DetailedCurrencyInfo amount:', amount);
 
@@ -35,14 +22,15 @@ export default function DetailedCurrencyInfo({ currencyData, isSending, amount }
             <div className={styles.amountSection}>
                 {amount && (
                     <p className={styles.amount}>
-                       {amount} {currencyData.ticker.toUpperCase()}
+                       {parseFloat(amount).toFixed(4)} {currencyData.ticker.toUpperCase()}
                     </p>
                 )}
             </div>
 
             {currencyData.contractAddress && (
                 <div className={styles.contractSection}>
-                    <p>Contract Address: {currencyData.contractAddress}</p>
+                    <p>Contract Address:</p>
+                    <p className={styles.contractAddress}>{currencyData.contractAddress}</p>
                 </div>
             )}
 
@@ -50,17 +38,12 @@ export default function DetailedCurrencyInfo({ currencyData, isSending, amount }
                 <img src={currencyData.image} alt={currencyData.fullName} className={styles.currencyImage} />
             </div>
 
-            <div
-                className={`${styles.confirmationsSection} ${
-                    !isSending ? styles.visible : ''
-                }`}
-            >
-              {!isSending && (
-    <p>
-        You will get {parseFloat(amount).toFixed(4)} {currencyData.fullName} after {currencyData.payinConfirmations} confirmations
-    </p>
-)}
-
+            <div className={`${styles.confirmationsSection} ${!isSending ? styles.visible : ''}`}>
+                {!isSending && (
+                    <p>
+                        You will get {parseFloat(amount).toFixed(4)} {currencyData.fullName} after {currencyData.payinConfirmations} confirmations
+                    </p>
+                )}
             </div>
         </div>
     );

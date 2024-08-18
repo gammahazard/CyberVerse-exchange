@@ -126,16 +126,22 @@ export default function Main() {
     }
   };
 
-const handleSwap = async (swapParams) => {
+  const handleSwap = async (swapParams) => {
     setAmount(swapParams.amount);
     setAddress(swapParams.address);
     setIsVisible(false);
     try {
         const transaction = await createTransaction(swapParams);
 
-        setTransactionDetails(transaction);
+        setTransactionDetails({
+          ...transaction,
+          amount: swapParams.amount  // Add the amount to the transaction details
+        });
 
-        const updatedTransactions = [...inProgressTransactions, transaction];
+        const updatedTransactions = [...inProgressTransactions, {
+          ...transaction,
+          amount: swapParams.amount  // Add the amount to the stored transaction
+        }];
         localStorage.setItem('transactions', JSON.stringify(updatedTransactions));
         setInProgressTransactions(updatedTransactions);
         setShowInProgressButton(true);
@@ -149,7 +155,7 @@ const handleSwap = async (swapParams) => {
         alert(`Failed to create transaction: ${error.message || 'Unknown error'}`);
         setIsVisible(true);
     }
-};
+  };
 
   // ---------------------------------------------------- new function
   const handleSent = () => {
@@ -214,16 +220,15 @@ const handleSwap = async (swapParams) => {
             onSent={handleSent} // This now correctly references the handleSent function
           />
         )}
-        {step === 5 && transactionDetails && (
+ {step === 5 && transactionDetails && (
           <StatusDisplay
             key={transactionDetails.id}
             transactionId={transactionDetails.id}
-            initialStatus={transactionDetails.status}
-            initialDetails={transactionDetails}
+            getStatus={getStatus} 
             onNewTransaction={handleNewTransaction}
+            initialDetails={transactionDetails}
           />
-        )}
-      </div>
+)} </div>
       {showInProgressModal && (
         <InProgress
           onClose={handleCloseInProgressModal}
