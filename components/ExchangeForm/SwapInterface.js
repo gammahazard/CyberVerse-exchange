@@ -362,7 +362,7 @@ const handleRateTypeChange = (e) => {
                         <span className={styles.feeValue}>{networkFee} {receiveCurrency.toUpperCase()}</span>
                     </div>
                     <div className={styles.feeItem}>
-                        <span className={styles.feeLabel}>Exchange Fee (0.9%):</span>
+                        <span className={styles.feeLabel}>Exchange Fee (0.75%):</span>
                         <span className={styles.feeValue}>{exchangeFee} {receiveCurrency.toUpperCase()}</span>
                     </div>
                     <div className={`${styles.feeItem} ${styles.totalFee}`}>
