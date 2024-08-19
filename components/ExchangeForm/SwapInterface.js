@@ -126,7 +126,7 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap, c
                     estimation = await estimateFixedRate(sendCurrency, receiveCurrency, amount);
                     setNetworkFee(estimation.networkFee);
                     const totalEstimated = parseFloat(estimation.amountTo);
-                    const exchangeFeeAmount = totalEstimated * 0.009; // 0.9% exchange fee
+                    const exchangeFeeAmount = totalEstimated * 0.0075; // 0.9% exchange fee
                     setExchangeFee(exchangeFeeAmount.toFixed(8));
                     const amountAfterFees = totalEstimated - parseFloat(estimation.networkFee) - exchangeFeeAmount;
                     setEstimatedAmount(amountAfterFees.toFixed(8));
