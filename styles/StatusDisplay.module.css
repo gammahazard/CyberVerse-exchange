@@ -42,11 +42,13 @@
 }
 
 .transactionTable {
-    width: 100%;
+    width: auto;
     border-collapse: collapse;
     margin-bottom: 30px;
     font-size: 1.2rem;
     table-layout: fixed;
+    word-break:break-all;
+    word-wrap:break-word;
 }
 
 .transactionTable td {
@@ -54,11 +56,12 @@
     border-bottom: 1px solid #ff00ff;
     word-break: break-word;
     overflow-wrap: break-word;
+    word-wrap:break-word;
 }
 
 .statusDisplay h2 {
     color: #1da4de;
-    margin-bottom: 30px;
+    margin-bottom: 0px;
     text-align: center;
     text-shadow: 0 0 15px rgb(0 255 0 / 80%);
     font-size: 2rem;
@@ -130,11 +133,11 @@
 }
 
 /* Tablet Styles */
+/* Tablet Styles */
 @media screen and (max-width: 1024px) {
     .statusDisplay {
-        width: 95%;
-        padding: 20px;
-        font-size: 1rem;
+        padding: 20px; /* Reduce padding for tablets */
+        max-width: 90%; /* Ensure it stays within screen bounds */
     }
 
     .statusMessage {
@@ -154,116 +157,43 @@
 }
 
 /* Mobile Styles */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 600px) {
     .statusDisplay {
-        width: 95%;
-        padding: 20px;
-        font-size: 1rem;
+        padding: 15px; /* Further reduce padding for mobile */
+        max-width: 95%; /* Allow more room on mobile screens */
     }
 
     .statusMessage {
         flex-direction: column;
         text-align: center;
-        font-size: 1rem;
-        padding: 10px;
+        font-size: 0.9rem; /* Slightly smaller font size */
+        padding: 8px; /* Reduce padding */
     }
 
     .transactionTable {
-        font-size: 0.9rem;
+        font-size: 0.8rem; /* Adjust table font size for readability */
     }
 
     .transactionTable td {
-        padding: 10px;
-    }
-
-    .statusDisplay h2 {
-        font-size: 1.5rem;
-        margin-bottom: 20px;
-    }
-
-    .transactionTable {
-        font-size: 0.9rem;
-    }
-
-    .transactionTable td {
-        padding: 10px;
-    }
-
-    .statusMessage {
-        flex-direction: column;
-        text-align: center;
-        font-size: 1rem;
-        padding: 10px;
-    }
-
-    .statusMessage svg {
-        margin-right: 0;
-        margin-bottom: 10px;
-    }
-
-    .spinIcon {
-        font-size: 1.2rem;
-    }
-
-    .error, .loading {
-        font-size: 1rem;
+        padding: 8px; /* Reduce cell padding */
     }
 
     .newTransactionButton {
-        padding: 10px 20px;
-        font-size: 1.2rem;
+        padding: 10px 20px; /* Reduce button padding for smaller screens */
+        font-size: 1.2rem; /* Reduce button text size */
     }
 
     .newTransactionButton svg {
-        font-size: 1.2rem;
+        margin-right: 10px; /* Adjust icon margin */
+        font-size: 1.2rem; /* Adjust icon size */
     }
 }
 
-/* iPhone SE and smaller screens */
-@media screen and (max-width: 375px) {
+@media screen and (max-width: 467px) {
     .statusDisplay {
-        width: 100%;
-        padding: 15px;
-        font-size: 0.9rem;
-    }
-
-    .statusMessage {
-        font-size: 0.9rem;
-        padding: 8px;
-    }
-
-    .transactionTable {
-        font-size: 0.8rem;
-    }
-
-    .transactionTable td {
-        padding: 8px;
-    }
-
-    .statusDisplay h2 {
-        font-size: 1.3rem;
-        margin-bottom: 15px;
-    }
-
-    .transactionTable {
-        font-size: 0.8rem;
-    }
-
-    .transactionTable td {
-        padding: 8px;
-    }
-
-    .statusMessage {
-        font-size: 0.9rem;
-        padding: 8px;
-    }
-
-    .newTransactionButton {
-        padding: 8px 16px;
-        font-size: 1rem;
-    }
-
-    .newTransactionButton svg {
-        font-size: 1rem;
-    }
-}
+        padding:40px; /* Further reduce padding for mobile */
+        max-width: 85%; /* Allow more room on mobile screens */
+ 
+        
+    }}
+    

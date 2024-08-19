@@ -235,11 +235,11 @@
   
 
   .inProgressButton {
-    position: absolute;
-    top: 10px;
+    position: relative;
+    top: 5px;
    
-    left: 10px;
-    z-index:888;
+    left: -200px;
+    z-index:8848;
     padding: 15px 25px;
     background-color: transparent;
     color: #ff00ff; 
@@ -291,7 +291,7 @@
   .backButton {
     position: absolute;
     top:0;
-    margin-top:10px;
+    margin-top:40px;
 
 
    
@@ -314,7 +314,7 @@
 
   .inputField {
   background-color: #1e1e1e; /* Dark background */
-  color: #ff00ff;  /* Light text color */
+  color: #ff00ff;   /* Light text color */
   border: 1px solid #444444; /* Subtle border */
   border-radius: 4px; /* Rounded corners */
   padding: 10px; /* Padding inside the input */
@@ -398,7 +398,6 @@
   margin-bottom: 20px;
 }
 
-
 .inputField::placeholder {
   color: #ff00ff; ; /* Lighter placeholder text */
 }
@@ -409,9 +408,10 @@
   }
   
   .prompt {
-    font-size: 1.5rem;
+    font-size: 1.2rem!important;
     margin-bottom: 20px;
-    margin-top:50px;
+    
+    margin-top:55px;
     text-align: center;
     text-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
   }
@@ -686,7 +686,7 @@
     border: none;
     border-radius: 4px;
     background-color: #0a0a0a; /* Neon green button background */
-    color: #000;
+    color: #ff00ff;
     cursor: pointer;
     margin-top: 20px;
     transition: background-color 0.3s;
@@ -698,7 +698,8 @@
   }
   
   .swapButton:hover:enabled {
-    background-color: #ff00ff;  /* Darker neon green on hover */
+    background-color: #ff00ff;
+    color:black;  /* Darker neon green on hover */
   }
   
   /* Additional styling for the input group to ensure proper spacing */
@@ -888,7 +889,24 @@ position:relative;
       font-size: 1rem;
     }
   }
-
+  .inProgressButton {
+    position: absolute;
+    top: 25px;
+   
+ left: 55px;
+    z-index:8848;
+    padding: 15px 25px;
+    background-color: transparent;
+    color: #ff00ff; 
+    border: 2px solid #ff00ff; 
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+  }
 
   @media screen and (max-width: 767px) {
     .swapInterface {
@@ -1022,18 +1040,21 @@ position:relative;
 }
 @media screen and (max-width: 767px) {
     .backButton {
-
+      
         left: 10px; /* Adjust left positioning */
-        margin-left: 0; /* Remove margin-left for smaller screens */
+        margin-left: 5px;
+        margin-bottom:5px; /* Remove margin-left for smaller screens */
         margin-top: 0; /* Remove margin-top for smaller screens */
-        padding: 10px 20px; /* Adjust padding for smaller screens */
+        padding: 10px 10px; /* Adjust padding for smaller screens */
         font-size: 0.9rem; /* Slightly smaller font size */
         border-radius: 6px; /* Slightly less rounded corners */
-        margin-top:20%;
+        margin-top:18%;
+        
     }
     .searchInput {
-      margin-left:30px;
-      width:min-content;
+      margin:auto;
+      padding-left:5px;
+      width:99%;
     }
 }
 @media screen and (max-width: 767px) {

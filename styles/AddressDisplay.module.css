@@ -3,6 +3,9 @@
   margin: 30px auto;
   font-size: 1.2rem;
   color: #ff00ff;
+   display:flex;
+ flex-direction:column;
+ margin-top:80px;
   max-width: auto;
   overflow-wrap:break-word;
   border: 2px solid #ff00ff;
@@ -45,11 +48,11 @@
 }
 
 .payinAddressContainer {
-  display: flex;
+
   align-items: center;
-  justify-content: space-between;
+
   margin-top: 10px;
-  flex-wrap: nowrap;
+
   background-color: transparent;
   border-radius: 5px;
   padding: 10px;
@@ -59,7 +62,8 @@
   flex-grow: 1;
   text-align: left;
   word-break: break-all;
-  margin-right: 10px;
+
+
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -67,6 +71,7 @@
 .clipboardIcon {
   cursor: pointer;
   color: #ff00ff;
+  margin-left:10px;
   flex-shrink: 0;
   font-size: 1.2em;
   transition: transform 0.3s;
@@ -154,9 +159,14 @@
 @media screen and (max-width: 767px) {
   .addressDisplay {
     font-size: 0.9rem;
-    margin: 15px auto;
+   
+ display:flex;
+ flex-direction:column;
+top:40px;
     padding: 10px;
-    width: 95%;
+    width: auto;
+    word-break:break-all;
+    word-wrap:break-word;
     box-sizing: border-box;
   }
 
