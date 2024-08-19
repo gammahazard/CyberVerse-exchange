@@ -96,11 +96,17 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap, c
  
 
     useEffect(() => {
-        if (connectedWalletAddress && (sendCurrency.toLowerCase() === 'eth' || sendCurrency.toLowerCase() === 'arb' || sendCurrency.toLowerCase() === 'sol')) {
-          setRefundAddress(connectedWalletAddress);
-          validateRefundAddress(connectedWalletAddress);
+        if (connectedWalletAddress && (
+            sendCurrency.toLowerCase() === 'eth' || 
+            sendCurrency.toLowerCase() === 'arb' || 
+            sendCurrency.toLowerCase() === 'sol' ||
+            sendCurrency.toLowerCase() === 'erg'  // Add ERG here
+        )) {
+            setRefundAddress(connectedWalletAddress);
+            validateRefundAddress(connectedWalletAddress);
         }
-      }, [validateRefundAddress]);
+    }, [sendCurrency, connectedWalletAddress, validateRefundAddress]);
+
 
     const estimateAmount = useCallback(async () => {
         if (sendCurrency && receiveCurrency && amount) {

@@ -3,9 +3,10 @@ import { FaSpinner, FaExchangeAlt, FaPaperPlane, FaCheckCircle, FaTimesCircle, F
 import { RiPoliceLineFill } from 'react-icons/ri';
 import useChangelly from '../../hooks/useChangelly';
 import styles from '../../styles/StatusDisplay.module.css';
-export default function StatusDisplay({ transactionId, getStatus, onNewTransaction, initialDetails }) {
+
+export default function StatusDisplay({ transactionId, onNewTransaction, initialDetails }) {
     const [txInfo, setTxInfo] = useState(initialDetails || {});
-    const [status, setStatus] = useState(initialDetails?.status || 'waiting');
+    const [status, setStatus] = useState(initialDetails?.status || '');
     const [error, setError] = useState('');
     const lastUpdateTime = useRef(0);
     const { getStatus: getStatusHook } = useChangelly();
@@ -19,12 +20,15 @@ export default function StatusDisplay({ transactionId, getStatus, onNewTransacti
 
         try {
             console.log('Fetching status for transaction:', transactionId);
-            const result = await (getStatus || getStatusHook)(transactionId);
+            const result = await getStatusHook(transactionId);
             console.log('Received status:', result);
             
-            if (result && result.result) {
-                setStatus(result.result);
-                setTxInfo(prevInfo => ({ ...prevInfo, status: result.result }));
+            if (typeof result === 'string') {
+                console.log('Updating status to:', result);
+                setStatus(result);
+                setTxInfo(prevInfo => ({ ...prevInfo, status: result }));
+            } else {
+                console.warn('Unexpected API response:', result);
             }
             
             setError('');
@@ -33,16 +37,14 @@ export default function StatusDisplay({ transactionId, getStatus, onNewTransacti
             console.error('Error fetching status:', err);
             setError('Failed to fetch status: ' + err.message);
         }
-    }, [transactionId, getStatus, getStatusHook]);
+    }, [transactionId, getStatusHook]);
 
     useEffect(() => {
         fetchStatus(); // Initial fetch
 
-        const timer = setInterval(() => {
-            fetchStatus();
-        }, 5000);
+        const intervalId = setInterval(fetchStatus, 5000); // Fetch every 5 seconds
 
-        return () => clearInterval(timer);
+        return () => clearInterval(intervalId); // Cleanup on unmount
     }, [fetchStatus]);
 
     useEffect(() => {
@@ -56,18 +58,21 @@ export default function StatusDisplay({ transactionId, getStatus, onNewTransacti
         }
     }, [status, txInfo.id]);
 
+ 
+
+
     const renderStatusMessage = () => {
         const iconSize = 24;
         const amount = txInfo.amount || txInfo.amountExpectedFrom;
         switch (status) {
             case 'new':
-                case 'waiting':
-                    return (
-                        <div className={styles.statusMessage}>
-                            <FaSpinner className={styles.spinIcon} size={iconSize} />
-                            <p>Waiting to receive {amount} {txInfo.currencyFrom?.toUpperCase()} to {txInfo.payinAddress}</p>
-                        </div>
-                    );
+            case 'waiting':
+                return (
+                    <div className={styles.statusMessage}>
+                        <FaSpinner className={styles.spinIcon} size={iconSize} />
+                        <p>Waiting to receive {amount} {txInfo.currencyFrom?.toUpperCase()} to {txInfo.payinAddress}</p>
+                    </div>
+                );
             case 'confirming':
                 return (
                     <div className={styles.statusMessage}>
@@ -86,7 +91,7 @@ export default function StatusDisplay({ transactionId, getStatus, onNewTransacti
                 return (
                     <div className={styles.statusMessage}>
                         <FaPaperPlane size={iconSize} />
-                        <p>Coins are being sent to the recipient&apos;s address. Your funds will arrive shortly!</p>
+                        <p>Coins are being sent to the recipient's address. Your funds will arrive shortly!</p>
                     </div>
                 );
             case 'finished':
@@ -126,10 +131,14 @@ export default function StatusDisplay({ transactionId, getStatus, onNewTransacti
                     </div>
                 );
             default:
-                return null;
+                return (
+                    <div className={styles.statusMessage}>
+                        <FaSpinner className={styles.spinIcon} size={iconSize} />
+                        <p>Loading status...</p>
+                    </div>
+                );
         }
     };
-
 
     if (error) {
         return <div className={styles.error}>{error}</div>;
@@ -159,7 +168,7 @@ export default function StatusDisplay({ transactionId, getStatus, onNewTransacti
                         </tr>
                         <tr>
                             <td>Status:</td>
-                            <td>{status}</td>
+                            <td>{status || 'Loading...'}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -168,11 +177,9 @@ export default function StatusDisplay({ transactionId, getStatus, onNewTransacti
                 <h3>Current Status</h3>
                 {renderStatusMessage()}
             </div>
-       
-                <button onClick={onNewTransaction} className={styles.newTransactionButton}>
-                    <FaArrowLeft /> Start New Transaction
-                </button>
-      
+            <button onClick={onNewTransaction} className={styles.newTransactionButton}>
+                <FaArrowLeft /> Start New Transaction
+            </button>
         </div>
     );
 }
