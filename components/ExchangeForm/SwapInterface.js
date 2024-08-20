@@ -18,13 +18,14 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap, c
     const [isEstimationSuccessful, setIsEstimationSuccessful] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
     const [rateId, setRateId] = useState(null);
-    const [isInputChanged, setIsInputChanged] = useState(false);
     const [isRateChanging, setIsRateChanging] = useState(false);
     const [isSwapButtonDisabled, setIsSwapButtonDisabled] = useState(false);
     const [networkFee, setNetworkFee] = useState('0');
     const [exchangeFee, setExchangeFee] = useState('0');
     const [totalAmount, setTotalAmount] = useState('0');
     const [currenciesData, setCurrenciesData] = useState([]);
+    const [isFixedRateEnabled, setIsFixedRateEnabled] = useState(true);
+
     const { 
         estimateFloatingRate, 
         estimateFixedRate, 
@@ -38,13 +39,19 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap, c
                 const fetchedCurrencies = await getCurrenciesFull();
                 console.log('Fetched currencies:', fetchedCurrencies);
                 setCurrenciesData(fetchedCurrencies);
+                
+                // Check if fixed rate is enabled for both send and receive currencies
+                const sendCurrencyData = fetchedCurrencies.find(c => c.ticker.toLowerCase() === sendCurrency.toLowerCase());
+                const receiveCurrencyData = fetchedCurrencies.find(c => c.ticker.toLowerCase() === receiveCurrency.toLowerCase());
+                
+                setIsFixedRateEnabled(sendCurrencyData?.fixRateEnabled && receiveCurrencyData?.fixRateEnabled);
             } catch (err) {
                 console.error('Error fetching currencies:', err);
             }
         };
 
-        fetchCurrencies(); // Fetch all currencies once on mount
-    }, []);
+        fetchCurrencies();
+    }, [sendCurrency, receiveCurrency]);
 
     const sendCurrencyData = useMemo(() => {
         return currenciesData.find(c => c.ticker.toLowerCase() === sendCurrency.toLowerCase());
@@ -236,56 +243,59 @@ const handleRefundAddressChange = (e) => {
 
 const handleRateTypeChange = (e) => {
     const newRateType = e.target.value;
+    if (newRateType === 'fixed' && !isFixedRateEnabled) {
+        return; // Prevent changing to fixed rate if it's not enabled
+    }
     setRateType(newRateType);
-    setEstimatedAmount(''); // Clear the estimated amount immediately
+    setEstimatedAmount('');
     setError('');
     setIsEstimationSuccessful(false);
-    setRateId(null); // Clear the rateId when switching
-    setIsRateChanging(true); // Set rate changing flag
+    setRateId(null);
+    setIsRateChanging(true);
 
-    // Trigger a new estimation if we have all necessary data
     if (amount && sendCurrency && receiveCurrency) {
         estimateAmount();
     }
 
-    // Disable the swap button for 1.25 seconds
     setTimeout(() => {
         setIsRateChanging(false);
     }, 3200);
 };
-    const RateTypeOptionBar = ({ rateType, onChange }) => (
-        <div className={styles.inputGroup}>
-            <div className={styles.inputWithTooltip}>
-                <FaQuestionCircle className={styles.tooltipIcon} />
-                <div className={`${styles.tooltip} ${styles.rateTypeTooltip}`}>
-                    Floating rates might change any other second. As a result, you might receive more or less than you thought you would.<br /><br />
-                    A fixed exchange rate is a rate that totally matches the amount displayed to the user at the beginning of the exchange, independently from the further rate volatility.
-                </div>
-                <div className={styles.rateTypeOptionBar}>
-                    <label className={rateType === 'floating' ? styles.active : ''}>
-                        <input
-                            type="radio"
-                            value="floating"
-                            checked={rateType === 'floating'}
-                            onChange={onChange}
-                            hidden
-                        />
-                        Floating Rate
-                    </label>
-                    <label className={rateType === 'fixed' ? styles.active : ''}>
-                        <input
-                            type="radio"
-                            value="fixed"
-                            checked={rateType === 'fixed'}
-                            onChange={onChange}
-                            hidden
-                        />
-                        Fixed Rate
-                    </label>
-                </div>
+
+const RateTypeOptionBar = ({ rateType, onChange, isFixedRateEnabled }) => (
+    <div className={styles.inputGroup}>
+        <div className={styles.inputWithTooltip}>
+            <FaQuestionCircle className={styles.tooltipIcon} />
+            <div className={`${styles.tooltip} ${styles.rateTypeTooltip}`}>
+                Floating rates might change any other second. As a result, you might receive more or less than you thought you would.<br /><br />
+                A fixed exchange rate is a rate that totally matches the amount displayed to the user at the beginning of the exchange, independently from the further rate volatility.
+            </div>
+            <div className={styles.rateTypeOptionBar}>
+                <label className={rateType === 'floating' ? styles.active : ''}>
+                    <input
+                        type="radio"
+                        value="floating"
+                        checked={rateType === 'floating'}
+                        onChange={onChange}
+                        hidden
+                    />
+                    Floating Rate
+                </label>
+                <label className={`${rateType === 'fixed' ? styles.active : ''} ${!isFixedRateEnabled ? styles.disabled : ''}`}>
+                    <input
+                        type="radio"
+                        value="fixed"
+                        checked={rateType === 'fixed'}
+                        onChange={onChange}
+                        hidden
+                        disabled={!isFixedRateEnabled}
+                    />
+                    Fixed Rate
+                </label>
             </div>
         </div>
-    );
+    </div>
+);
 
     useEffect(() => {
         setIsVisible(true);
@@ -344,7 +354,11 @@ const handleRateTypeChange = (e) => {
             </div>
 
             <div className={styles.inputGroup}>
-                <RateTypeOptionBar rateType={rateType} onChange={handleRateTypeChange} />
+                <RateTypeOptionBar 
+                    rateType={rateType} 
+                    onChange={handleRateTypeChange} 
+                    isFixedRateEnabled={isFixedRateEnabled}
+                />
             </div>
             {estimatedAmount && (
                 <div className={styles.feeBreakdownContainer}>

@@ -21,7 +21,7 @@ const parseErrorMessage = (error) => {
         return `MINIMUM AMOUNT IS ${amount} ${asset.toUpperCase()}`;
     }
     
-    return error; // Return the original error if it doesn't match either format
+    return error; 
 };
 
 
@@ -60,8 +60,8 @@ const estimateFloatingRate = async (from, to, amountFrom) => {
         if (response.ok && data.result && data.result.length > 0) {
             return {
                 amountTo: data.result[0].amountTo,
-                networkFee: data.result[0].networkFee || '0', // Include networkFee, default to '0' if not present
-                visibleAmount: data.result[0].visibleAmount || data.result[0].amountTo // Include visibleAmount if available
+                networkFee: data.result[0].networkFee || '0', 
+                visibleAmount: data.result[0].visibleAmount || data.result[0].amountTo 
             };
         } else if (data.error) {
             console.error('Changelly API Error:', data.error);
@@ -93,7 +93,7 @@ const estimateFixedRate = async (from, to, amountFrom) => {
                 rateId: data.result[0].id,
                 min: data.result[0].min,
                 max: data.result[0].max,
-                networkFee: data.result[0].networkFee || '0', // Include networkFee, default to '0' if not present
+                networkFee: data.result[0].networkFee || '0', 
             };
         } else if (data.error) {
             console.error('Changelly API Error:', data.error);
@@ -281,8 +281,7 @@ return {
     getStatus, 
     searchTransactions, 
     getPairs, 
-    getCurrenciesFull,// Don't forget to return this function
-    parseErrorMessage // Add this line
-
+    getCurrenciesFull,
+    parseErrorMessage 
 };
 }

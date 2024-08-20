@@ -677,7 +677,16 @@
     text-align: center;
     font-weight: bold;
   }
-  
+  .cypxRow {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .cypxRow .currencyIcon{
+    width: 100px;
+   margin-bottom: 5px;
+   
+  }
   /* Style the swap button */
   .swapButton {
     width: 100%;
@@ -691,7 +700,10 @@
     margin-top: 20px;
     transition: background-color 0.3s;
   }
-  
+  .rateTypeOptionBar label.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
   .swapButton:disabled {
     background-color: #666; /* Grey out the button when disabled */
     cursor: not-allowed;
