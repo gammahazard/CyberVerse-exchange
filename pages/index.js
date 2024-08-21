@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import Title from '../components/LandingPage/Title';
-import LaunchButton from '../components/LandingPage/LaunchButton';
 import TermsModal from '../components/TermsModal/TermsModal';
-import styles from '../styles/Home.module.css';
+import styles from '../styles/Landing.module.css';
 
 export default function Home() {
   const [showTerms, setShowTerms] = useState(false);
@@ -32,10 +31,7 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.content}>
-        <Title />
-        <LaunchButton onClick={handleLaunch} />
-      </div>
+      <Title onLaunch={handleLaunch} />
       {showTerms && <TermsModal onAccept={handleAccept} onDecline={() => setShowTerms(false)} />}
     </div>
   );

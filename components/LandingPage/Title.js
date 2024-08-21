@@ -1,10 +1,20 @@
-import styles from '../../styles/Home.module.css';
+// components/LandingPage/Title.js
+import React from 'react';
+import styles from '../../styles/Landing.module.css';
+import LaunchButton from './LaunchButton';
 
-export default function Title() {
+export default function Title({ onLaunch }) {
   return (
-    <h1 className={styles.title}>
-      <span className={styles.titleGlow}>CyberVerse</span>
-      <span className={styles.titleSub}>Exchange</span>
-    </h1>
+    <div className={styles.content}>
+      <h1 className={styles.title}>
+        <span className={styles.titleGlow}>Cyberia Exchange</span>
+      </h1>
+      <span className={styles.titleSub}>
+        Exchange 500+ tokens across almost 20+ chains!
+      </span>
+      <div className={styles.launchButtonContainer}>
+        <LaunchButton onClick={onLaunch} />
+      </div>
+    </div>
   );
 }

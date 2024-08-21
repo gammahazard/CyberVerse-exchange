@@ -136,7 +136,7 @@ export default function AddressDisplay({
           setIsWalletConnected(true);
           setConnectedWalletName('ADA Wallet');
           const walletBalance = await wallet.getBalance();
-          setWalletBalance(walletBalance[0]?.quantity || 0); // Assuming balance[0] is in Lovelace
+          setWalletBalance(walletBalance[0]?.quantity || 0); 
           console.log(walletBalance)
         } else {
           const ethereumProvider = await detectEthereumProvider();
