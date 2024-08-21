@@ -305,6 +305,7 @@ const RateTypeOptionBar = ({ rateType, onChange, isFixedRateEnabled }) => (
                 </label>
             </div>
         </div>
+        
     </div>
 );
 
