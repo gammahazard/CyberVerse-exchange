@@ -40,7 +40,7 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap, c
                 console.log('Fetched currencies:', fetchedCurrencies);
                 setCurrenciesData(fetchedCurrencies);
                 
-                // Check if fixed rate is enabled for both send and receive currencies
+             
                 const sendCurrencyData = fetchedCurrencies.find(c => c.ticker.toLowerCase() === sendCurrency.toLowerCase());
                 const receiveCurrencyData = fetchedCurrencies.find(c => c.ticker.toLowerCase() === receiveCurrency.toLowerCase());
                 
@@ -80,39 +80,50 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap, c
         [receiveCurrency, validateAddress]
     );
 
-    const validateRefundAddress = useCallback(
-        async (address) => {
-            if (address && sendCurrency) {
-                try {
-                    const validationResult = await validateAddress(sendCurrency, address);
-                    setIsRefundAddressValid(validationResult.result);
-                    setRefundValidationError(validationResult.message || '');
-                } catch (err) {
-                    setIsRefundAddressValid(false);
-                    setRefundValidationError(err.message || 'Failed to validate refund address');
-                }
-            } else {
-                // If the address is empty, set it as invalid
+const validateRefundAddress = useCallback(
+    async (address) => {
+        if (address && sendCurrency) {
+            try {
+                const validationResult = await validateAddress(sendCurrency, address);
+                setIsRefundAddressValid(validationResult.result);
+                setRefundValidationError(validationResult.message || '');
+            } catch (err) {
                 setIsRefundAddressValid(false);
-                setRefundValidationError('Refund address is required');
+                setRefundValidationError(err.message || 'Failed to validate refund address');
             }
-        },
-        [validateAddress]
-    );
+        } else {
+            setIsRefundAddressValid(false);
+            setRefundValidationError('Refund address is required');
+        }
+    },
+    [validateAddress, sendCurrency] // Added sendCurrency to dependencies
+);
 
  
 
-    useEffect(() => {
+useEffect(() => {
+    const setRefundAddressAsync = async () => {
         if (connectedWalletAddress && (
             sendCurrency.toLowerCase() === 'eth' || 
             sendCurrency.toLowerCase() === 'arb' || 
-            sendCurrency.toLowerCase() === 'sol' ||
-            sendCurrency.toLowerCase() === 'erg'  // Add ERG here
+            sendCurrency.toLowerCase() === 'sol' || 
+            sendCurrency.toLowerCase() === 'erg' || 
+            sendCurrency.toLowerCase() === 'ada' // Ensure ADA is included here
         )) {
-            setRefundAddress(connectedWalletAddress);
-            validateRefundAddress(connectedWalletAddress);
+            let address = connectedWalletAddress;
+
+            // If connectedWalletAddress is a Promise, await its resolution
+            if (typeof connectedWalletAddress.then === 'function') {
+                address = await connectedWalletAddress;
+            }
+
+            setRefundAddress(address);
+            validateRefundAddress(address);
         }
-    }, [sendCurrency, connectedWalletAddress, validateRefundAddress]);
+    };
+
+    setRefundAddressAsync();
+}, [sendCurrency, connectedWalletAddress, validateRefundAddress]);
 
 
     const estimateAmount = useCallback(async () => {
@@ -124,20 +135,20 @@ export default function SwapInterface({ sendCurrency, receiveCurrency, onSwap, c
                     setNetworkFee(estimation.networkFee);
                     const totalEstimated = parseFloat(estimation.visibleAmount || estimation.amountTo);
                     const exchangeFeeAmount = totalEstimated * 0.0075; // 0.9% exchange fee
-                    setExchangeFee(exchangeFeeAmount.toFixed(8));
+                    setExchangeFee(exchangeFeeAmount.toFixed(6));
                     const amountAfterFees = totalEstimated - parseFloat(estimation.networkFee) - exchangeFeeAmount;
-                    setEstimatedAmount(amountAfterFees.toFixed(8));
-                    setTotalAmount(totalEstimated.toFixed(8));
+                    setEstimatedAmount(amountAfterFees.toFixed(6));
+                    setTotalAmount(totalEstimated.toFixed(6));
                     setRateId(null);
                 } else {
                     estimation = await estimateFixedRate(sendCurrency, receiveCurrency, amount);
                     setNetworkFee(estimation.networkFee);
                     const totalEstimated = parseFloat(estimation.amountTo);
                     const exchangeFeeAmount = totalEstimated * 0.0075; // 0.9% exchange fee
-                    setExchangeFee(exchangeFeeAmount.toFixed(8));
+                    setExchangeFee(exchangeFeeAmount.toFixed(6));
                     const amountAfterFees = totalEstimated - parseFloat(estimation.networkFee) - exchangeFeeAmount;
-                    setEstimatedAmount(amountAfterFees.toFixed(8));
-                    setTotalAmount(totalEstimated.toFixed(8));
+                    setEstimatedAmount(amountAfterFees.toFixed(6));
+                    setTotalAmount(totalEstimated.toFixed(6));
                     setRateId(estimation.rateId);
                     if (parseFloat(amount) < parseFloat(estimation.min) || parseFloat(amount) > parseFloat(estimation.max)) {
                         throw new Error(`Amount must be between ${estimation.min} and ${estimation.max} ${sendCurrency.toUpperCase()}`);
@@ -206,7 +217,7 @@ const handleAmountChange = (e) => {
     setAmount(newAmount);
     setIsEstimationSuccessful(false);
     
-    // Disable the swap button for 2.5 seconds
+
     setIsSwapButtonDisabled(true);
     setTimeout(() => {
         setIsSwapButtonDisabled(false);
@@ -223,9 +234,9 @@ useEffect(() => {
         if (amount) {
             estimateAmount();
         }
-    }, 1000); // 1-second interval for updating the estimation
+    }, 1000); 
 
-    return () => clearInterval(interval); // Cleanup interval on component unmount
+    return () => clearInterval(interval); 
 }, [amount, estimateAmount]);
 const handleAddressChange = (e) => {
     const address = e.target.value;
@@ -244,7 +255,7 @@ const handleRefundAddressChange = (e) => {
 const handleRateTypeChange = (e) => {
     const newRateType = e.target.value;
     if (newRateType === 'fixed' && !isFixedRateEnabled) {
-        return; // Prevent changing to fixed rate if it's not enabled
+        return; 
     }
     setRateType(newRateType);
     setEstimatedAmount('');
@@ -414,7 +425,7 @@ const RateTypeOptionBar = ({ rateType, onChange, isFixedRateEnabled }) => (
         !isEstimationSuccessful ||
         !isRefundAddressValid || 
         isRateChanging ||
-        isSwapButtonDisabled // Disable the button based on this state
+        isSwapButtonDisabled 
     }
 >
     Exchange Now

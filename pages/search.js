@@ -17,7 +17,7 @@ export default function Search() {
   const handleSearch = async () => {
     setLoading(true);
     setError('');
-    setTransactions([]); // Clear previous results
+    setTransactions([]); 
     try {
       const result = await searchTransactions(searchAddress);
       setTransactions(result.sort((a, b) => b.createdAt - a.createdAt));

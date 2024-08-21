@@ -6,6 +6,7 @@ import { FaSpinner } from 'react-icons/fa';
 import EthereumWalletModal from '../../wallets/ethereum/EthereumWalletModal';
 import SolanaWalletModal from '../../wallets/solana/SolanaWalletModal';
 import ErgoWalletModal from '../../wallets/ergo/ErgoWalletModal';
+import AdaWalletModal from '../../wallets/cardano/AdaWalletModal';
 
 const priorityCurrencies = ['btc', 'eth', 'arb', 'sol', 'ton', 'erg', 'ltc', 'cro', 'usdt', 'usdc'];
 
@@ -20,6 +21,8 @@ export default function FilteredCurrencyList({ onSelect, prompt, availablePairs 
   const fetchedOnce = useRef(false);
   const [showSolanaModal, setShowSolanaModal] = useState(false);
   const [showErgoModal, setShowErgoModal] = useState(false);
+  const [showAdaModal, setShowAdaModal] = useState(false);
+
   useEffect(() => {
     const fetchFullCurrencyList = async () => {
       try {
@@ -76,9 +79,17 @@ export default function FilteredCurrencyList({ onSelect, prompt, availablePairs 
     } else if (currency.toLowerCase() === 'erg') {
       setSelectedCurrency(currency);
       setShowErgoModal(true);
+    } else if (currency.toLowerCase() === 'ada') {
+      setSelectedCurrency(currency);
+      setShowAdaModal(true);
     } else {
       onSelect(currency);
     }
+  };
+
+  const handleAdaWalletConnected = (address) => {
+    setShowAdaModal(false);
+    onSelect(selectedCurrency, address);
   };
 
   const handleErgoWalletConnected = (address) => {
@@ -150,6 +161,13 @@ export default function FilteredCurrencyList({ onSelect, prompt, availablePairs 
         <ErgoWalletModal
           onClose={() => setShowErgoModal(false)}
           onWalletConnected={handleErgoWalletConnected}
+          onContinueWithoutWallet={handleContinueWithoutWallet}
+        />
+      )}
+        {showAdaModal && (
+        <AdaWalletModal
+          onClose={() => setShowAdaModal(false)}
+          onWalletConnected={handleAdaWalletConnected}
           onContinueWithoutWallet={handleContinueWithoutWallet}
         />
       )}

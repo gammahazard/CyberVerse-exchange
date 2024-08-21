@@ -40,15 +40,15 @@ export default function StatusDisplay({ transactionId, onNewTransaction, initial
     }, [transactionId, getStatusHook]);
 
     useEffect(() => {
-        fetchStatus(); // Initial fetch
+        fetchStatus(); 
 
-        const intervalId = setInterval(fetchStatus, 5000); // Fetch every 5 seconds
+        const intervalId = setInterval(fetchStatus, 5000);
 
-        return () => clearInterval(intervalId); // Cleanup on unmount
+        return () => clearInterval(intervalId); 
     }, [fetchStatus]);
 
     useEffect(() => {
-        // Update local storage when status changes
+     
         if (txInfo.id) {
             const storedTransactions = JSON.parse(localStorage.getItem('transactions') || '[]');
             const updatedTransactions = storedTransactions.map(tx => 

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import QRCode from 'qrcode.react';
-import { FaClipboard, FaWallet } from 'react-icons/fa';
+import { FaClipboard } from 'react-icons/fa';
 import styles from '../../styles/AddressDisplay.module.css';
 import { detectEthereumProvider, connectWallet, sendTransaction } from '../../wallets/ethereum/eth';
 import { detectSolanaProvider, connectSolanaWallet, sendSolanaTransaction, getSolanaBalance } from '../../wallets/solana/solana';
 import { detectErgoProvider, connectErgoWallet, buildAndSignErgoTransaction, getErgoBalance } from '../../wallets/ergo/ergo';
-
-
+import { sendAdaTransaction } from '../../wallets/cardano/ada'; // ADA transaction method
+import { useWallet } from '@meshsdk/react'; // ADA connection methods
+import { connectAdaWallet, getAdaBalance } from '../../wallets/cardano/ada';
 export default function AddressDisplay({ 
   currencyFrom, 
   currencyTo, 
@@ -26,6 +27,9 @@ export default function AddressDisplay({
 
   const network = currencyFrom.toLowerCase() === 'arb' ? 'arbitrum' : 'ethereum';
 
+  // ADA wallet connection management
+  const { wallet, connected, name, connect, disconnect, error } = useWallet();
+
   const handleCopy = () => {
     navigator.clipboard.writeText(payinAddress);
     setCopied(true);
@@ -34,84 +38,55 @@ export default function AddressDisplay({
 
   const handleSendWithWallet = async () => {
     setTransactionError(null);
-    if (currencyFrom.toLowerCase() === 'sol') {
-      if (walletProvider) {
-        try {
-          console.log('Attempting to send Solana transaction:');
-          console.log('To Address:', payinAddress);
-          console.log('Amount:', amountExpectedFrom, 'SOL');
-
-          const txHash = await sendSolanaTransaction(walletProvider, payinAddress, parseFloat(amountExpectedFrom));
-          console.log('Transaction sent:', txHash);
-          alert(`Transaction sent! Hash: ${txHash}`);
-          onSent();
-        } catch (error) {
-          console.error('Error sending Solana transaction:', error);
-          handleTransactionError(error);
-        }
-      } else {
-        setTransactionError('Solana wallet is not connected!');
-      }
-    } else if (currencyFrom.toLowerCase() === 'erg') {
-      try {
-        console.log('Attempting to send Ergo transaction:');
-        console.log('To Address:', payinAddress);
-        console.log('Amount:', amountExpectedFrom, 'ERG');
-
+    try {
+      if (currencyFrom.toLowerCase() === 'sol') {
+        const txHash = await sendSolanaTransaction(walletProvider, payinAddress, parseFloat(amountExpectedFrom));
+        alert(`Transaction sent! Hash: ${txHash}`);
+      } else if (currencyFrom.toLowerCase() === 'erg') {
         const txId = await buildAndSignErgoTransaction(payinAddress, amountExpectedFrom);
-        console.log('Transaction sent:', txId);
         alert(`Transaction sent! ID: ${txId}`);
-        onSent();
-      } catch (error) {
-        console.error('Error sending Ergo transaction:', error);
-        handleTransactionError(error);
-      }
-    } else {
-      if (walletProvider) {
-        try {
-          console.log('Attempting to send transaction:');
-          console.log('Network:', network);
-          console.log('To Address:', payinAddress);
-          console.log('Amount:', amountExpectedFrom, currencyFrom.toUpperCase());
-    
-          const tokenAddress = currencyFrom.toLowerCase() === 'arb' ? '0x912CE59144191C1204E64559FE8253a0e49E6548' : null;
-          const txHash = await sendTransaction(walletProvider, payinAddress, amountExpectedFrom, network, tokenAddress);
-          console.log('Transaction sent:', txHash);
+      } else if (currencyFrom.toLowerCase() === 'ada') {
+        if (wallet) {
+          const balanceInAda = parseFloat(walletBalance) / 1e6; // Convert Lovelace to ADA
+          if (balanceInAda < parseFloat(amountExpectedFrom)) {
+            const neededAda = parseFloat(amountExpectedFrom) - balanceInAda;
+            setTransactionError(`Insufficient balance. You need at least ${neededAda.toFixed(6)} more ADA.`);
+            return;
+          }
+          const txHash = await sendAdaTransaction(wallet, payinAddress, amountExpectedFrom);
           alert(`Transaction sent! Hash: ${txHash}`);
-          onSent();
-        } catch (error) {
-          console.error('Error sending transaction:', error);
-          handleTransactionError(error);
+        } else {
+          setTransactionError('ADA wallet is not connected!');
         }
       } else {
-        setTransactionError('Ethereum wallet is not connected!');
+        const txHash = await sendTransaction(walletProvider, payinAddress, amountExpectedFrom, network);
+        alert(`Transaction sent! Hash: ${txHash}`);
       }
-      
+      onSent();
+    } catch (error) {
+      handleTransactionError(error);
     }
   };
-  
+
   const handleTransactionError = (error) => {
     if (error && error.message) {
-      if (currencyFrom.toLowerCase() === 'erg' && error.message.includes('Insufficient inputs')) {
-        // Extract the required amount from the Ergo error message
+      if (error.message.includes('Insufficient inputs')) {
         const match = error.message.match(/nanoErgs: (\d+)/);
         if (match && match[1]) {
           const requiredNanoErgs = parseInt(match[1], 10);
-          const requiredErgs = requiredNanoErgs / 1000000000; // Convert nanoErgs to ERG
+          const requiredErgs = requiredNanoErgs / 1e9; // Convert nanoErgs to ERG
           setTransactionError(`Insufficient balance. You need at least ${requiredErgs.toFixed(4)} ERG to complete this transaction.`);
         } else {
           setTransactionError(`Insufficient balance. Please check your ERG balance and try again.`);
         }
-      } else if ((currencyFrom.toLowerCase() === 'eth' || currencyFrom.toLowerCase() === 'arb') && 
-                 error.message.includes('insufficient funds for gas * price + value')) {
-        // Extract the required amount from the Ethereum error message
+      } else if (error.message.includes('insufficient funds for gas * price + value')) {
         const match = error.message.match(/want (\d+)/);
         if (match && match[1]) {
           const requiredWei = BigInt(match[1]);
           const requiredEth = Number(requiredWei) / 1e18; // Convert Wei to ETH
-          setTransactionError(`Insufficient balance. You need at least ${requiredEth.toFixed(6)} ${currencyFrom.toUpperCase()} to complete this transaction.`);
+          setTransactionError(`Insufficient balance. You need at least ${requiredEth.toFixed(6)} ETH to complete this transaction.`);
         } else {
-          setTransactionError(`Insufficient balance. Please check your ${currencyFrom.toUpperCase()} balance and try again.`);
+          setTransactionError(`Insufficient balance. Please check your ETH balance and try again.`);
         }
       } else {
         setTransactionError(`Transaction failed: ${error.message}`);
@@ -120,7 +95,6 @@ export default function AddressDisplay({
       setTransactionError('Failed to send transaction. Please check the console for details.');
     }
   };
-
   const updateWalletBalance = async () => {
     if (walletProvider) {
       try {
@@ -129,8 +103,9 @@ export default function AddressDisplay({
           balance = await getSolanaBalance(walletProvider.publicKey.toString());
         } else if (currencyFrom.toLowerCase() === 'erg') {
           balance = await getErgoBalance();
-        } else {
-          // Ethereum balance logic here if needed
+        } else if (currencyFrom.toLowerCase() === 'ada' && wallet) {
+          balance = await getAdaBalance(wallet); // Use the refactored function to get ADA balance
+          console.log('Formatted ADA Balance:', balance); // Log the formatted balance for debugging
         }
         setWalletBalance(balance);
       } catch (error) {
@@ -138,26 +113,17 @@ export default function AddressDisplay({
       }
     }
   };
-
   useEffect(() => {
     const checkWalletConnection = async () => {
-      if (currencyFrom.toLowerCase() === 'sol') {
-        try {
+      try {
+        if (currencyFrom.toLowerCase() === 'sol') {
           const { account, walletName, provider } = await connectSolanaWallet();
           setIsWalletConnected(!!account);
           setConnectedWalletName(walletName);
           setWalletProvider(provider);
-          // Update balance immediately after connecting
           const balance = await getSolanaBalance(account);
           setWalletBalance(balance);
-        } catch (error) {
-          console.error("Failed to check Solana wallet connection:", error);
-          setIsWalletConnected(false);
-          setConnectedWalletName('');
-          setWalletProvider(null);
-        }
-      } else if (currencyFrom.toLowerCase() === 'erg') {
-        try {
+        } else if (currencyFrom.toLowerCase() === 'erg') {
           const ergoProvider = await detectErgoProvider();
           if (ergoProvider) {
             const { address, balance, wallet } = await connectErgoWallet();
@@ -166,62 +132,64 @@ export default function AddressDisplay({
             setWalletProvider(ergoProvider);
             setWalletBalance(balance);
           }
-        } catch (error) {
-          console.error("Failed to check Ergo wallet connection:", error);
-          setIsWalletConnected(false);
-          setConnectedWalletName('');
-          setWalletProvider(null);
-        }
-   
-      } else {
-        const ethereumProvider = await detectEthereumProvider();
-        if (ethereumProvider) {
-          try {
+        } else if (currencyFrom.toLowerCase() === 'ada' && connected) {
+          setIsWalletConnected(true);
+          setConnectedWalletName('ADA Wallet');
+          const walletBalance = await wallet.getBalance();
+          setWalletBalance(walletBalance[0]?.quantity || 0); // Assuming balance[0] is in Lovelace
+          console.log(walletBalance)
+        } else {
+          const ethereumProvider = await detectEthereumProvider();
+          if (ethereumProvider) {
             const { account } = await connectWallet(ethereumProvider.provider, network);
             setIsWalletConnected(!!account);
             setConnectedWalletName('MetaMask');
             setWalletProvider(ethereumProvider.provider);
-          } catch (error) {
-            console.error("Failed to check wallet connection:", error);
-            setIsWalletConnected(false);
-            setConnectedWalletName('');
-            setWalletProvider(null);
           }
         }
+      } catch (error) {
+        console.error("Failed to check wallet connection:", error);
+        setIsWalletConnected(false);
+        setConnectedWalletName('');
       }
     };
 
     checkWalletConnection();
-  }, [currencyFrom, network]);
+  }, [currencyFrom, network, connected, wallet]);
+
   const formatBalance = (balance) => {
     if (typeof balance === 'number') {
-      return balance.toFixed(4);
+      return (balance / 1e6).toFixed(6); // Convert Lovelace to ADA and format it
     } else if (typeof balance === 'string') {
-      // If balance is already a string, we assume it's properly formatted
-      return balance;
+      return (parseFloat(balance) / 1e6).toFixed(6); // If balance is a string, convert it to a number and format
     } else if (balance && typeof balance.toString === 'function') {
-      // If it's an object (like BigNumber), try to convert it to string
-      return balance.toString();
+      return (parseFloat(balance.toString()) / 1e6).toFixed(6); // Convert any object balance to a string, then to a number, and format
     }
-    return 'N/A'; // Default case if balance is undefined or null
+    return 'N/A';
   };
 
   useEffect(() => {
     if (isWalletConnected) {
       updateWalletBalance();
-      const intervalId = setInterval(updateWalletBalance, 10000); // Update every 10 seconds
+      const intervalId = setInterval(updateWalletBalance, 10000);
       return () => clearInterval(intervalId);
     }
   }, [isWalletConnected, currencyFrom, walletProvider]);
+
   const getWalletName = () => {
     if (currencyFrom.toLowerCase() === 'erg') {
       return 'Ergo Wallet';
     } else if (currencyFrom.toLowerCase() === 'sol') {
       return 'Solana Wallet';
+    } else if (currencyFrom.toLowerCase() === 'ada') {
+      return 'ADA Wallet';
     } else {
       return connectedWalletName || 'MetaMask';
     }
   };
+
+  const shouldShowWalletOptions = ['eth', 'arb', 'sol', 'erg', 'ada'].includes(currencyFrom.toLowerCase());
+
   return (
     <div className={styles.addressDisplay}>
       <h2>Transaction Details</h2>
@@ -259,10 +227,12 @@ export default function AddressDisplay({
         <QRCode value={payinAddress} size={160} />
       </div>
 
-
       <div className={styles.buttonContainer}>
-        <button onClick={onSent} className={styles.sentButton}>I&apos;ve sent the funds</button>
-        {isWalletConnected && (
+        <button onClick={onSent} className={styles.sentButton}>
+          I&apos;ve sent the funds
+        </button>
+
+        {shouldShowWalletOptions && isWalletConnected && (
           <>
             <div className={styles.walletInfo}>
               <p>Connected Wallet: {getWalletName()}</p>
@@ -273,14 +243,12 @@ export default function AddressDisplay({
             <button 
               onClick={handleSendWithWallet} 
               className={styles.walletButton}
-              // Removed the disabled attribute
             >
               Send with {getWalletName()}
             </button>
           </>
         )}
       </div>
-
 
       {refundAddress && (
         <div className={styles.refundInfo}>

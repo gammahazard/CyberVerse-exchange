@@ -62,11 +62,11 @@ export default function InProgress({ onClose, onSelectTransaction }) {
     }, [fetchStatuses]);
 
     useEffect(() => {
-        // Reset loading state and hasLoadedBefore when component mounts
+ 
         setIsLoading(true);
         hasLoadedBefore.current = false;
 
-        // Cleanup function to reset state when component unmounts
+  
         return () => {
             setIsLoading(true);
             hasLoadedBefore.current = false;

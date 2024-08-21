@@ -135,12 +135,12 @@ export default function Main() {
 
         setTransactionDetails({
           ...transaction,
-          amount: swapParams.amount  // Add the amount to the transaction details
+          amount: swapParams.amount  
         });
 
         const updatedTransactions = [...inProgressTransactions, {
           ...transaction,
-          amount: swapParams.amount  // Add the amount to the stored transaction
+          amount: swapParams.amount  
         }];
         localStorage.setItem('transactions', JSON.stringify(updatedTransactions));
         setInProgressTransactions(updatedTransactions);
@@ -159,11 +159,11 @@ export default function Main() {
 
   // ---------------------------------------------------- new function
   const handleSent = () => {
-    setIsVisible(false); // Fade out the current step
+    setIsVisible(false); 
     setTimeout(() => {
-      setStep(5); // Move to the next step after fading out
-      setIsVisible(true); // Fade in the new step
-    }, 300); // Adjust the timeout to match your fade-out duration
+      setStep(5); 
+      setIsVisible(true); 
+    }, 300); 
   };
 
   // ---------------------------------------------------- ui
@@ -217,7 +217,7 @@ export default function Main() {
             payinAddress={transactionDetails.payinAddress}
             payoutAddress={transactionDetails.payoutAddress}
             refundAddress={transactionDetails.refundAddress}
-            onSent={handleSent} // This now correctly references the handleSent function
+            onSent={handleSent} 
           />
         )}
  {step === 5 && transactionDetails && (

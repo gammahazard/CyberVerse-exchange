@@ -38,7 +38,7 @@ const getCurrencies = async () => {
         if (!data.result || !Array.isArray(data.result)) {
             throw new Error('Invalid data structure');
         }
-        return data.result; // Return just the array of currencies
+        return data.result; 
     } catch (error) {
         console.error('Error fetching currencies:', error);
         throw error;

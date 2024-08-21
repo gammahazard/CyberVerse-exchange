@@ -29,7 +29,7 @@ export default function CurrencyList({ onSelect, prompt }) {
     };
 
     fetchCurrencies();
-  }, []); // Empty dependency array ensures this runs only once
+  }, []); 
 
   const sortedCurrencies = useMemo(() => {
     return currencies.sort((a, b) => {
@@ -68,7 +68,7 @@ export default function CurrencyList({ onSelect, prompt }) {
             key={currency.ticker} 
             currency={currency.ticker} 
             onClick={() => onSelect(currency.ticker)}
-            currencyInfo={currency} // Pass the full currency info
+            currencyInfo={currency} 
           />
         ))}
       </div>
