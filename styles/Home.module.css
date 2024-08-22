@@ -163,14 +163,6 @@
 
 
   
-  .currencyGrid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 100px;
-    margin-top: 30px;
-    min-width:800px;
-  }
-  
 
    .swapButton, .inProgressButton, .sentButton {
     padding: 15px 25px;
@@ -304,19 +296,7 @@
 }
 
 
-.currencyHeader {
-  margin-bottom: 10px;
-}
 
-.currencyTicker {
-  font-size: 24px;
-  font-weight: bold;
-  margin-right: 10px;
-}
-
-.currencyFullName {
-  font-size: 18px;
-}
 
 .amount {
   font-size: 20px;
@@ -572,14 +552,7 @@ box-shadow: 0 0 20px rgb(0, 0, 0), 0 0 30px rgba(255, 255, 255, 0.4); /* More in
     text-align: center;
     color: #ff00ff;; /* Neon green color for emphasis */
   }
-  .currencyButtonContainer:hover .currencyButton {
-    border-color: #0070f3;
-}
-.currencyButton:hover {
-  background-color: #0a0a0a;
-  color: #ff00ff;
-  box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
-}
+
   /* Style the error message */
   .error {
     color: #ff4d4f; /* Red error color */
@@ -632,14 +605,169 @@ box-shadow: 0 0 20px rgb(0, 0, 0), 0 0 30px rgba(255, 255, 255, 0.4); /* More in
   .inputGroup {
     margin-bottom: 20px;
   }
+  .currencyHeader {
+    margin-bottom: 10px;
+  }
+  
+  .currencyTicker {
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  .currencyListContainer {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  
+  .currencyList {
+    width: 100%;
+    max-width: 1200px;
+  }
+  
+  .currencyGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 3fr));
+    gap: 1.5rem;
+    padding: 20px;
+    min-height: 400px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  
+  .currencyGrid.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .currencyButtonWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  
+  .currencyButtonWrapper.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .searchInput {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .prompt {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .noResults {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 18px;
+    color: #666;
+  }
+  
+  .loadingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-size: 18px;
+    color: #666;
+  }
+  
+  .fadeIn {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
+  .fadeOut {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
 
   .currencyList {
-        width: 100%;
-        padding:50px;
-        border:1px solid #ff00ff;
-        border-radius: 10px;
-      }
-
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .currencyGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 1.5rem;
+    padding: 20px;
+    min-height: 400px; /* Adjust this value based on your needs */
+    opacity: 0;
+    min-width:290px;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  
+  .currencyGrid.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .searchInput {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .prompt {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .noResults {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 18px;
+    color: #666;
+  }
+  
+  .loadingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-size: 18px;
+    color: #666;
+  }
+  
+  .currencyFullName {
+    font-size: 18px;
+  }
+ 
+      .currencyButtonContainer:hover .currencyButton {
+        border-color: #0070f3;
+    }
+    .currencyButton:hover {
+      background-color: #0a0a0a;
+      color: #ff00ff;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
+    }
     .currencyButtonContainer {
 display:inline-block;
 position:relative;

@@ -1,7 +1,5 @@
-// changelly-exchange/pages/_app.js
 import { MeshProvider } from '@meshsdk/react';
-import '@meshsdk/react/styles.css'; // Add this for default styles
-
+import '@meshsdk/react/styles.css';
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
@@ -13,4 +11,3 @@ function MyApp({ Component, pageProps }) {
 }
 
 export default MyApp;
-

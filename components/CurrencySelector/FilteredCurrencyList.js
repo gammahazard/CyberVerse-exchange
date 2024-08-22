@@ -2,7 +2,6 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import CurrencyButton from './CurrencyButton';
 import useChangelly from '../../hooks/useChangelly';
 import styles from '../../styles/Home.module.css';
-import { FaSpinner } from 'react-icons/fa';
 import EthereumWalletModal from '../../wallets/ethereum/EthereumWalletModal';
 import SolanaWalletModal from '../../wallets/solana/SolanaWalletModal';
 import ErgoWalletModal from '../../wallets/ergo/ErgoWalletModal';
@@ -17,8 +16,10 @@ export default function FilteredCurrencyList({ onSelect, prompt, availablePairs 
   const [fullCurrencyList, setFullCurrencyList] = useState([]);
   const [filteredCurrencies, setFilteredCurrencies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [containerVisible, setContainerVisible] = useState(false);
   const { getCurrenciesFull } = useChangelly();
   const fetchedOnce = useRef(false);
+  const containerRef = useRef(null);
   const [showSolanaModal, setShowSolanaModal] = useState(false);
   const [showErgoModal, setShowErgoModal] = useState(false);
   const [showAdaModal, setShowAdaModal] = useState(false);
@@ -50,6 +51,12 @@ export default function FilteredCurrencyList({ onSelect, prompt, availablePairs 
     }
   }, [fullCurrencyList, availablePairs]);
 
+  useEffect(() => {
+    if (!isLoading && containerRef.current) {
+      setTimeout(() => setContainerVisible(true), 100); // Delay to ensure DOM is ready
+    }
+  }, [isLoading]);
+
   const sortedCurrencies = useMemo(() => {
     return filteredCurrencies.sort((a, b) => {
       const aIndex = priorityCurrencies.indexOf(a.ticker.toLowerCase());
@@ -65,9 +72,6 @@ export default function FilteredCurrencyList({ onSelect, prompt, availablePairs 
   const displayedCurrencies = sortedCurrencies.filter(currency =>
     currency.ticker.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
- 
-
 
   const handleCurrencyClick = (currency) => {
     if (currency.toLowerCase() === 'eth' || currency.toLowerCase() === 'arb') {
@@ -112,10 +116,10 @@ export default function FilteredCurrencyList({ onSelect, prompt, availablePairs 
     onSelect(selectedCurrency);
   };
 
-  if (isLoading) return <div>Loading currencies...</div>;
+  if (isLoading) return <div className={styles.loadingContainer}>Loading currencies...</div>;
 
   return (
-    <>
+    <div className={styles.currencyListContainer}>
       <div className={styles.currencyList}>
         <h2 className={styles.prompt}>{prompt}</h2>
         <input
@@ -125,19 +129,27 @@ export default function FilteredCurrencyList({ onSelect, prompt, availablePairs 
           onChange={(e) => setSearchTerm(e.target.value)}
           className={styles.searchInput}
         />
-        <div className={styles.currencyGrid}>
-          {filteredCurrencies.length === 0 ? (
-            <div className={styles.loadingMessage}>No currencies available</div>
-          ) : (
-            displayedCurrencies.map((currency) => (
-              <CurrencyButton
+        <div 
+          ref={containerRef}
+          className={`${styles.currencyGrid} ${containerVisible ? styles.visible : ''}`}
+        >
+          {displayedCurrencies.length > 0 ? (
+            displayedCurrencies.map((currency, index) => (
+              <div 
                 key={currency.ticker}
-                currency={currency.ticker}
-                onClick={() => handleCurrencyClick(currency.ticker)}
-                currencyInfo={currency}
-                isPriority={priorityCurrencies.includes(currency.ticker.toLowerCase())}
-              />
+                className={`${styles.currencyButtonWrapper} ${containerVisible ? styles.visible : ''}`}
+                style={{ transitionDelay: `${index * 30}ms` }}
+              >
+                <CurrencyButton
+                  currency={currency.ticker}
+                  onClick={() => handleCurrencyClick(currency.ticker)}
+                  currencyInfo={currency}
+                  isPriority={priorityCurrencies.includes(currency.ticker.toLowerCase())}
+                />
+              </div>
             ))
+          ) : (
+            <div className={styles.noResults}>No matching currencies found</div>
           )}
         </div>
       </div>
@@ -149,7 +161,7 @@ export default function FilteredCurrencyList({ onSelect, prompt, availablePairs 
           network={selectedCurrency.toLowerCase() === 'arb' ? 'arbitrum' : 'ethereum'}
         />
       )}
-        {showSolanaModal && (
+      {showSolanaModal && (
         <SolanaWalletModal
           onClose={() => setShowSolanaModal(false)}
           onWalletConnected={handleSolanaWalletConnected}
@@ -157,21 +169,20 @@ export default function FilteredCurrencyList({ onSelect, prompt, availablePairs 
           network="mainnet"
         />
       )}
-       {showErgoModal && (
+      {showErgoModal && (
         <ErgoWalletModal
           onClose={() => setShowErgoModal(false)}
           onWalletConnected={handleErgoWalletConnected}
           onContinueWithoutWallet={handleContinueWithoutWallet}
         />
       )}
-        {showAdaModal && (
+      {showAdaModal && (
         <AdaWalletModal
           onClose={() => setShowAdaModal(false)}
           onWalletConnected={handleAdaWalletConnected}
           onContinueWithoutWallet={handleContinueWithoutWallet}
         />
       )}
-    </>
-    
+    </div>
   );
 }
